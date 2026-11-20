@@ -16,6 +16,7 @@ MAP
 QUESTS
 INTEL
 ARCHIVE
+UNIT
 HACKING
 GARDEN
 SYSTEM
@@ -29,6 +30,7 @@ WEEKLY OPERATION
 MONTHLY OPERATION
 ANNUAL OPERATION
 DAILY ORDERS
+WELLNESS
 NO SIGNAL
 TITLE
 ARTIST
@@ -42,6 +44,11 @@ AFFILIATION
 STATUS
 ARCHIVED
 NEXT RECORD
+CONDITION
+INTEGRITY
+ENERGY
+MORALE
+BOND
 BREACH
 A 3D intrusion drill. Fly the probe, break the shield nodes and destroy every core.
 BEST SCORE
@@ -58,7 +65,6 @@ ILLUMINATION
 NEXT FULL MOON
 LUNAR TEARS
 A quiet field behind the ruins. Click the ground to plant Lunar Tears and stir the wind with the cursor.
-UNIT
 SESSION UPTIME
 TIME ZONE
 DISPLAY
@@ -68,6 +74,9 @@ MEDIA LINK
 BLACK BOX
 NOMINAL
 SIGNAL HISTORY // 60 SEC
+MAINTENANCE PROPOSAL
+DONE
+LATER
 POD 042 // LOG
 OBSERVING
 HUB
@@ -86,13 +95,26 @@ COMPLETED TODAY
 FOCUS TIME TODAY
 0 MIN
 THE TIMER KEEPS RUNNING IN THE HUB // SEE THE TOP BAR
+PROPOSALS OFF
+PROPOSALS APPEAR WHILE THE DESKTOP IS IN VIEW // SET MEAL TIMES IN THE WALLPAPER PROPERTIES
 DESKTOP
 DEPLOY TO DESKTOP
 RESUME ROTATION
+SET AS UNIT
 NO CHARACTER ARCHIVE
 Set 'Character folder' in the wallpaper properties
 Assign an image in the wallpaper properties
 VISUAL RECORD // NONE
+MAINTENANCE BAY // 01
+Set a character folder, or add images named after your unit
+IN SERVICE
+REPAIR
+SLEEP
+PAT
+GIFT LUNAR TEAR
+OUTFITS
+OUTFITS ARE IMAGES THAT SHARE THE UNIT'S NAME, SUCH AS '2B - REVEALING OUTFIT.PNG'
+ACCESSORIES
 BREACH // TOP RUNS
 INTERCEPT // TOP RUNS
 LOGIC LOCK // FASTEST LOCKS
@@ -121,6 +143,7 @@ ORBITAL OVERVIEW
 OPERATION PROGRESS
 AUDIO LOG
 VISUAL RECORD
+MAINTENANCE BAY
 INTRUSION DRILLS
 LUNAR TEAR FIELD
 UNIT DIAGNOSTICS
@@ -166,6 +189,9 @@ Video record could not be decoded. Only .webm is supported.
 REMAINING {time}
 {done} / {total} COMPLETE
 NONE ASSIGNED
+OFF
+{name} {when}
+DONE TODAY
 PLAYING
 PAUSED
 STOPPED
@@ -180,6 +206,7 @@ CAP {n}
 SIMULATED
 ACTIVE
 SILENT
+GAIN X{g}
 UNAVAILABLE
 OFFLINE
 ONLINE
@@ -231,12 +258,23 @@ Why are you poking {c}?
 ORBITAL OVERVIEW // SURVEY
 OPERATIONS AND ORDERS
 SIGNAL ARCHIVE
+MAINTENANCE AND BOND
 UNIT CONFIGURATION
 OPERATIONS
 Progress of the current hour, day, week, month and year.
 Your own checklist. Click an order to mark it complete. Resets every day.
 FOCUS TIMER
 A timed operation for focused work. The Pod reports when it ends, even from the hub.
+Proposals to rest your eyes, drink water, stretch, check your posture and eat. Click an interval to change it.
+CARE
+Look after your unit. Its meters drift down over time; repairs, sleep and attention bring them back and build bond.
+WARDROBE
+Outfits and accessories earned through bond. Click one to equip it.
+SUPPLIES
+Items held, what they do and how to earn more.
+Keep your unit on the desktop in its current outfit and accessory.
+CHANGE UNIT
+Pick another character in ARCHIVE > CHARACTERS with SET AS UNIT. Bond and supplies carry over.
 NOW PLAYING
 Live media signal through Wallpaper Engine media integration.
 Tracks the terminal has picked up, newest first. Choose what is kept under QUICK SETTINGS // AUDIO LOG.
@@ -329,9 +367,36 @@ Operation timer started. {time} remaining.
 Operation timer complete. Recommend a short rest.
 OPERATION {time}
 OPERATION COMPLETE
+PROPOSAL // {name}
 PAUSE
 RESUME
 {n} MIN
+EYE REST
+Optical rest logged. {n} today.
+20-20-20: look at something about 6 m (20 ft) away for 20 seconds and blink slowly a few times.
+HYDRATION
+Hydration logged. {n} today.
+Drink a glass of water. A little and often works better than a lot at once.
+STRETCH
+Stretch logged. {n} today.
+Stand up. Roll your shoulders, stretch your back, neck and wrists, and walk for a minute if you can.
+POSTURE
+Posture check logged. {n} today.
+Feet flat, back against the chair, shoulders loose, screen at eye level and an arm's length away.
+MEAL
+Meal logged. Fuel reserves restored.
+Time to eat something. Regular meals keep energy and focus steady.
+DUE
+IN {n} MIN
+IN {h}H {m}M
+START {n} S
+TODAY {n}
+LOG NOW
+PROPOSALS ON
+EVERY {n} MIN
+SHOWN
+{n} LOGGED TODAY
+NEXT // {name} {when}
 RECEIVED
 NO AUDIO SIGNALS RECORDED
 TIME
@@ -345,6 +410,89 @@ IN ARCHIVE
 {name} cannot stand on the desktop: it needs a tall transparent PNG, 600 px high or more.
 {name} deployed to the desktop. Rotation held.
 Character rotation resumed.
+SMALL RECOVERY
+Restores 25% integrity.
+Daily supply drop. Wellness proposals.
+MEDIUM RECOVERY
+Restores 50% integrity.
+Finished focus operations.
+LARGE RECOVERY
+Restores integrity completely.
+Completing every daily order.
+LUNAR TEAR
+A gift. Raises morale and bond a great deal.
+One for every 3 flowers planted in the GARDEN.
+MACKEREL
+A fish. Lethal to androids.
+Rarely found in the water supply.
+No accessory.
+PINK RIBBON
+A ribbon from a little machine lost in the desert.
+BLUE RIBBON
+Her big sister kept the matching one.
+A white moonflower. Legend says it grants one wish.
+FOX MASK
+A festival mask, worn to the side.
+MACHINE HEAD
+A hollow machine lifeform head. Pod advises against it.
+EMIL'S HEAD
+A cheerful, slightly unsettling spare head.
+BOND LV {n}
+GIVE {n} LUNAR TEARS ({have}/{n})
+FINISH {n} DRILLS ({have}/{n})
+{c} has left sleep mode. Energy {n}%.
+Daily supply drop from the Bunker: Small Recovery x2.
+A Lunar Tear from the GARDEN was set aside for {c}.
+A mackerel was recovered from the water supply. Do not ask how.
+{c} noticed you looking after yourself. Small Recovery x1 received.
+Daily orders rewarded: Large Recovery x1 for {c}.
+Focus operation rewarded: Medium Recovery x1 for {c}.
+Bond with {c} reached level {n}.
+OUTFIT
+Unlocked for {c}: {item}. Equip it in UNIT > WARDROBE.
+No repairs needed. Integrity is at {n}%.
+No recovery items. A supply drop arrives every day; wellness proposals and focus operations earn more.
+{item} applied. Integrity {n}%.
+{c} woke up. Energy {n}%.
+{c} is fully charged and refuses to sleep.
+{c} entered sleep mode. Full charge in about {n} min.
+{c} has had enough attention for now.
+{c} stirs, still asleep.
+{c} seems pleased. Morale {n}%.
+No Lunar Tears in supply. One is set aside for every 3 flowers planted in the GARDEN.
+{c} accepted the Lunar Tear. Lunar Tears given: {n}.
+{c} holds the flower carefully. Morale {n}%.
+Mackerel is lethal to androids. Gift refused. This unit is keeping it away from {c}.
+Mackerel is lethal to androids. Pod 042 refused to hand it over.
+{c} assigned as your unit. Bond and supplies carry over.
+No image of {c} in the character archive.
+SLEEP MODE
+DAMAGED
+EXHAUSTED
+SULKING
+FATIGUED
+EXCELLENT
+LV {n}
+MAX
+SLEEP MODE  //  {n} MIN
+WAKE
+Integrity is low. Repair with a recovery item.
+Energy is low. Sleep mode recharges it.
+Morale is low. A pat or a Lunar Tear will help.
+Sleeping. Morale holds while the unit rests.
+Click the unit to pat it. Music, drills and your own wellness breaks also lift it.
+NO IMAGES OF THIS UNIT
+STANDARD
+EQUIPPED
+EQUIP
+This image is not a transparent cutout, so accessories cannot be placed on it.
+ITEM
+HELD
+EFFECT
+SOURCE
+GIFT
+USE
+LUNAR TEARS GIVEN {a}  //  DRILLS FINISHED {b}
 NO
 SCORE
 BREACHES
@@ -372,12 +520,13 @@ MENU LEFT
 MENU RIGHT
 DESKTOP CHARACTER
 ON
-OFF
 POD LOG
 KEEP
 MUSIC ONLY
 THIS SESSION ONLY
 AUDIO VISUALIZER
+AUDIO SENSITIVITY
+AUTO-BOOST QUIET AUDIO
 PARTICLES
 LOW
 NORMAL
@@ -479,7 +628,6 @@ INTEGRITY LOST
 Breach drill ended. {stages}, score {score}.
 {n} breach cleared|{n} breaches cleared
 SHIELD DOWN
-INTEGRITY
 PULSE READY
 PULSE
 SHOOT IT
@@ -866,6 +1014,50 @@ Report: No input detected. Returning to the hub.
 ## pod.events.fullMoon
 Report: Full moon tonight. Lunar Tears are said to glow brighter.
 
+## pod.events.wellEyes
+Proposal: Optical rest. Look at something far away for twenty seconds. This unit will keep watch.
+Proposal: Unit {u} has been staring at the screen for a while. Recommend looking into the distance and blinking.
+Alert: Blink rate below recommended levels. This unit cannot measure that. It assumes the worst.
+
+## pod.events.wellWater
+Proposal: Coolant check. Drink a glass of water.
+Proposal: Hydration is due. Humans are mostly water and lose it constantly.
+Report: Time since last hydration exceeds the recommended interval. Proposal: water.
+
+## pod.events.wellStretch
+Proposal: Stand and stretch. Prolonged sitting reduces combat efficiency.
+Proposal: Actuator stiffness predicted. Recommend moving around for a minute.
+Proposal: Maintenance break. Roll the shoulders, stretch the back, then resume operations.
+
+## pod.events.wellPosture
+Proposal: Posture check. Shoulders down, back straight, feet on the floor.
+Analysis: Current posture estimate: suboptimal. This is a guess. Please prove it wrong.
+
+## pod.events.wellMeal
+Proposal: Scheduled fuel intake. Eat something.
+Proposal: Meal time. This unit cannot read your fuel gauge, so it assumes it is low.
+Report: It is {t}. Recommend a proper meal, not only snacks.
+
+## pod.events.unitTired
+Report: {mine} is running low on energy. Proposal: sleep mode, in UNIT.
+Query: {mine} keeps drifting off. Is rest scheduled?
+
+## pod.events.unitSad
+Report: Morale of {mine} is falling. Proposal: attention. A Lunar Tear would also work.
+Analysis: {mine} appears to be sulking. Emotions are prohibited. This unit will not report it.
+
+## pod.events.unitHurt
+Alert: Integrity of {mine} below safe levels. Proposal: repairs, in UNIT.
+Report: {mine} has taken wear and tear. Recovery items recommended.
+
+## pod.events.unitHappy
+Alert: Emotional output from {mine} exceeds YoRHa regulations. This unit will look the other way.
+Report: {mine} is in excellent condition. Credit is shared with you.
+
+## pod.events.unitFine
+Report: {mine} status nominal. Bond level {bond}.
+Report: Maintenance log for {mine} updated. No issues found.
+
 ## pod.events.place.map
 Report: Map data synchronised. Proposal: survey a location.
 Report: Orbital view ready. The Bunker passes overhead every few minutes.
@@ -881,6 +1073,10 @@ Report: INTEL open. This unit's transmissions are archived here. Please read the
 ## pod.events.place.archive
 Report: Character records loaded. Entries: {records}.
 Report: Archive open. Proposal: choose someone to keep you company.
+
+## pod.events.place.unit
+Report: Maintenance bay open. {mine} is waiting.
+Report: Unit records loaded. Bond level with {mine}: {bond}.
 
 ## pod.events.place.hacking
 Report: Intrusion drills ready. This unit keeps score. It always keeps score.

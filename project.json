@@ -1,513 +1,543 @@
 {
-	"approved" : true,
-	"contentrating" : "Everyone",
-	"description" : "Fan-made NieR:Automata style desktop terminal. Not affiliated with Square Enix.\n\nLANGUAGES\nEnglish, 简体中文, 日本語, 한국어, Русский, Deutsch, Français, Español, Português (Brasil). 'Language' starts on Auto, which follows the language Wallpaper Engine reports and falls back to English. Pick one in the properties or in SYSTEM > QUICK SETTINGS.\n\nHUB AND PLACES\nThe desktop is the hub. Hover a menu entry to preview it, click to go there; HUB brings you back, or the terminal returns on its own when idle.\n- MAP: drag the globe, click locations to survey them\n- QUESTS: time progress, your own daily orders checklist, focus timer\n- INTEL: now playing, audio log, Pod archive\n- ARCHIVE: character grid; click a record to deploy it to the desktop\n- HACKING: BREACH, a 3D intrusion drill (fly the probe with the cursor, break the shield nodes, destroy every core), and your records\n- GARDEN: plant Lunar Tears, stir the wind with the cursor\n- SYSTEM: diagnostics and quick settings you can change from the desktop\n\nFEATURES\n- Live clock and date in the YoRHa menu style\n- Audio visualizer, Pod log with time-aware messages, floating particles, scanlines and glitches\n- Daylight, night or automatic theme (switches by the clock; set the hours in the properties)\n- Menu on the left or right, works on ultrawide and portrait monitors\n- Your own image or .webm video as a duotone background\n\nCHARACTERS\nA character set is included and appears right away. To use your own, set 'Character folder' to a folder of PNG renders. The file name is the name on screen: '01 - 2B - YoRHa No.2 Type B.png' shows 2B with the subtitle; the leading number only sets the order. Tall transparent PNGs (600 px high or more) stand beside the panel, breathe, emote, say your custom lines and react to clicks; other images stay in ARCHIVE. Click a record in ARCHIVE > CHARACTERS to keep it on the desktop.\n\nPRIVACY\nINTEL > AUDIO LOG lists what Media Integration picks up, browser videos included. Clear it with INTEL > CLEAR AUDIO LOG, and choose Keep, Music only, This session only or Off under 'Audio log' (also in SYSTEM > QUICK SETTINGS).\n\nTIPS\n- Turn on Media Integration in Wallpaper Engine's settings for the INTEL panel\n- Allow mouse input for menu hover and character reactions\n\nUpdate: 18/11/2026\n\n- New 3D drill in HACKING: BREACH, replacing INTERCEPT and LOGIC LOCK. Fly the probe with the cursor (it fires on its own, click for a pulse), shoot down the coloured shots, dodge the ringed ones, break the shield nodes and destroy every core. Sweep, fortress and corridor stages, an upgrade after each one, records in HACKING > RECORDS. Built to stay light: it only loads when opened, lowers its resolution on slower PCs and frees its memory 30 seconds after you leave.\n\n- 9 languages: English, 简体中文, 日本語, 한국어, Русский, Deutsch, Français, Español, Português (Brasil). Set 'Language' in the properties (Auto follows the language Wallpaper Engine reports) or switch it in SYSTEM > QUICK SETTINGS.\n\n- Audio log privacy: INTEL > CLEAR AUDIO LOG wipes the list (click twice). New 'Audio log' setting: Keep, Music only (skips browser videos when the player reports them), This session only, Off.\n\n- Theme: new Auto option switches between daylight and night by the clock; set the hours in the properties.\n\n- Characters: the included set now appears without choosing a folder. Your own 'Character folder' still replaces it. ARCHIVE marks images that can't stand on the desktop (they need a transparent PNG at least 600 px tall).\n\n- Fixed a rare error in the MAP globe.",
-	"file" : "index.html",
-	"general" : 
-	{
-		"properties" : 
-		{
-			"audiolog" : 
-			{
-				"index" : 15,
-				"options" : 
-				[
+	"approved": true,
+	"contentrating": "Everyone",
+	"description": "Fan-made NieR:Automata style desktop terminal. Not affiliated with Square Enix.\n\nNEW (21/11/2026): UNIT, WELLNESS AND AUDIO SENSITIVITY\nThanks for the ideas in the comments.\n- UNIT: look after your character, Tamagotchi style. Integrity, energy and morale drift down in real time. Repair with recovery items, put the unit in sleep mode, pat it, and give it Lunar Tears grown in the GARDEN. Care builds bond, which unlocks accessories from the game (Pink Ribbon, Blue Ribbon, Lunar Tear, Fox Mask, Machine Head, Emil's Head) and outfits: any character images that share your unit's name, such as 2B's Reincarnation render. Accessories show on the desktop too. Pick your unit in ARCHIVE > SET AS UNIT. Nothing is ever lost: an empty meter only means a tired or sulking unit. Do not feed it mackerel.\n- QUESTS > WELLNESS: optional reminders to rest your eyes (20-20-20 rule), drink water, stretch, check your posture and eat at your meal times. The Pod proposes them on a small card: DONE, LATER, or a 20-second eye-rest countdown. Switch them on in the properties or in QUESTS > WELLNESS, and click an interval to change it. Reminders appear while the desktop is in view. Looking after yourself also rewards your unit.\n- Audio sensitivity slider (25 to 800%) and Auto-boost for quiet audio (on by default), so calm, quiet music moves the visualizer, the particles and the character. Both are also in SYSTEM > QUICK SETTINGS.\n\nLANGUAGES\nEnglish, 简体中文, 日本語, 한국어, Русский, Deutsch, Français, Español, Português (Brasil). 'Language' starts on Auto, which follows the language Wallpaper Engine reports and falls back to English. Pick one in the properties or in SYSTEM > QUICK SETTINGS.\n\nHUB AND PLACES\nThe desktop is the hub. Hover a menu entry to preview it, click to go there; HUB brings you back, or the terminal returns on its own when idle.\n- MAP: drag the globe, click locations to survey them\n- QUESTS: time progress, your own daily orders checklist, focus timer, wellness reminders\n- INTEL: now playing, audio log, Pod archive\n- ARCHIVE: character grid; click a record to deploy it to the desktop or set it as your unit\n- UNIT: care for your character, bond, outfits, accessories and supplies\n- HACKING: BREACH, a 3D intrusion drill (fly the probe with the cursor, break the shield nodes, destroy every core), the 2D drills INTERCEPT (click packets before they reach the core) and LOGIC LOCK (rotate tiles until every terminal is powered), and your records\n- GARDEN: plant Lunar Tears, stir the wind with the cursor\n- SYSTEM: diagnostics and quick settings you can change from the desktop\n\nFEATURES\n- Live clock and date in the YoRHa menu style\n- Audio visualizer with adjustable sensitivity, Pod log with time-aware messages, floating particles, scanlines and glitches\n- Daylight, night or automatic theme (switches by the clock; set the hours in the properties)\n- Menu on the left or right, works on ultrawide and portrait monitors\n- Your own image or .webm video as a duotone background\n\nCHARACTERS\nA character set is included and appears right away. To use your own, set 'Character folder' to a folder of PNG renders. The file name is the name on screen: '01 - 2B - YoRHa No.2 Type B.png' shows 2B with the subtitle; the leading number only sets the order. Tall transparent PNGs (600 px high or more) stand beside the panel, breathe, emote, say your custom lines and react to clicks; other images stay in ARCHIVE. Click a record in ARCHIVE > CHARACTERS to keep it on the desktop. Images with the same name as your unit ('2B - Revealing Outfit.png') become outfits in UNIT > WARDROBE.\n\nPRIVACY\nINTEL > AUDIO LOG lists what Media Integration picks up, browser videos included. Clear it with INTEL > CLEAR AUDIO LOG, and choose Keep, Music only, This session only or Off under 'Audio log' (also in SYSTEM > QUICK SETTINGS).\n\nTIPS\n- Turn on Media Integration in Wallpaper Engine's settings for the INTEL panel\n- Allow mouse input for menu hover, character reactions and the UNIT and WELLNESS buttons\n- Quiet music barely moving the bars? Raise 'Audio sensitivity' or keep 'Auto-boost quiet audio' on",
+	"file": "index.html",
+	"general": {
+		"properties": {
+			"audiolog": {
+				"index": 15,
+				"options": [
 					{
-						"label" : "Keep tracks on this PC",
-						"value" : "keep"
+						"label": "Keep tracks on this PC",
+						"value": "keep"
 					},
 					{
-						"label" : "Keep music only (skip videos the player reports, e.g. YouTube)",
-						"value" : "music"
+						"label": "Keep music only (skip videos the player reports, e.g. YouTube)",
+						"value": "music"
 					},
 					{
-						"label" : "This session only (forgotten on restart)",
-						"value" : "session"
+						"label": "This session only (forgotten on restart)",
+						"value": "session"
 					},
 					{
-						"label" : "Off (record nothing)",
-						"value" : "off"
+						"label": "Off (record nothing)",
+						"value": "off"
 					}
 				],
-				"order" : 115,
-				"text" : "Audio log (INTEL)",
-				"type" : "combo",
-				"value" : "keep"
+				"order": 115,
+				"text": "Audio log (INTEL)",
+				"type": "combo",
+				"value": "keep"
 			},
-			"autocycle" : 
-			{
-				"condition" : "showmenu.value == true",
-				"index" : 11,
-				"max" : 120,
-				"min" : 0,
-				"order" : 111,
-				"text" : "Auto-switch panel every N seconds (0 = off)",
-				"type" : "slider",
-				"value" : 12
+			"autocycle": {
+				"condition": "showmenu.value == true",
+				"index": 11,
+				"max": 120,
+				"min": 0,
+				"order": 111,
+				"text": "Auto-switch panel every N seconds (0 = off)",
+				"type": "slider",
+				"value": 12
 			},
-			"bgwash" : 
-			{
-				"index" : 26,
-				"max" : 90,
-				"min" : 0,
-				"order" : 126,
-				"text" : "Background wash (%)",
-				"type" : "slider",
-				"value" : 30
+			"bgwash": {
+				"index": 26,
+				"max": 90,
+				"min": 0,
+				"order": 128,
+				"text": "Background wash (%)",
+				"type": "slider",
+				"value": 30
 			},
-			"charfolder" : 
-			{
-				"index" : 27,
-				"mode" : "fetchall",
-				"order" : 127,
-				"text" : "Character folder (empty = included set; PNG renders, file name = character name)",
-				"type" : "directory",
-				"value" : ""
+			"charfolder": {
+				"index": 27,
+				"mode": "fetchall",
+				"order": 129,
+				"text": "Character folder (empty = included set; PNG renders, file name = character name)",
+				"type": "directory",
+				"value": ""
 			},
-			"charinterval" : 
-			{
-				"index" : 28,
-				"max" : 300,
-				"min" : 3,
-				"order" : 128,
-				"text" : "Switch character every N seconds",
-				"type" : "slider",
-				"value" : 20
+			"charinterval": {
+				"index": 28,
+				"max": 300,
+				"min": 3,
+				"order": 130,
+				"text": "Switch character every N seconds",
+				"type": "slider",
+				"value": 20
 			},
-			"charmode" : 
-			{
-				"index" : 30,
-				"options" : 
-				[
+			"charmode": {
+				"index": 30,
+				"options": [
 					{
-						"label" : "Beside the panel",
-						"value" : "stand"
+						"label": "Beside the panel",
+						"value": "stand"
 					},
 					{
-						"label" : "Off",
-						"value" : "off"
+						"label": "Off",
+						"value": "off"
 					}
 				],
-				"order" : 130,
-				"text" : "Desktop character",
-				"type" : "combo",
-				"value" : "stand"
+				"order": 132,
+				"text": "Desktop character",
+				"type": "combo",
+				"value": "stand"
 			},
-			"charshuffle" : 
-			{
-				"index" : 29,
-				"order" : 129,
-				"text" : "Shuffle characters",
-				"type" : "bool",
-				"value" : false
+			"charshuffle": {
+				"index": 29,
+				"order": 131,
+				"text": "Shuffle characters",
+				"type": "bool",
+				"value": false
 			},
-			"clock24" : 
-			{
-				"index" : 7,
-				"order" : 107,
-				"text" : "24-hour clock",
-				"type" : "bool",
-				"value" : true
+			"clock24": {
+				"index": 7,
+				"order": 107,
+				"text": "24-hour clock",
+				"type": "bool",
+				"value": true
 			},
-			"customimage" : 
-			{
-				"index" : 22,
-				"order" : 122,
-				"text" : "Your image (screenshot or art)",
-				"type" : "file",
-				"value" : ""
+			"customimage": {
+				"index": 22,
+				"order": 124,
+				"text": "Your image (screenshot or art)",
+				"type": "file",
+				"value": ""
 			},
-			"customvideo" : 
-			{
-				"fileType" : "video",
-				"index" : 23,
-				"order" : 123,
-				"text" : "Your video background (.webm only)",
-				"type" : "file",
-				"value" : ""
+			"customvideo": {
+				"fileType": "video",
+				"index": 23,
+				"order": 125,
+				"text": "Your video background (.webm only)",
+				"type": "file",
+				"value": ""
 			},
-			"dailyorders" : 
-			{
-				"index" : 34,
-				"order" : 134,
-				"text" : "Daily orders for QUESTS (separate with |)",
-				"type" : "textinput",
-				"value" : "Drink some water|Stretch for five minutes|Back up your save data|Finish one task you have been avoiding"
+			"dailyorders": {
+				"index": 34,
+				"order": 136,
+				"text": "Daily orders for QUESTS (separate with |)",
+				"type": "textinput",
+				"value": "Drink some water|Stretch for five minutes|Back up your save data|Finish one task you have been avoiding"
 			},
-			"daystart" : 
-			{
-				"condition" : "theme.value == 'auto'",
-				"index" : 2,
-				"max" : 23,
-				"min" : 0,
-				"order" : 102,
-				"text" : "Day theme starts at (hour)",
-				"type" : "slider",
-				"value" : 7
+			"daystart": {
+				"condition": "theme.value == 'auto'",
+				"index": 2,
+				"max": 23,
+				"min": 0,
+				"order": 102,
+				"text": "Day theme starts at (hour)",
+				"type": "slider",
+				"value": 7
 			},
-			"emotefreq" : 
-			{
-				"condition" : "charmode.value == 'stand'",
-				"index" : 32,
-				"max" : 10,
-				"min" : 0,
-				"order" : 132,
-				"text" : "Emote frequency (0 = only react to clicks)",
-				"type" : "slider",
-				"value" : 5
+			"emotefreq": {
+				"condition": "charmode.value == 'stand'",
+				"index": 32,
+				"max": 10,
+				"min": 0,
+				"order": 134,
+				"text": "Emote frequency (0 = only react to clicks)",
+				"type": "slider",
+				"value": 5
 			},
-			"emotelines" : 
-			{
-				"condition" : "charmode.value == 'stand'",
-				"index" : 33,
-				"order" : 133,
-				"text" : "Custom lines (separate with |)",
-				"type" : "textinput",
-				"value" : "Glory to Mankind.|...|Hm.|Systems nominal.|Is something wrong?|Proceeding with the mission."
+			"emotelines": {
+				"condition": "charmode.value == 'stand'",
+				"index": 33,
+				"order": 135,
+				"text": "Custom lines (separate with |)",
+				"type": "textinput",
+				"value": "Glory to Mankind.|...|Hm.|Systems nominal.|Is something wrong?|Proceeding with the mission."
 			},
-			"footertext" : 
-			{
-				"index" : 6,
-				"order" : 106,
-				"text" : "Footer text",
-				"type" : "textinput",
-				"value" : "Glory to Mankind"
+			"footertext": {
+				"index": 6,
+				"order": 106,
+				"text": "Footer text",
+				"type": "textinput",
+				"value": "Glory to Mankind"
 			},
-			"glitch" : 
-			{
-				"index" : 20,
-				"order" : 120,
-				"text" : "Random glitch effect",
-				"type" : "bool",
-				"value" : true
+			"glitch": {
+				"index": 20,
+				"order": 122,
+				"text": "Random glitch effect",
+				"type": "bool",
+				"value": true
 			},
-			"hubreturn" : 
-			{
-				"index" : 35,
-				"max" : 600,
-				"min" : 0,
-				"order" : 135,
-				"text" : "Return to the hub after N seconds idle (0 = never)",
-				"type" : "slider",
-				"value" : 120
+			"hubreturn": {
+				"index": 35,
+				"max": 600,
+				"min": 0,
+				"order": 143,
+				"text": "Return to the hub after N seconds idle (0 = never)",
+				"type": "slider",
+				"value": 120
 			},
-			"imagefilter" : 
-			{
-				"index" : 25,
-				"options" : 
-				[
+			"imagefilter": {
+				"index": 25,
+				"options": [
 					{
-						"label" : "YoRHa duotone",
-						"value" : "nier"
+						"label": "YoRHa duotone",
+						"value": "nier"
 					},
 					{
-						"label" : "Monochrome",
-						"value" : "mono"
+						"label": "Monochrome",
+						"value": "mono"
 					},
 					{
-						"label" : "Original colors",
-						"value" : "original"
+						"label": "Original colors",
+						"value": "original"
 					}
 				],
-				"order" : 125,
-				"text" : "Image and character filter",
-				"type" : "combo",
-				"value" : "nier"
+				"order": 127,
+				"text": "Image and character filter",
+				"type": "combo",
+				"value": "nier"
 			},
-			"imageplacement" : 
-			{
-				"index" : 24,
-				"options" : 
-				[
+			"imageplacement": {
+				"index": 24,
+				"options": [
 					{
-						"label" : "Background and ARCHIVE panel",
-						"value" : "both"
+						"label": "Background and ARCHIVE panel",
+						"value": "both"
 					},
 					{
-						"label" : "Background only",
-						"value" : "background"
+						"label": "Background only",
+						"value": "background"
 					},
 					{
-						"label" : "ARCHIVE panel only",
-						"value" : "archive"
+						"label": "ARCHIVE panel only",
+						"value": "archive"
 					}
 				],
-				"order" : 124,
-				"text" : "Image placement",
-				"type" : "combo",
-				"value" : "both"
+				"order": 126,
+				"text": "Image placement",
+				"type": "combo",
+				"value": "both"
 			},
-			"language" : 
-			{
-				"index" : 0,
-				"options" : 
-				[
+			"language": {
+				"index": 0,
+				"options": [
 					{
-						"label" : "Auto (language Wallpaper Engine reports)",
-						"value" : "auto"
+						"label": "Auto (language Wallpaper Engine reports)",
+						"value": "auto"
 					},
 					{
-						"label" : "English",
-						"value" : "en"
+						"label": "English",
+						"value": "en"
 					},
 					{
-						"label" : "简体中文 (Chinese, Simplified)",
-						"value" : "zh"
+						"label": "简体中文 (Chinese, Simplified)",
+						"value": "zh"
 					},
 					{
-						"label" : "日本語 (Japanese)",
-						"value" : "ja"
+						"label": "日本語 (Japanese)",
+						"value": "ja"
 					},
 					{
-						"label" : "한국어 (Korean)",
-						"value" : "ko"
+						"label": "한국어 (Korean)",
+						"value": "ko"
 					},
 					{
-						"label" : "Русский (Russian)",
-						"value" : "ru"
+						"label": "Русский (Russian)",
+						"value": "ru"
 					},
 					{
-						"label" : "Deutsch (German)",
-						"value" : "de"
+						"label": "Deutsch (German)",
+						"value": "de"
 					},
 					{
-						"label" : "Français (French)",
-						"value" : "fr"
+						"label": "Français (French)",
+						"value": "fr"
 					},
 					{
-						"label" : "Español (Spanish)",
-						"value" : "es"
+						"label": "Español (Spanish)",
+						"value": "es"
 					},
 					{
-						"label" : "Português (Brasil)",
-						"value" : "pt"
+						"label": "Português (Brasil)",
+						"value": "pt"
 					}
 				],
-				"order" : 100,
-				"text" : "Language",
-				"type" : "combo",
-				"value" : "auto"
+				"order": 100,
+				"text": "Language",
+				"type": "combo",
+				"value": "auto"
 			},
-			"layout" : 
-			{
-				"index" : 4,
-				"options" : 
-				[
+			"layout": {
+				"index": 4,
+				"options": [
 					{
-						"label" : "Menu on the left",
-						"value" : "left"
+						"label": "Menu on the left",
+						"value": "left"
 					},
 					{
-						"label" : "Menu on the right (keeps desktop icons clear)",
-						"value" : "right"
+						"label": "Menu on the right (keeps desktop icons clear)",
+						"value": "right"
 					}
 				],
-				"order" : 104,
-				"text" : "Layout",
-				"type" : "combo",
-				"value" : "left"
+				"order": 104,
+				"text": "Layout",
+				"type": "combo",
+				"value": "left"
 			},
-			"loginterval" : 
-			{
-				"condition" : "showlog.value == true",
-				"index" : 14,
-				"max" : 300,
-				"min" : 10,
-				"order" : 114,
-				"text" : "Pod chatter interval (seconds)",
-				"type" : "slider",
-				"value" : 40
+			"loginterval": {
+				"condition": "showlog.value == true",
+				"index": 14,
+				"max": 300,
+				"min": 10,
+				"order": 114,
+				"text": "Pod chatter interval (seconds)",
+				"type": "slider",
+				"value": 40
 			},
-			"nightstart" : 
-			{
-				"condition" : "theme.value == 'auto'",
-				"index" : 3,
-				"max" : 23,
-				"min" : 0,
-				"order" : 103,
-				"text" : "Night theme starts at (hour)",
-				"type" : "slider",
-				"value" : 19
+			"nightstart": {
+				"condition": "theme.value == 'auto'",
+				"index": 3,
+				"max": 23,
+				"min": 0,
+				"order": 103,
+				"text": "Night theme starts at (hour)",
+				"type": "slider",
+				"value": 19
 			},
-			"parallax" : 
-			{
-				"index" : 21,
-				"order" : 121,
-				"text" : "Mouse parallax",
-				"type" : "bool",
-				"value" : true
+			"parallax": {
+				"index": 21,
+				"order": 123,
+				"text": "Mouse parallax",
+				"type": "bool",
+				"value": true
 			},
-			"particles" : 
-			{
-				"index" : 18,
-				"max" : 300,
-				"min" : 0,
-				"order" : 118,
-				"text" : "Floating particles",
-				"type" : "slider",
-				"value" : 70
+			"particles": {
+				"index": 18,
+				"max": 300,
+				"min": 0,
+				"order": 120,
+				"text": "Floating particles",
+				"type": "slider",
+				"value": 70
 			},
-			"scanlines" : 
-			{
-				"index" : 19,
-				"order" : 119,
-				"text" : "Scanlines and film grain",
-				"type" : "bool",
-				"value" : true
+			"scanlines": {
+				"index": 19,
+				"order": 121,
+				"text": "Scanlines and film grain",
+				"type": "bool",
+				"value": true
 			},
-			"schemecolor" : 
-			{
-				"order" : 0,
-				"text" : "ui_browse_properties_scheme_color",
-				"type" : "color",
-				"value" : "0.80392 0.78431 0.69020"
+			"schemecolor": {
+				"order": 0,
+				"text": "ui_browse_properties_scheme_color",
+				"type": "color",
+				"value": "0.80392 0.78431 0.69020"
 			},
-			"showcasesize" : 
-			{
-				"condition" : "charmode.value == 'stand'",
-				"index" : 31,
-				"max" : 100,
-				"min" : 30,
-				"order" : 131,
-				"text" : "Desktop character size (%)",
-				"type" : "slider",
-				"value" : 100
+			"showcasesize": {
+				"condition": "charmode.value == 'stand'",
+				"index": 31,
+				"max": 100,
+				"min": 30,
+				"order": 133,
+				"text": "Desktop character size (%)",
+				"type": "slider",
+				"value": 100
 			},
-			"showlog" : 
-			{
-				"index" : 13,
-				"order" : 113,
-				"text" : "Show Pod log",
-				"type" : "bool",
-				"value" : true
+			"showlog": {
+				"index": 13,
+				"order": 113,
+				"text": "Show Pod log",
+				"type": "bool",
+				"value": true
 			},
-			"showmenu" : 
-			{
-				"index" : 10,
-				"order" : 110,
-				"text" : "Show menu and panel",
-				"type" : "bool",
-				"value" : true
+			"showmenu": {
+				"index": 10,
+				"order": 110,
+				"text": "Show menu and panel",
+				"type": "bool",
+				"value": true
 			},
-			"showseconds" : 
-			{
-				"index" : 8,
-				"order" : 108,
-				"text" : "Show seconds",
-				"type" : "bool",
-				"value" : true
+			"showseconds": {
+				"index": 8,
+				"order": 108,
+				"text": "Show seconds",
+				"type": "bool",
+				"value": true
 			},
-			"showviz" : 
-			{
-				"index" : 16,
-				"order" : 116,
-				"text" : "Audio visualizer",
-				"type" : "bool",
-				"value" : true
+			"showviz": {
+				"index": 16,
+				"order": 116,
+				"text": "Audio visualizer",
+				"type": "bool",
+				"value": true
 			},
-			"startpanel" : 
-			{
-				"condition" : "showmenu.value == true",
-				"index" : 12,
-				"options" : 
-				[
+			"startpanel": {
+				"condition": "showmenu.value == true",
+				"index": 12,
+				"options": [
 					{
-						"label" : "MAP",
-						"value" : "map"
+						"label": "MAP",
+						"value": "map"
 					},
 					{
-						"label" : "QUESTS",
-						"value" : "quests"
+						"label": "QUESTS",
+						"value": "quests"
 					},
 					{
-						"label" : "INTEL",
-						"value" : "intel"
+						"label": "INTEL",
+						"value": "intel"
 					},
 					{
-						"label" : "ARCHIVE",
-						"value" : "archive"
+						"label": "ARCHIVE",
+						"value": "archive"
 					},
 					{
-						"label" : "HACKING",
-						"value" : "hacking"
+						"label": "UNIT",
+						"value": "unit"
 					},
 					{
-						"label" : "GARDEN",
-						"value" : "garden"
+						"label": "HACKING",
+						"value": "hacking"
 					},
 					{
-						"label" : "SYSTEM",
-						"value" : "system"
+						"label": "GARDEN",
+						"value": "garden"
+					},
+					{
+						"label": "SYSTEM",
+						"value": "system"
 					}
 				],
-				"order" : 112,
-				"text" : "Starting panel",
-				"type" : "combo",
-				"value" : "map"
+				"order": 112,
+				"text": "Starting panel",
+				"type": "combo",
+				"value": "map"
 			},
-			"theme" : 
-			{
-				"index" : 1,
-				"options" : 
-				[
+			"theme": {
+				"index": 1,
+				"options": [
 					{
-						"label" : "Daylight (beige)",
-						"value" : "light"
+						"label": "Daylight (beige)",
+						"value": "light"
 					},
 					{
-						"label" : "Night (dark)",
-						"value" : "dark"
+						"label": "Night (dark)",
+						"value": "dark"
 					},
 					{
-						"label" : "Auto (day and night by the clock)",
-						"value" : "auto"
+						"label": "Auto (day and night by the clock)",
+						"value": "auto"
 					}
 				],
-				"order" : 101,
-				"text" : "Theme",
-				"type" : "combo",
-				"value" : "light"
+				"order": 101,
+				"text": "Theme",
+				"type": "combo",
+				"value": "light"
 			},
-			"uiscale" : 
-			{
-				"index" : 9,
-				"max" : 160,
-				"min" : 50,
-				"order" : 109,
-				"text" : "UI scale (%)",
-				"type" : "slider",
-				"value" : 100
+			"uiscale": {
+				"index": 9,
+				"max": 160,
+				"min": 50,
+				"order": 109,
+				"text": "UI scale (%)",
+				"type": "slider",
+				"value": 100
 			},
-			"unitname" : 
-			{
-				"index" : 5,
-				"order" : 105,
-				"text" : "Unit name",
-				"type" : "textinput",
-				"value" : "2B"
+			"unitname": {
+				"index": 5,
+				"order": 105,
+				"text": "Unit name",
+				"type": "textinput",
+				"value": "2B"
 			},
-			"vizheight" : 
-			{
-				"condition" : "showviz.value == true",
-				"index" : 17,
-				"max" : 30,
-				"min" : 4,
-				"order" : 117,
-				"text" : "Visualizer height (% of screen)",
-				"type" : "slider",
-				"value" : 12
+			"vizheight": {
+				"condition": "showviz.value == true",
+				"index": 17,
+				"max": 30,
+				"min": 4,
+				"order": 117,
+				"text": "Visualizer height (% of screen)",
+				"type": "slider",
+				"value": 12
+			},
+			"audiogain": {
+				"index": 36,
+				"type": "slider",
+				"text": "Audio sensitivity (%) - raise it for quiet music",
+				"min": 25,
+				"max": 800,
+				"value": 100,
+				"order": 118
+			},
+			"audioauto": {
+				"index": 37,
+				"type": "bool",
+				"text": "Auto-boost quiet audio",
+				"value": true,
+				"order": 119
+			},
+			"wellness": {
+				"index": 38,
+				"type": "bool",
+				"text": "Wellness reminders (QUESTS > WELLNESS)",
+				"value": false,
+				"order": 137
+			},
+			"eyesevery": {
+				"index": 39,
+				"type": "slider",
+				"text": "Eye break every N minutes (0 = off)",
+				"min": 0,
+				"max": 120,
+				"value": 20,
+				"condition": "wellness.value == true",
+				"order": 138
+			},
+			"waterevery": {
+				"index": 40,
+				"type": "slider",
+				"text": "Drink water every N minutes (0 = off)",
+				"min": 0,
+				"max": 240,
+				"value": 60,
+				"condition": "wellness.value == true",
+				"order": 139
+			},
+			"stretchevery": {
+				"index": 41,
+				"type": "slider",
+				"text": "Stretch break every N minutes (0 = off)",
+				"min": 0,
+				"max": 240,
+				"value": 45,
+				"condition": "wellness.value == true",
+				"order": 140
+			},
+			"postureevery": {
+				"index": 42,
+				"type": "slider",
+				"text": "Posture check every N minutes (0 = off)",
+				"min": 0,
+				"max": 240,
+				"value": 0,
+				"condition": "wellness.value == true",
+				"order": 141
+			},
+			"mealtimes": {
+				"index": 43,
+				"type": "textinput",
+				"text": "Meal reminder times, 24 h (separate with |, empty = off)",
+				"value": "08:00|12:30|18:30",
+				"condition": "wellness.value == true",
+				"order": 142
 			}
 		},
-		"supportsaudioprocessing" : true
+		"supportsaudioprocessing": true
 	},
-	"preview" : "preview.gif",
-	"ratingsex" : "none",
-	"ratingviolence" : "none",
-	"tags" : [ "Game" ],
-	"title" : "YoRHa Terminal - NieR:Automata UI",
-	"type" : "web",
-	"version" : 9,
-	"visibility" : "public",
-	"workshopid" : "3830732662",
-	"workshopurl" : "steam://url/CommunityFilePage/3830732662"
+	"preview": "preview.gif",
+	"ratingsex": "none",
+	"ratingviolence": "none",
+	"tags": [
+		"Game"
+	],
+	"title": "YoRHa Terminal - NieR:Automata UI",
+	"type": "web",
+	"version": 9,
+	"visibility": "public",
+	"workshopid": "3830732662",
+	"workshopurl": "steam://url/CommunityFilePage/3830732662"
 }

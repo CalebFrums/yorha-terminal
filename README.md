@@ -15,9 +15,10 @@ The desktop is the hub. Hover a menu entry to preview it and click to go there. 
 | Place | What's there |
 | --- | --- |
 | **MAP** | Drag the globe and click locations to survey them |
-| **QUESTS** | Time progress, your own daily orders checklist, a focus timer |
+| **QUESTS** | Time progress, your own daily orders checklist, a focus timer, and optional wellness reminders |
 | **INTEL** | Now playing, an audio log and the Pod archive |
-| **ARCHIVE** | A character grid. Click a record to put it on the desktop |
+| **ARCHIVE** | A character grid. Click a record to put it on the desktop, or set it as your unit |
+| **UNIT** | Look after your character, Tamagotchi style. Bond unlocks outfits and accessories |
 | **HACKING** | BREACH, a 3D intrusion drill built on three.js. Also INTERCEPT, LOGIC LOCK and your records |
 | **GARDEN** | Plant Lunar Tears and stir the wind with the cursor |
 | **SYSTEM** | Diagnostics and quick settings you can change from the desktop |
@@ -25,12 +26,14 @@ The desktop is the hub. Hover a menu entry to preview it and click to go there. 
 ## Features
 
 - A live clock and date in the YoRHa menu style
-- An audio visualizer and floating particles, with scanlines and glitches
+- An audio visualizer and floating particles, with scanlines and glitches. A sensitivity setting and an auto-boost make quiet music show up too
 - A Pod log with about 210 lines that react to the time, the music and what you do (try petting the Pod: move in slow circles over its log)
 - Daylight, night or automatic theme, which switches by the clock
 - Menu on the left or right. It works on ultrawide and portrait monitors
 - Your own image or `.webm` video as a duotone background
 - Characters from a folder of your PNGs. They stand beside the panel, breathe, emote, say your custom lines and react to clicks
+- UNIT: care for one character. Integrity, energy and morale drift down in real time; repairs, sleep mode, pats and Lunar Tears from the GARDEN bring them back. Bond unlocks accessories from the game (Pink and Blue Ribbon, Lunar Tear, Fox Mask, Machine Head, Emil's Head), drawn here as simple originals, and outfits (any images that share the unit's name)
+- WELLNESS: optional Pod proposals to rest your eyes (20-20-20), drink water, stretch, check your posture and eat at your meal times
 - 9 languages: English, 简体中文, 日本語, 한국어, Русский, Deutsch, Français, Español, Português (Brasil)
 
 ## Demo notes
@@ -43,7 +46,9 @@ The demo runs the same files Wallpaper Engine does, but in a browser. Some parts
 ```
 #theme=dark                  light | dark | auto
 #language=ja                 auto | en | zh | ja | ko | ru | de | fr | es | pt
-#place=hacking               map | quests | intel | archive | hacking | garden | system
+#place=hacking               map | quests | intel | archive | unit | hacking | garden | system
+#place=quests&sub=wellness&wellness=true
+#audiogain=300&audioauto=false
 #layout=right&uiscale=110
 #charfiles=https://example.com/a.png|https://example.com/b.png
 ```

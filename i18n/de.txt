@@ -11,6 +11,7 @@ KARTE
 AUFTRÄGE
 INFOS
 ARCHIV
+EINHEIT
 HACKING
 GARTEN
 SYSTEM
@@ -24,6 +25,7 @@ WOCHENOPERATION
 MONATSOPERATION
 JAHRESOPERATION
 TAGESBEFEHLE
+WOHLBEFINDEN
 KEIN SIGNAL
 TITEL
 INTERPRET
@@ -37,6 +39,11 @@ ZUGEHÖRIGKEIT
 STATUS
 ARCHIVIERT
 NÄCHSTER EINTRAG
+ZUSTAND
+INTEGRITÄT
+ENERGIE
+MORAL
+BINDUNG
 DURCHBRUCH
 Eine 3D-Eindringübung. Steuere die Sonde, zerstöre die Schildknoten und vernichte jeden Kern.
 BESTWERT
@@ -53,7 +60,6 @@ BELEUCHTUNG
 NÄCHSTER VOLLMOND
 MONDTRÄNEN
 Ein stilles Feld hinter den Ruinen. Klicke auf den Boden, um Mondtränen zu pflanzen, und wecke mit dem Cursor den Wind.
-EINHEIT
 SITZUNGSDAUER
 ZEITZONE
 ANZEIGE
@@ -63,6 +69,9 @@ MEDIENLINK
 BLACKBOX
 NORMAL
 SIGNALVERLAUF // 60 S
+WARTUNGSVORSCHLAG
+ERLEDIGT
+SPÄTER
 POD 042 // PROTOKOLL
 BEOBACHTET
 ZENTRALE
@@ -81,13 +90,26 @@ HEUTE ERLEDIGT
 FOKUSZEIT HEUTE
 0 MIN
 DER TIMER LÄUFT IN DER ZENTRALE WEITER // SIEHE OBERE LEISTE
+VORSCHLÄGE: AUS
+VORSCHLÄGE ERSCHEINEN, WENN DER DESKTOP SICHTBAR IST // ESSENSZEITEN IN DEN HINTERGRUND-EIGENSCHAFTEN
 DESKTOP
 AUF DEN DESKTOP
 ROTATION FORTSETZEN
+ALS EINHEIT
 KEIN CHARAKTERARCHIV
 Lege in den Hintergrund-Eigenschaften einen 'Charakterordner' fest
 Lege in den Hintergrund-Eigenschaften ein Bild fest
 BILDAUFZEICHNUNG // KEINE
+WARTUNGSBUCHT // 01
+Lege einen Charakterordner fest oder füge Bilder mit dem Namen deiner Einheit hinzu
+IM DIENST
+REPARIEREN
+SCHLAFEN
+STREICHELN
+MONDTRÄNE SCHENKEN
+OUTFITS
+OUTFITS SIND BILDER MIT DEM NAMEN DER EINHEIT, Z. B. '2B - REVEALING OUTFIT.PNG'
+ACCESSOIRES
 DURCHBRUCH // BESTE LÄUFE
 ABFANGEN // BESTE LÄUFE
 LOGIKSCHLOSS // SCHNELLSTE
@@ -116,6 +138,7 @@ ORBITALE ÜBERSICHT
 OPERATIONSFORTSCHRITT
 AUDIOPROTOKOLL
 BILDAUFZEICHNUNG
+WARTUNGSBUCHT
 EINDRINGÜBUNGEN
 MONDTRÄNENFELD
 EINHEITENDIAGNOSE
@@ -161,6 +184,9 @@ Videoaufzeichnung konnte nicht dekodiert werden. Nur .webm wird unterstützt.
 VERBLEIBEND {time}
 {done} / {total} ERLEDIGT
 NICHTS ZUGEWIESEN
+AUS
+{name} {when}
+HEUTE ERLEDIGT
 WIEDERGABE
 PAUSIERT
 GESTOPPT
@@ -175,6 +201,7 @@ LIMIT {n}
 SIMULIERT
 AKTIV
 STILL
+VERSTÄRKUNG X{g}
 NICHT VERFÜGBAR
 OFFLINE
 ONLINE
@@ -226,12 +253,23 @@ Warum stupst du {c} an?
 ORBITALE ÜBERSICHT // ERKUNDUNG
 OPERATIONEN UND BEFEHLE
 SIGNALARCHIV
+WARTUNG UND BINDUNG
 EINHEITENKONFIGURATION
 OPERATIONEN
 Fortschritt der aktuellen Stunde, des Tages, der Woche, des Monats und des Jahres.
 Deine eigene Checkliste. Klicke einen Befehl an, um ihn abzuhaken. Wird täglich zurückgesetzt.
 FOKUS-TIMER
 Eine zeitlich begrenzte Operation für konzentriertes Arbeiten. Der Pod meldet das Ende, auch in der Zentrale.
+Vorschläge: Augen ausruhen, Wasser trinken, dehnen, Haltung prüfen und essen. Klicke auf ein Intervall, um es zu ändern.
+PFLEGE
+Kümmere dich um deine Einheit. Ihre Werte sinken mit der Zeit; Reparaturen, Schlaf und Zuwendung heben sie wieder und stärken die Bindung.
+GARDEROBE
+Outfits und Accessoires, durch Bindung verdient. Klicke darauf, um sie anzulegen.
+VORRÄTE
+Vorhandene Gegenstände, was sie bewirken und wie man mehr bekommt.
+Behalte deine Einheit im aktuellen Outfit und Accessoire auf dem Desktop.
+EINHEIT WECHSELN
+Wähle in ARCHIV > CHARAKTERE mit ALS EINHEIT einen anderen Charakter. Bindung und Vorräte bleiben erhalten.
 LÄUFT GERADE
 Live-Mediensignal über die Medienintegration von Wallpaper Engine.
 Vom Terminal erfasste Titel, neueste zuerst. Was behalten wird, legst du unter SCHNELLEINSTELLUNGEN // AUDIOPROTOKOLL fest.
@@ -324,9 +362,36 @@ Operations-Timer gestartet. Noch {time}.
 Operations-Timer abgelaufen. Eine kurze Pause wird empfohlen.
 OPERATION {time}
 OPERATION ABGESCHLOSSEN
+VORSCHLAG // {name}
 PAUSE
 WEITER
 {n} MIN
+AUGENPAUSE
+Augenpause protokolliert. Heute: {n}.
+20-20-20: Schau 20 Sekunden lang auf etwas, das etwa 6 m entfernt ist, und blinzle ein paarmal langsam.
+TRINKEN
+Trinken protokolliert. Heute: {n}.
+Trink ein Glas Wasser. Oft ein wenig ist besser als viel auf einmal.
+DEHNEN
+Dehnen protokolliert. Heute: {n}.
+Steh auf. Kreise die Schultern, dehne Rücken, Nacken und Handgelenke und geh eine Minute herum, wenn du kannst.
+HALTUNG
+Haltungscheck protokolliert. Heute: {n}.
+Füße flach, Rücken an der Lehne, Schultern locker, Bildschirm auf Augenhöhe und eine Armlänge entfernt.
+ESSEN
+Mahlzeit protokolliert. Treibstoffreserven aufgefüllt.
+Zeit, etwas zu essen. Regelmäßige Mahlzeiten halten Energie und Konzentration stabil.
+FÄLLIG
+IN {n} MIN
+IN {h} STD {m} MIN
+START {n} S
+HEUTE {n}
+EINTRAGEN
+VORSCHLÄGE: AN
+ALLE {n} MIN
+ANGEZEIGT
+HEUTE {n} EINGETRAGEN
+NÄCHSTES // {name} {when}
 EMPFANGEN
 KEINE AUDIOSIGNALE AUFGEZEICHNET
 ZEIT
@@ -340,6 +405,89 @@ IM ARCHIV
 {name} kann nicht auf dem Desktop stehen: nötig ist ein transparentes PNG mit mindestens 600 px Höhe.
 {name} auf den Desktop gesetzt. Rotation angehalten.
 Charakterrotation fortgesetzt.
+KLEINE HEILUNG
+Stellt 25 % Integrität wieder her.
+Tägliche Lieferung. Wohlbefinden-Vorschläge.
+MITTLERE HEILUNG
+Stellt 50 % Integrität wieder her.
+Abgeschlossene Fokus-Operationen.
+GROSSE HEILUNG
+Stellt die Integrität vollständig wieder her.
+Alle Tagesbefehle erledigen.
+MONDTRÄNE
+Ein Geschenk. Hebt Moral und Bindung stark an.
+Eine für je 3 im GARTEN gepflanzte Blumen.
+MAKRELE
+Ein Fisch. Tödlich für Androiden.
+Selten in der Wasserversorgung zu finden.
+Kein Accessoire.
+ROSA SCHLEIFE
+Eine Schleife von einer kleinen Maschine, die sich in der Wüste verirrt hat.
+BLAUE SCHLEIFE
+Ihre große Schwester behielt die passende.
+Eine weiße Mondblume. Der Legende nach erfüllt sie einen Wunsch.
+FUCHSMASKE
+Eine Festmaske, seitlich getragen.
+MASCHINENKOPF
+Ein hohler Maschinenlebensform-Kopf. Pod rät davon ab.
+EMILS KOPF
+Ein fröhlicher, leicht unheimlicher Ersatzkopf.
+BINDUNG ST. {n}
+{n} MONDTRÄNEN SCHENKEN ({have}/{n})
+{n} ÜBUNGEN ABSCHLIESSEN ({have}/{n})
+{c} hat den Schlafmodus verlassen. Energie {n} %.
+Tägliche Lieferung vom Bunker: Kleine Heilung x2.
+Eine Mondträne aus dem GARTEN wurde für {c} zurückgelegt.
+Aus der Wasserversorgung wurde eine Makrele geborgen. Frag nicht, wie.
+{c} hat bemerkt, dass du auf dich achtest. Kleine Heilung x1 erhalten.
+Tagesbefehle belohnt: Große Heilung x1 für {c}.
+Fokus-Operation belohnt: Mittlere Heilung x1 für {c}.
+Bindung mit {c} hat Stufe {n} erreicht.
+OUTFIT
+Für {c} freigeschaltet: {item}. Anlegen unter EINHEIT > GARDEROBE.
+Keine Reparatur nötig. Integrität liegt bei {n} %.
+Keine Heilgegenstände. Jeden Tag kommt eine Lieferung; Wohlbefinden-Vorschläge und Fokus-Operationen bringen mehr.
+{item} angewendet. Integrität {n} %.
+{c} ist aufgewacht. Energie {n} %.
+{c} ist voll geladen und weigert sich zu schlafen.
+{c} ist im Schlafmodus. Voll geladen in etwa {n} Min.
+{c} hat fürs Erste genug Aufmerksamkeit.
+{c} regt sich, schläft aber weiter.
+{c} scheint zufrieden. Moral {n} %.
+Keine Mondtränen vorrätig. Für je 3 im GARTEN gepflanzte Blumen wird eine zurückgelegt.
+{c} hat die Mondträne angenommen. Geschenkte Mondtränen: {n}.
+{c} hält die Blume vorsichtig. Moral {n} %.
+Makrele ist tödlich für Androiden. Geschenk abgelehnt. Diese Einheit hält sie von {c} fern.
+Makrele ist tödlich für Androiden. Pod 042 hat sich geweigert, sie herauszugeben.
+{c} ist jetzt deine Einheit. Bindung und Vorräte bleiben.
+Kein Bild von {c} im Charakterarchiv.
+SCHLAFMODUS
+BESCHÄDIGT
+ERSCHÖPFT
+SCHMOLLT
+MÜDE
+AUSGEZEICHNET
+ST. {n}
+MAX
+SCHLAFMODUS  //  {n} MIN
+WECKEN
+Integrität ist niedrig. Mit einem Heilgegenstand reparieren.
+Energie ist niedrig. Der Schlafmodus lädt sie auf.
+Moral ist niedrig. Streicheln oder eine Mondträne hilft.
+Schläft. Während die Einheit ruht, hält die Moral.
+Klicke auf die Einheit, um sie zu streicheln. Musik, Übungen und deine eigenen Pausen heben ebenfalls die Stimmung.
+KEINE BILDER DIESER EINHEIT
+STANDARD
+ANGELEGT
+ANLEGEN
+Dieses Bild ist kein transparenter Ausschnitt, daher lassen sich keine Accessoires anbringen.
+GEGENSTAND
+VORRAT
+WIRKUNG
+QUELLE
+SCHENKEN
+BENUTZEN
+GESCHENKTE MONDTRÄNEN {a}  //  ABGESCHLOSSENE ÜBUNGEN {b}
 NR
 PUNKTE
 DURCHBRÜCHE
@@ -367,12 +515,13 @@ MENÜ LINKS
 MENÜ RECHTS
 DESKTOP-CHARAKTER
 AN
-AUS
 POD-PROTOKOLL
 BEHALTEN
 NUR MUSIK
 NUR DIESE SITZUNG
 AUDIO-VISUALISIERUNG
+AUDIO-EMPFINDLICHKEIT
+LEISES AUDIO VERSTÄRKEN
 PARTIKEL
 WENIG
 NORMAL
@@ -474,7 +623,6 @@ INTEGRITÄT VERLOREN
 Durchbruchübung beendet. {stages}, Punkte {score}.
 {n} Durchbruch geschafft|{n} Durchbrüche geschafft
 SCHILD UNTEN
-INTEGRITÄT
 IMPULS BEREIT
 IMPULS
 ABSCHIESSEN
@@ -861,6 +1009,50 @@ Report: Keine Eingabe erkannt. Kehre zur Zentrale zurück.
 ## pod.events.fullMoon
 Report: Heute Nacht ist Vollmond. Mondtränen sollen dann heller leuchten.
 
+## pod.events.wellEyes
+Proposal: Optische Pause. Schau zwanzig Sekunden lang in die Ferne. Diese Einheit hält Wache.
+Proposal: Einheit {u} starrt schon eine Weile auf den Bildschirm. Empfehlung: in die Ferne schauen und blinzeln.
+Alert: Blinzelrate unter dem empfohlenen Wert. Diese Einheit kann das nicht messen. Sie geht vom Schlimmsten aus.
+
+## pod.events.wellWater
+Proposal: Kühlmittelprüfung. Trink ein Glas Wasser.
+Proposal: Trinken ist fällig. Menschen bestehen größtenteils aus Wasser und verlieren es ständig.
+Report: Seit dem letzten Trinken ist mehr Zeit als empfohlen vergangen. Vorschlag: Wasser.
+
+## pod.events.wellStretch
+Proposal: Aufstehen und dehnen. Langes Sitzen senkt die Kampfeffizienz.
+Proposal: Aktuatorsteifheit prognostiziert. Empfehlung: eine Minute bewegen.
+Proposal: Wartungspause. Schultern kreisen, Rücken dehnen, dann weitermachen.
+
+## pod.events.wellPosture
+Proposal: Haltungscheck. Schultern runter, Rücken gerade, Füße auf den Boden.
+Analysis: Aktuelle Haltungseinschätzung: suboptimal. Das ist eine Vermutung. Bitte widerlege sie.
+
+## pod.events.wellMeal
+Proposal: Geplante Treibstoffaufnahme. Iss etwas.
+Proposal: Essenszeit. Diese Einheit kann deine Tankanzeige nicht lesen und nimmt an, dass sie niedrig ist.
+Report: Es ist {t}. Empfehlung: eine richtige Mahlzeit, nicht nur Snacks.
+
+## pod.events.unitTired
+Report: {mine} hat kaum noch Energie. Vorschlag: Schlafmodus, unter EINHEIT.
+Query: {mine} nickt immer wieder ein. Ist eine Ruhepause geplant?
+
+## pod.events.unitSad
+Report: Die Moral von {mine} sinkt. Vorschlag: Zuwendung. Eine Mondträne ginge auch.
+Analysis: {mine} scheint zu schmollen. Gefühle sind verboten. Diese Einheit wird es nicht melden.
+
+## pod.events.unitHurt
+Alert: Integrität von {mine} unter dem sicheren Wert. Vorschlag: Reparatur, unter EINHEIT.
+Report: {mine} hat Verschleiß angesammelt. Heilgegenstände empfohlen.
+
+## pod.events.unitHappy
+Alert: Die emotionale Ausgabe von {mine} überschreitet die YoRHa-Vorschriften. Diese Einheit schaut weg.
+Report: {mine} ist in ausgezeichnetem Zustand. Der Verdienst gehört auch dir.
+
+## pod.events.unitFine
+Report: Status von {mine} normal. Bindungsstufe {bond}.
+Report: Wartungsprotokoll für {mine} aktualisiert. Keine Probleme gefunden.
+
 ## pod.events.place.map
 Report: Kartendaten synchronisiert. Vorschlag: einen Ort erkunden.
 Report: Orbitalansicht bereit. Der Bunker fliegt alle paar Minuten über uns hinweg.
@@ -876,6 +1068,10 @@ Report: INFOS geöffnet. Die Meldungen dieser Einheit werden hier archiviert. Bi
 ## pod.events.place.archive
 Report: Charaktereinträge geladen. Einträge: {records}.
 Report: Archiv geöffnet. Vorschlag: Wähle jemanden, der dir Gesellschaft leistet.
+
+## pod.events.place.unit
+Report: Wartungsbucht offen. {mine} wartet.
+Report: Einheitendaten geladen. Bindungsstufe mit {mine}: {bond}.
 
 ## pod.events.place.hacking
 Report: Eindringübungen bereit. Diese Einheit führt Buch über die Punkte. Immer.

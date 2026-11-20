@@ -255,11 +255,48 @@
         'Alert: Visual corruption detected. Correcting. Please do not look directly at it.'],
       autoHub: ['Report: No input detected. Returning to the hub.'],
       fullMoon: ['Report: Full moon tonight. Lunar Tears are said to glow brighter.'],
+      // Wellness proposals (QUESTS > WELLNESS). Shown on the proposal card as well as in the log.
+      wellEyes: [
+        'Proposal: Optical rest. Look at something far away for twenty seconds. This unit will keep watch.',
+        'Proposal: Unit {u} has been staring at the screen for a while. Recommend looking into the distance and blinking.',
+        'Alert: Blink rate below recommended levels. This unit cannot measure that. It assumes the worst.'],
+      wellWater: [
+        'Proposal: Coolant check. Drink a glass of water.',
+        'Proposal: Hydration is due. Humans are mostly water and lose it constantly.',
+        'Report: Time since last hydration exceeds the recommended interval. Proposal: water.'],
+      wellStretch: [
+        'Proposal: Stand and stretch. Prolonged sitting reduces combat efficiency.',
+        'Proposal: Actuator stiffness predicted. Recommend moving around for a minute.',
+        'Proposal: Maintenance break. Roll the shoulders, stretch the back, then resume operations.'],
+      wellPosture: [
+        'Proposal: Posture check. Shoulders down, back straight, feet on the floor.',
+        'Analysis: Current posture estimate: suboptimal. This is a guess. Please prove it wrong.'],
+      wellMeal: [
+        'Proposal: Scheduled fuel intake. Eat something.',
+        'Proposal: Meal time. This unit cannot read your fuel gauge, so it assumes it is low.',
+        'Report: It is {t}. Recommend a proper meal, not only snacks.'],
+      // Your unit (UNIT place). {mine} is its name, {bond} its bond level.
+      unitTired: [
+        'Report: {mine} is running low on energy. Proposal: sleep mode, in UNIT.',
+        'Query: {mine} keeps drifting off. Is rest scheduled?'],
+      unitSad: [
+        'Report: Morale of {mine} is falling. Proposal: attention. A Lunar Tear would also work.',
+        'Analysis: {mine} appears to be sulking. Emotions are prohibited. This unit will not report it.'],
+      unitHurt: [
+        'Alert: Integrity of {mine} below safe levels. Proposal: repairs, in UNIT.',
+        'Report: {mine} has taken wear and tear. Recovery items recommended.'],
+      unitHappy: [
+        'Alert: Emotional output from {mine} exceeds YoRHa regulations. This unit will look the other way.',
+        'Report: {mine} is in excellent condition. Credit is shared with you.'],
+      unitFine: [
+        'Report: {mine} status nominal. Bond level {bond}.',
+        'Report: Maintenance log for {mine} updated. No issues found.'],
       place: {
         map: ['Report: Map data synchronised. Proposal: survey a location.', 'Report: Orbital view ready. The Bunker passes overhead every few minutes.'],
         quests: ['Report: Mission log open. Daily orders: {done} of {total} complete.', 'Report: Mission log open. Proposal: complete something, however small.'],
         intel: ['Report: Signal archive open. Tracks logged: {tracks}.', 'Report: INTEL open. This unit\'s transmissions are archived here. Please read them.'],
         archive: ['Report: Character records loaded. Entries: {records}.', 'Report: Archive open. Proposal: choose someone to keep you company.'],
+        unit: ['Report: Maintenance bay open. {mine} is waiting.', 'Report: Unit records loaded. Bond level with {mine}: {bond}.'],
         hacking: ['Report: Intrusion drills ready. This unit keeps score. It always keeps score.', 'Report: Drill terminal online. Pod 153 is watching. Probably.'],
         garden: ['Report: Arrived at the field. Soil conditions acceptable for Lunar Tears.', 'Report: The field is quiet. Moon phase: {moon}.'],
         system: ['Report: Configuration access granted. Please do not delete this unit.', 'Report: System menu open. This unit\'s own settings are not adjustable. It checked.']

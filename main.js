@@ -45,7 +45,15 @@
     dailyOrders: 'Drink some water|Stretch for five minutes|Back up your save data|Finish one task you have been avoiding',
     audioLog: 'keep',
     dayStart: 7,
-    nightStart: 19
+    nightStart: 19,
+    audioGain: 100,
+    audioAuto: true,
+    wellness: false,
+    eyesEvery: 20,
+    waterEvery: 60,
+    stretchEvery: 45,
+    postureEvery: 0,
+    mealTimes: '08:00|12:30|18:30'
   };
   // Shipped defaults. Default text (footer, lines, orders) is shown translated until the user edits it.
   const DEFAULTS = Object.assign({}, cfg);
@@ -89,15 +97,24 @@
     emotefreq: 'emoteFreq',
     emotelines: 'emoteLines',
     hubreturn: 'hubReturn',
-    dailyorders: 'dailyOrders'
+    dailyorders: 'dailyOrders',
+    audiogain: 'audioGain',
+    audioauto: 'audioAuto',
+    wellness: 'wellness',
+    eyesevery: 'eyesEvery',
+    waterevery: 'waterEvery',
+    stretchevery: 'stretchEvery',
+    postureevery: 'postureEvery',
+    mealtimes: 'mealTimes'
   };
 
-  const PANELS = ['map', 'quests', 'intel', 'archive', 'hacking', 'garden', 'system'];
+  const PANELS = ['map', 'quests', 'intel', 'archive', 'unit', 'hacking', 'garden', 'system'];
   const PANEL_SUB = {
     map: K('ORBITAL OVERVIEW'),
     quests: K('OPERATION PROGRESS'),
     intel: K('AUDIO LOG'),
     archive: K('VISUAL RECORD'),
+    unit: K('MAINTENANCE BAY'),
     hacking: K('INTRUSION DRILLS'),
     garden: K('LUNAR TEAR FIELD'),
     system: K('UNIT DIAGNOSTICS')
@@ -288,6 +305,10 @@
     smooth: new Float32Array(128),
     peaks: new Float32Array(128),
     lastSignal: 0,
+    lastIn: 0,
+    peak: 0, // slow-decaying peak of the incoming signal (auto boost)
+    auto: 1, // current auto boost
+    gain: 1, // total gain applied (sensitivity x auto boost)
     level: 0,
     history: new Float32Array(240), // 60 s sampled at 4 Hz
     histHead: 0
@@ -378,6 +399,7 @@
     syncLanguage();
     applyTheme(false);
     syncAudioLog();
+    syncWellness();
     b.classList.toggle('layout-right', cfg.layout === 'right');
     b.classList.toggle('no-seconds', !cfg.showSeconds);
     b.classList.toggle('no-menu', !cfg.showMenu);
@@ -466,7 +488,7 @@
 
     const filter = 'filter-' + (['nier', 'mono', 'original'].includes(cfg.imageFilter) ? cfg.imageFilter : 'nier');
     for (const el of [$('bg-layer'), frame, $('m-thumb-frame'), $('dossier-art'), $('showcase'),
-      $('pa-frame'), $('pm-thumb-frame'), $('arc-art'), $('arc-grid')]) {
+      $('pa-frame'), $('pm-thumb-frame'), $('arc-art'), $('arc-grid'), $('un-mini'), $('bay-fig'), $('wd-fig'), $('wd-outfits'), $('wd-acc')]) {
       el.classList.remove('filter-nier', 'filter-mono', 'filter-original');
       el.classList.add(filter);
     }
@@ -529,6 +551,7 @@
     else if (state.panel === 'quests') updateQuests(now);
     else if (state.panel === 'intel') updateIntel();
     else if (state.panel === 'archive') updateDossierNext(now);
+    else if (state.panel === 'unit') updateUnitPreview();
     else if (state.panel === 'hacking') updateHackingPreview();
     else if (state.panel === 'garden') updateGardenPreview();
     else if (state.panel === 'system') updateSystem(now);
@@ -592,6 +615,8 @@
     const list = orderList();
     const st = ordersState();
     setText($('hq-orders'), list.length ? T('{done} / {total} COMPLETE', { done: list.filter((t) => st.items[t]).length, total: list.length }) : T('NONE ASSIGNED'));
+    const soon = cfg.wellness ? wellSoonest(now) : null;
+    setText($('hq-well'), !cfg.wellness ? T('OFF') : soon ? T('{name} {when}', { name: T(soon.w.name), when: fmtIn(soon.at - now) }) : T('DONE TODAY'));
   }
 
   // ---------- intel (media integration) ----------
@@ -722,7 +747,8 @@
     setText($(p + 'fps'), T('{n} FPS', { n: state.fps }) + (state.fpsLimit > 0 ? ' // ' + T('CAP {n}', { n: state.fpsLimit }) : ''));
     let a = K('SIMULATED');
     if (audio.hasApi) a = performance.now() - audio.lastSignal < 2000 ? K('ACTIVE') : K('SILENT');
-    setText($(p + 'audio'), T(a));
+    const gain = Math.abs(audio.gain - 1) >= 0.05 ? '  //  ' + T('GAIN X{g}', { g: audio.gain.toFixed(1) }) : '';
+    setText($(p + 'audio'), T(a) + gain);
     let m = K('UNAVAILABLE');
     if (hasMediaApi) m = media.enabled === false ? K('OFFLINE') : (media.title ? K('ONLINE') : K('STANDBY'));
     setText($(p + 'media'), T(m));
@@ -734,26 +760,45 @@
 
   // ---------- audio ----------
 
+  // Sensitivity: the user's gain (audioGain %) times an automatic boost for quiet sources. The boost
+  // follows a slow-decaying peak of the input, so a calm song fills the bars while loud music is left
+  // alone. Below the noise gate nothing is boosted, so silence stays flat.
+  const AUDIO_GATE = 0.004;
+  // Values past 0.7 are pressed toward 1 instead of cut off, so loud bars still differ at high gain.
+  const softClip = (x) => (x <= 0.7 ? x : 0.7 + 0.3 * (1 - Math.exp(-(x - 0.7) / 0.3)));
+
   function onAudio(arr) {
+    const now = performance.now();
+    const dt = audio.lastIn ? Math.min(0.5, (now - audio.lastIn) / 1000) : 0.033;
+    audio.lastIn = now;
     let max = 0;
     for (let i = 0; i < 128; i++) {
-      const v = Math.min(arr[i] || 0, 1);
-      audio.raw[i] = v;
+      const v = arr[i] || 0;
       if (v > max) max = v;
     }
-    if (max > 0.015) audio.lastSignal = performance.now();
+    audio.peak = Math.max(max, audio.peak * Math.pow(0.5, dt / 5)); // halves every 5 s
+    const want = cfg.audioAuto && audio.peak > AUDIO_GATE ? clamp(0.7 / audio.peak, 1, 12) : 1;
+    // Drop the boost quickly when the music gets louder, raise it slowly when it gets quieter.
+    audio.auto += (want - audio.auto) * Math.min(1, dt * (want < audio.auto ? 8 : 0.6));
+    const g = clamp(cfg.audioGain, 10, 1000) / 100 * audio.auto;
+    audio.gain = g;
+    for (let i = 0; i < 128; i++) audio.raw[i] = softClip(Math.max(0, arr[i] || 0) * g);
+    if (max > AUDIO_GATE && max * g > 0.015) audio.lastSignal = now;
   }
 
-  // Browser preview only: a gentle synthetic spectrum so the visualizer is not empty.
+  // Browser preview only: a gentle synthetic spectrum so the visualizer is not empty. It goes through
+  // onAudio, so the sensitivity setting shows in a browser too.
+  const fakeArr = new Float32Array(128);
   function fakeAudio(t) {
     for (let ch = 0; ch < 2; ch++) {
       for (let i = 0; i < 64; i++) {
         const f = i / 64;
         const beat = Math.pow(Math.max(0, Math.sin(t * 3.1)), 8) * (1 - f) * 0.55;
         const v = (0.22 + 0.18 * Math.sin(t * 1.7 + i * 0.35 + ch)) * (1 - f * 0.75) + beat + 0.06 * Math.sin(t * 7 + i);
-        audio.raw[ch * 64 + i] = clamp(v, 0, 1);
+        fakeArr[ch * 64 + i] = clamp(v, 0, 1);
       }
     }
+    onAudio(fakeArr);
     audio.lastSignal = performance.now();
   }
 
@@ -1217,6 +1262,8 @@
     if (intercept && intercept.stats().runs.length) v.interceptBest = String(intercept.stats().runs[0].score).padStart(6, '0');
     if (logic && logic.stats().solved) v.locks = logic.stats().solved;
     if (games.moon) v.moon = T(games.moon(d).name);
+    v.mine = unitName();
+    v.bond = bondLv(U.xp);
     return Object.assign(v, extra || {});
   }
 
@@ -1234,17 +1281,27 @@
     say(k ? k[1] : '', k ? text.slice(k[0].length) : text, who);
   }
 
-  // Pick a usable line the Pod has not said lately. Returns false when nothing fits right now.
-  function podSay(lines, extra, who) {
-    if (!cfg.showLog || !lines || !lines.length || I18N.loading) return false; // wait for the language file
+  // Pick a usable line the Pod has not said lately: { line, vars }, or null when nothing fits right now.
+  function podPick(lines, extra) {
+    if (!lines || !lines.length || I18N.loading) return null; // wait for the language file
     const vars = podVars(extra);
     const ok = lines.filter((l) => usableLine(l, vars));
-    if (!ok.length) return false;
+    if (!ok.length) return null;
     const fresh = ok.filter((l) => !pod.recent.includes(l));
     const pool = fresh.length ? fresh : ok;
     const line = pool[Math.floor(Math.random() * pool.length)];
     remember(line);
-    sayLine(line, vars, who);
+    return { line: line, vars: vars };
+  }
+
+  // The picked line as plain text, without its "Kind:" prefix (for cards outside the log).
+  const fillLine = (p) => p.line.replace(/\{(\w+)\}/g, (m, k) => (p.vars[k] !== undefined ? String(p.vars[k]) : m)).replace(KIND_RE, '');
+
+  function podSay(lines, extra, who) {
+    if (!cfg.showLog) return false;
+    const p = podPick(lines, extra);
+    if (!p) return false;
+    sayLine(p.line, p.vars, who);
     return true;
   }
 
@@ -1297,6 +1354,7 @@
       [0.5, () => podSay((P.weekday || {})[d.getDay()])],
       [music ? 2.5 : 0, () => podSay(I.music)],
       [actorVisible() ? 1.5 : 0, () => podCharLine()],
+      [unitNeed() && unitNeed() !== 'rest' ? 1.4 : 0.25, () => podSay(PE['unit' + (unitNeed() || 'fine').replace(/^./, (c) => c.toUpperCase())])],
       [0.8 + 1.5 * cur, () => podChat(late && Math.random() < 0.5)],
       [0.35, () => podSay(I.hint)]
     ];
@@ -1607,6 +1665,7 @@
     buildDots();
     applyGallery();
     if (nav.place === 'archive') renderArchive();
+    unitRefresh(true);
 
     if (!files.length) {
       gallery.current = '';
@@ -1675,6 +1734,7 @@
         if (actor.frame) actor.facing = 1;
         actor.ready = true;
         layoutActor();
+        syncDesktopAcc();
         emote('sparkle');
         // Now and then the Pod comments on who just stepped onto the desktop (not on the first one).
         if (pod.charsShown++ > 0 && Date.now() - pod.lastChar > 180000 && Math.random() < 0.4) {
@@ -1685,6 +1745,7 @@
         $('showcase').classList.add('show-empty');
         $('show-a').classList.remove('on');
         $('show-b').classList.remove('on');
+        placeAcc($('actor-acc'), '', null);
         clearTimeout(actor.bubbleTimer);
         actor.bubble.classList.remove('show');
       }
@@ -2091,6 +2152,24 @@
       emote('sleep');
       return;
     }
+    // Your unit shows how it is doing: sleepy, sulking, battered or delighted.
+    const need = isUnit(gallery.current) ? unitNeed() : '';
+    if (need && Math.random() < (need === 'rest' ? 0.75 : 0.4)) {
+      if (need === 'rest' || need === 'tired') {
+        act('droop');
+        emote('sleep');
+      } else if (need === 'sad') {
+        act('droop');
+        emote('dots');
+      } else if (need === 'hurt') {
+        act('shake');
+        emote('sweat');
+      } else {
+        act(Math.random() < 0.5 ? 'hop' : 'float');
+        emote('heart');
+      }
+      return;
+    }
     if (musicActive() && Math.random() < 0.7) {
       act(Math.random() < 0.5 ? 'doubleHop' : 'hop');
       emote('music');
@@ -2127,6 +2206,7 @@
   }
 
   actor.el.addEventListener('pointerdown', () => {
+    if (isUnit(gallery.current)) unitPat(true);
     const now = performance.now();
     actor.pokes = actor.pokes.filter((p) => now - p < 8000);
     actor.pokes.push(now);
@@ -2233,6 +2313,7 @@
     quests: { title: K('QUESTS'), sub: K('OPERATIONS AND ORDERS') },
     intel: { title: K('INTEL'), sub: K('SIGNAL ARCHIVE') },
     archive: { title: K('ARCHIVE'), sub: K('CHARACTER RECORDS') },
+    unit: { title: K('UNIT'), sub: K('MAINTENANCE AND BOND') },
     hacking: { title: K('HACKING'), sub: K('INTRUSION DRILLS') },
     garden: { title: K('GARDEN'), sub: K('LUNAR TEAR FIELD') },
     system: { title: K('SYSTEM'), sub: K('UNIT CONFIGURATION') }
@@ -2270,7 +2351,17 @@
         return [
           { id: 'ops', label: K('OPERATIONS'), desc: K('Progress of the current hour, day, week, month and year.') },
           { id: 'orders', label: K('DAILY ORDERS'), desc: K('Your own checklist. Click an order to mark it complete. Resets every day.') },
-          { id: 'timer', label: K('FOCUS TIMER'), desc: K('A timed operation for focused work. The Pod reports when it ends, even from the hub.') }
+          { id: 'timer', label: K('FOCUS TIMER'), desc: K('A timed operation for focused work. The Pod reports when it ends, even from the hub.') },
+          { id: 'wellness', label: K('WELLNESS'), desc: K('Proposals to rest your eyes, drink water, stretch, check your posture and eat. Click an interval to change it.') }
+        ];
+      case 'unit':
+        return [
+          { id: 'care', label: K('CARE'), desc: K('Look after your unit. Its meters drift down over time; repairs, sleep and attention bring them back and build bond.') },
+          { id: 'wardrobe', label: K('WARDROBE'), desc: K('Outfits and accessories earned through bond. Click one to equip it.') },
+          { id: 'items', label: K('SUPPLIES'), desc: K('Items held, what they do and how to earn more.') },
+          { id: 'deploy', label: K('DEPLOY TO DESKTOP'), desc: K('Keep your unit on the desktop in its current outfit and accessory.'), action: deployUnit },
+          { id: 'change', label: K('CHANGE UNIT'), desc: K('Pick another character in ARCHIVE > CHARACTERS with SET AS UNIT. Bond and supplies carry over.'),
+            action: () => go('archive', 'chars'), value: () => unitName().toUpperCase() }
         ];
       case 'intel':
         return [
@@ -2375,6 +2466,7 @@
     setText($('tab-clock'), timeHM(new Date()));
     if (!pod.placesSeen[name] && Math.random() < 0.7) podSay((PE.place || {})[name]);
     pod.placesSeen[name] = true;
+    placeWellCard();
   }
 
   function showHub() {
@@ -2388,6 +2480,7 @@
     fitNames(); // names that changed while the hub was hidden could not be measured then
     fitShowLabel();
     refreshPanel(Date.now());
+    placeWellCard();
   }
 
   function buildSide(name) {
@@ -2800,6 +2893,7 @@
           sk.count = streakCount() + 1;
           sk.last = today;
           store.set('orders.streak', sk);
+          unitEvent('orders');
         }
         say('Report', T('All daily orders complete. Streak: {days}. Glory to Mankind.', { days: TN(sk.count, '{n} day|{n} days') }));
       } else {
@@ -2869,10 +2963,12 @@
       say('Alert', T('Operation timer complete. Recommend a short rest.'));
       act('hop');
       emote('alert');
+      unitEvent('timer');
     }
     let status = T('SYS NOMINAL');
     if (timer.running) status = T('OPERATION {time}', { time: fmtMS(timerLeft(now)) });
     else if (now < timerFlash) status = T('OPERATION COMPLETE');
+    else if (well.card) status = T('PROPOSAL // {name}', { name: T(wellById(well.card.id).name) });
     setText($('status-label'), status);
   }
 
@@ -2936,12 +3032,309 @@
         if (force || orders.renderedDay !== dayKey(new Date())) renderOrders();
       } else if (nav.sel === 'timer') {
         renderTimer(now);
+      } else if (nav.sel === 'wellness') {
+        renderWellness(now, force);
       }
     },
     frame(dt, t) {
       if (nav.sel === 'timer') drawTimerRing(t);
     }
   };
+
+  // ----- QUESTS > WELLNESS: proposals to rest the eyes, drink, stretch, sit well and eat -----
+  // Interval proposals count from the start of the session (or from the last time one was done); meal
+  // proposals come at the times in mealTimes. One card at a time, spaced out, never during a drill.
+  // Wallpaper Engine only shows the desktop when nothing covers it, so a card waits there until it is seen.
+
+  const WELL = [
+    { id: 'eyes', field: 'eyesEvery', name: K('EYE REST'), hold: 20, act: 'nod', emote: 'dots',
+      done: K('Optical rest logged. {n} today.'),
+      hint: K('20-20-20: look at something about 6 m (20 ft) away for 20 seconds and blink slowly a few times.') },
+    { id: 'water', field: 'waterEvery', name: K('HYDRATION'), act: 'hop', emote: 'sweat',
+      done: K('Hydration logged. {n} today.'),
+      hint: K('Drink a glass of water. A little and often works better than a lot at once.') },
+    { id: 'stretch', field: 'stretchEvery', name: K('STRETCH'), act: 'stretch', emote: 'sparkle',
+      done: K('Stretch logged. {n} today.'),
+      hint: K('Stand up. Roll your shoulders, stretch your back, neck and wrists, and walk for a minute if you can.') },
+    { id: 'posture', field: 'postureEvery', name: K('POSTURE'), act: 'stretch', emote: 'alert',
+      done: K('Posture check logged. {n} today.'),
+      hint: K('Feet flat, back against the chair, shoulders loose, screen at eye level and an arm\'s length away.') },
+    { id: 'meal', name: K('MEAL'), act: 'hop', emote: 'heart',
+      done: K('Meal logged. Fuel reserves restored.'),
+      hint: K('Time to eat something. Regular meals keep energy and focus steady.') }
+  ];
+  const WELL_ICON = {
+    eyes: '<svg viewBox="0 0 24 24"><path d="M1.5 12S5.5 5 12 5s10.5 7 10.5 7-4 7-10.5 7S1.5 12 1.5 12z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3.4" fill="currentColor"/></svg>',
+    water: '<svg viewBox="0 0 24 24"><path d="M12 2C9 7 5.5 10.5 5.5 14.5a6.5 6.5 0 0 0 13 0C18.5 10.5 15 7 12 2z" fill="currentColor"/></svg>',
+    stretch: '<svg viewBox="0 0 24 24"><circle cx="12" cy="4.2" r="2.3" fill="currentColor"/><path d="M4.5 2.5L12 9l7.5-6.5M12 9v6.5M12 15.5L8 22M12 15.5L16 22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    posture: '<svg viewBox="0 0 24 24"><circle cx="10" cy="3.8" r="2.3" fill="currentColor"/><path d="M10 8v7h6.5v6.5M10 11.5h5M5 8.5V22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    meal: '<svg viewBox="0 0 24 24"><path d="M2.5 12h19a9.5 8.5 0 0 1-19 0z" fill="currentColor"/><path d="M13.5 2.5l-2.5 8M19.5 3.5l-6 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'
+  };
+  const WELL_STEPS = [0, 10, 15, 20, 30, 45, 60, 90, 120];
+  const MEAL_WINDOW = 90 * 60000; // a meal proposal can still appear up to 90 min after its time
+  const WELL_GAP = 90000; // at least 90 s between two cards
+  const WELL_TIMEOUT = 10 * 60000; // an unanswered card closes itself and the countdown starts again
+  const WELL_SNOOZE = 10 * 60000;
+  const wellById = (id) => WELL.find((w) => w.id === id);
+  const well = {
+    st: Object.assign({ day: '', done: {}, meals: {} }, store.get('well', {})),
+    last: {}, // id -> when its countdown last restarted
+    snooze: {}, // id -> not before this time
+    card: null, // { id, at, holdEnd, meal }
+    lastCard: 0,
+    lastCheck: 0,
+    on: false,
+    rows: null
+  };
+  for (const w of WELL) well.last[w.id] = Date.now();
+
+  function wellToday() {
+    const today = dayKey(new Date());
+    if (well.st.day !== today) {
+      well.st = { day: today, done: {}, meals: {} };
+      store.set('well', well.st);
+    }
+    return well.st;
+  }
+
+  const wellEvery = (w) => (w.field ? clamp(cfg[w.field], 0, 600) : 0);
+
+  // "08:00|12:30|18:30" -> [{ key: '08:00', at: ms today }]
+  function mealSlots(now) {
+    const d = new Date(now), out = [];
+    for (const raw of String(cfg.mealTimes || '').split(/[|,;]/)) {
+      const m = /^\s*(\d{1,2})(?:[:.h](\d{2}))?\s*$/i.exec(raw);
+      if (!m) continue;
+      const h = Number(m[1]), mi = Number(m[2] || 0);
+      if (h > 23 || mi > 59) continue;
+      out.push({ key: pad(h) + ':' + pad(mi), at: new Date(d.getFullYear(), d.getMonth(), d.getDate(), h, mi).getTime() });
+    }
+    return out.sort((a, b) => a.at - b.at).slice(0, 8);
+  }
+
+  // The meal slot a proposal (or LOG NOW) belongs to: the latest one already due, else the next one.
+  function mealSlot(now) {
+    const st = wellToday();
+    const open = mealSlots(now).filter((s) => !st.meals[s.key] && now < s.at + MEAL_WINDOW);
+    return open.filter((s) => s.at <= now).pop() || open[0] || null;
+  }
+
+  // When a proposal is next due (ms), or 0 when it is off or nothing is left today.
+  function wellNext(w, now) {
+    if (w.id === 'meal') {
+      const s = mealSlot(now);
+      return s ? Math.max(s.at, well.snooze.meal || 0) : 0;
+    }
+    const every = wellEvery(w);
+    if (!every) return 0;
+    return Math.max(well.last[w.id] + every * 60000, well.snooze[w.id] || 0);
+  }
+
+  function fmtIn(ms) {
+    if (ms <= 0) return T('DUE');
+    const m = Math.ceil(ms / 60000);
+    if (m < 60) return T('IN {n} MIN', { n: m });
+    return T('IN {h}H {m}M', { h: Math.floor(m / 60), m: pad(m % 60) });
+  }
+
+  // The proposal coming up soonest, for the hub panel.
+  function wellSoonest(now) {
+    let best = null, at = Infinity;
+    for (const w of WELL) {
+      const n = wellNext(w, now);
+      if (n && n < at) {
+        best = w;
+        at = n;
+      }
+    }
+    return best ? { w: best, at: at } : null;
+  }
+
+  // Switching proposals on starts every countdown fresh.
+  function syncWellness() {
+    if (cfg.wellness && !well.on) for (const w of WELL) well.last[w.id] = Date.now();
+    well.on = !!cfg.wellness;
+    if (!cfg.wellness && well.card) closeWellCard();
+  }
+
+  function wellTick(now) {
+    if (now - well.lastCheck < 1000) return;
+    well.lastCheck = now;
+    const c = well.card;
+    if (c) {
+      if (c.holdEnd) {
+        const left = c.holdEnd - now;
+        setText($('wc-count'), left > 0 ? String(Math.ceil(left / 1000)) : '');
+        if (left <= 0) wellDone(c.id);
+      } else if (now - c.at > WELL_TIMEOUT) {
+        wellMissed(c.id);
+      }
+      return;
+    }
+    if (!cfg.wellness || gameBusy() || nav.transit || now - well.lastCard < WELL_GAP) return;
+    let pick = null, pickAt = Infinity;
+    for (const w of WELL) {
+      const at = wellNext(w, now);
+      if (at && at <= now && at < pickAt) {
+        pick = w;
+        pickAt = at;
+      }
+    }
+    if (pick) showWellCard(pick, now);
+  }
+
+  // The card sits above the Pod log on the hub and in the corner of a place.
+  function placeWellCard() {
+    const card = $('well-card');
+    if (nav.place) {
+      if (card.parentNode !== $('place')) $('place').appendChild(card);
+    } else if (card.parentNode !== $('rightcol')) {
+      $('rightcol').insertBefore(card, $('podlog'));
+    }
+  }
+
+  function showWellCard(w, now) {
+    const slot = w.id === 'meal' ? mealSlot(now) : null;
+    well.card = { id: w.id, at: now, holdEnd: 0, meal: slot ? slot.key : '' };
+    well.lastCard = now;
+    const p = podPick(PE['well' + w.id.charAt(0).toUpperCase() + w.id.slice(1)]);
+    if (p && cfg.showLog) sayLine(p.line, p.vars);
+    const card = $('well-card');
+    card.dataset.kind = w.id;
+    $('wc-icon').innerHTML = WELL_ICON[w.id];
+    setText($('wc-title'), T(w.name) + (slot ? '  //  ' + slot.key : ''));
+    setText($('wc-text'), p ? fillLine(p) : '');
+    setText($('wc-hint'), T(w.hint));
+    setText($('wc-count'), '');
+    setText($('wc-done'), w.hold ? T('START {n} S', { n: w.hold }) : T('DONE'));
+    setText($('wc-today'), T('TODAY {n}', { n: wellToday().done[w.id] || 0 }));
+    placeWellCard();
+    card.classList.remove('show', 'holding');
+    void card.offsetWidth;
+    card.classList.add('show');
+    act(w.act);
+    emote(w.emote);
+    if (nav.place === 'quests' && nav.sel === 'wellness') renderWellness(now, true);
+  }
+
+  function closeWellCard() {
+    well.card = null;
+    $('well-card').classList.remove('show', 'holding');
+  }
+
+  function wellDone(id) {
+    const now = Date.now(), st = wellToday(), w = wellById(id);
+    st.done[id] = (st.done[id] || 0) + 1;
+    if (id === 'meal') {
+      const key = well.card && well.card.id === 'meal' && well.card.meal ? well.card.meal : (mealSlot(now) || {}).key;
+      if (key) st.meals[key] = 1;
+    }
+    store.set('well', st);
+    well.last[id] = now;
+    delete well.snooze[id];
+    if (well.card && well.card.id === id) closeWellCard();
+    say('Confirmation', T(w.done, { n: st.done[id] }));
+    act('hop');
+    emote('heart');
+    unitEvent('wellness', id);
+    if (nav.place === 'quests' && nav.sel === 'wellness') renderWellness(now, true);
+  }
+
+  function wellLater(id) {
+    well.snooze[id] = Date.now() + WELL_SNOOZE;
+    closeWellCard();
+  }
+
+  function wellMissed(id) {
+    const now = Date.now();
+    well.last[id] = now;
+    if (id === 'meal' && well.card && well.card.meal) {
+      wellToday().meals[well.card.meal] = -1;
+      store.set('well', well.st);
+    }
+    closeWellCard();
+  }
+
+  $('wc-done').addEventListener('click', () => {
+    const c = well.card;
+    if (!c) return;
+    const w = wellById(c.id);
+    if (w.hold && !c.holdEnd) {
+      c.holdEnd = Date.now() + w.hold * 1000;
+      $('well-card').classList.add('holding');
+      setText($('wc-count'), String(w.hold));
+      setText($('wc-done'), T('DONE'));
+      return;
+    }
+    wellDone(c.id);
+  });
+  $('wc-later').addEventListener('click', () => {
+    if (well.card) wellLater(well.card.id);
+  });
+
+  // The WELLNESS view: one row per proposal. Rows are built on entry; the countdowns update in place.
+  function renderWellness(now, force) {
+    const list = $('well-list');
+    if (force || !well.rows) {
+      list.textContent = '';
+      well.rows = {};
+      for (const w of WELL) {
+        const row = document.createElement('div');
+        row.className = 'well-row';
+        const ico = document.createElement('span');
+        ico.className = 'wl-ico';
+        ico.innerHTML = WELL_ICON[w.id];
+        const main = document.createElement('span');
+        main.className = 'wl-main';
+        const nm = document.createElement('span');
+        nm.className = 'wl-name';
+        nm.textContent = T(w.name);
+        const hint = document.createElement('span');
+        hint.className = 'wl-hint';
+        hint.textContent = T(w.hint);
+        main.append(nm, hint);
+        const every = document.createElement('span');
+        every.className = 'wl-every' + (w.field ? ' btn ghost' : '');
+        if (w.field) {
+          every.addEventListener('click', () => {
+            const i = WELL_STEPS.indexOf(wellEvery(w));
+            setOverride(w.field, WELL_STEPS[(i + 1) % WELL_STEPS.length]);
+          });
+        }
+        const next = document.createElement('span');
+        next.className = 'wl-next';
+        const today = document.createElement('span');
+        today.className = 'wl-today';
+        const go = document.createElement('span');
+        go.className = 'btn wl-do';
+        go.textContent = T('LOG NOW');
+        go.addEventListener('click', () => wellDone(w.id));
+        row.append(ico, main, every, next, today, go);
+        list.appendChild(row);
+        well.rows[w.id] = { row: row, every: every, next: next, today: today };
+      }
+    }
+    const st = wellToday();
+    setText($('wl-toggle'), cfg.wellness ? T('PROPOSALS ON') : T('PROPOSALS OFF'));
+    $('wl-toggle').classList.toggle('ghost', !cfg.wellness);
+    let total = 0;
+    for (const w of WELL) {
+      const r = well.rows[w.id];
+      total += st.done[w.id] || 0;
+      const every = wellEvery(w);
+      const slots = w.id === 'meal' ? mealSlots(now) : null;
+      const off = w.field ? !every : !slots.length;
+      r.row.classList.toggle('off', off || !cfg.wellness);
+      setText(r.every, w.field ? (every ? T('EVERY {n} MIN', { n: every }) : T('OFF')) : (slots.length ? slots.map((s) => s.key).join('  ') : T('OFF')));
+      const at = wellNext(w, now);
+      setText(r.next, !cfg.wellness || off ? '--' : well.card && well.card.id === w.id ? T('SHOWN') : at ? fmtIn(at - now) : T('DONE TODAY'));
+      setText(r.today, T('TODAY {n}', { n: st.done[w.id] || 0 }));
+    }
+    setText($('wl-total'), T('{n} LOGGED TODAY', { n: total }));
+    const soon = cfg.wellness ? wellSoonest(now) : null;
+    setText($('wl-next'), soon ? T('NEXT // {name} {when}', { name: T(soon.w.name), when: fmtIn(soon.at - now) }) : '--');
+  }
+  $('wl-toggle').addEventListener('click', () => setOverride('wellness', !cfg.wellness));
 
   // ----- INTEL: now playing, audio log, Pod archive -----
 
@@ -3035,6 +3428,7 @@
     const file = gallery.files[idx];
     $('arc-deploy').classList.toggle('off', !file || file === gallery.pinned);
     $('arc-resume').classList.toggle('off', !gallery.pinned);
+    $('arc-assign').classList.toggle('off', !file || sameName(file, unitName()));
     if (!file) return;
     const info = parseCharName(file);
     const img = $('arc-img');
@@ -3088,6 +3482,10 @@
     if (idx >= 0) deployRecord(idx);
   });
   $('arc-resume').addEventListener('click', resumeRotation);
+  $('arc-assign').addEventListener('click', () => {
+    const idx = arcIndex();
+    if (idx >= 0) assignUnit(gallery.files[idx]);
+  });
   // The dossier image tells whether a record can stand on the desktop.
   $('arc-img').addEventListener('load', () => {
     const img = $('arc-img'), f = img.dataset.file;
@@ -3104,6 +3502,756 @@
     },
     sub(id) {
       if (id === 'chars') renderArchive();
+    }
+  };
+
+  // ----- UNIT: look after your character, Tamagotchi style -----
+  // One unit (a character name). Integrity, energy and morale drift down in real time; repairs, sleep
+  // mode and attention bring them back, and so does the rest of the terminal (wellness proposals, daily
+  // orders, focus operations, drills, Lunar Tears from the GARDEN, music). Care builds BOND, which unlocks
+  // outfits (character images that share the unit's name) and accessories from the game.
+  // Nothing is ever lost: an empty meter only means a tired or sulking unit, and time away is capped.
+
+  const ITEMS = [
+    { id: 'small', name: K('SMALL RECOVERY'), heal: 25, desc: K('Restores 25% integrity.'), src: K('Daily supply drop. Wellness proposals.') },
+    { id: 'medium', name: K('MEDIUM RECOVERY'), heal: 50, desc: K('Restores 50% integrity.'), src: K('Finished focus operations.') },
+    { id: 'large', name: K('LARGE RECOVERY'), heal: 100, desc: K('Restores integrity completely.'), src: K('Completing every daily order.') },
+    { id: 'tear', name: K('LUNAR TEAR'), desc: K('A gift. Raises morale and bond a great deal.'), src: K('One for every 3 flowers planted in the GARDEN.') },
+    { id: 'mackerel', name: K('MACKEREL'), desc: K('A fish. Lethal to androids.'), src: K('Rarely found in the water supply.') }
+  ];
+  const itemById = (id) => ITEMS.find((i) => i.id === id);
+
+  // Accessories from the game, drawn here as simple originals. Unlocks follow the game loosely: the ribbons
+  // come from the lost machine sisters, the Lunar Tear from gathering the flowers for Emil.
+  const ACCS = [
+    { id: 'none', name: K('NONE'), desc: K('No accessory.') },
+    { id: 'pink', name: K('PINK RIBBON'), lv: 2, desc: K('A ribbon from a little machine lost in the desert.') },
+    { id: 'blue', name: K('BLUE RIBBON'), lv: 3, desc: K('Her big sister kept the matching one.') },
+    { id: 'tear', name: K('LUNAR TEAR'), gifts: 4, desc: K('A white moonflower. Legend says it grants one wish.') },
+    { id: 'fox', name: K('FOX MASK'), lv: 5, desc: K('A festival mask, worn to the side.') },
+    { id: 'machine', name: K('MACHINE HEAD'), drills: 5, desc: K('A hollow machine lifeform head. Pod advises against it.') },
+    { id: 'emil', name: K('EMIL\'S HEAD'), lv: 7, desc: K('A cheerful, slightly unsettling spare head.') }
+  ];
+  const accById = (id) => ACCS.find((a) => a.id === id) || ACCS[0];
+
+  const petals = (n, a0, len, wid, fill, stroke) => {
+    let s = '';
+    for (let i = 0; i < n; i++) {
+      s += '<path transform="rotate(' + (a0 + i * 360 / n) + ' 50 50)" d="M50 50C' + (50 - wid) + ' ' + (50 - len * 0.35) + ' ' +
+        (50 - wid * 0.7) + ' ' + (50 - len * 0.85) + ' 50 ' + (50 - len) + 'C' + (50 + wid * 0.7) + ' ' + (50 - len * 0.85) + ' ' +
+        (50 + wid) + ' ' + (50 - len * 0.35) + ' 50 50Z" fill="' + fill + '" stroke="' + stroke + '" stroke-width="1.3"/>';
+    }
+    return s;
+  };
+  const ribbon = (lite, dark) => '<svg viewBox="0 0 100 100"><g stroke="#2e2a26" stroke-width="2.4" stroke-linejoin="round">' +
+    '<path fill="' + dark + '" d="M46 53L32 88l9-4 5 8 7-37z"/><path fill="' + dark + '" d="M54 53l14 33-9-3-4 9-6-36z"/>' +
+    '<path fill="' + lite + '" d="M50 47C40 30 16 21 11 36c-5 15 17 24 39 18z"/><path fill="' + lite + '" d="M50 47c10-17 34-26 39-11 5 15-17 24-39 18z"/>' +
+    '<path fill="' + dark + '" d="M43 43q7-4 14 0l1 12q-8 4-16 0z"/></g>' +
+    '<path d="M18 35c6-5 17-1 25 9M82 35c-6-5-17-1-25 9" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="2.4" stroke-linecap="round"/>' +
+    '<path d="M21 47c9 3 18 3 25 2M79 47c-9 3-18 3-25 2" fill="none" stroke="#000" stroke-opacity=".2" stroke-width="2"/></svg>';
+  const ACC_SVG = {
+    none: '<svg viewBox="0 0 100 100"><path d="M30 50h40" stroke="currentColor" stroke-width="4" stroke-linecap="round" opacity=".45"/></svg>',
+    pink: ribbon('#eda7bd', '#c4728d'),
+    blue: ribbon('#a3c2e6', '#6687b5'),
+    tear: '<svg viewBox="0 0 100 100"><defs><radialGradient id="lt-g" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#eef4fb"/>' +
+      '<stop offset="1" stop-color="#ffffff"/></radialGradient></defs>' +
+      '<path d="M50 58C40 70 27 76 15 74c8-9 21-15 35-16zM52 58c8 12 18 18 30 18-6-10-17-16-30-18z" fill="#7f9c74" stroke="#3e5238" stroke-width="1.6"/>' +
+      petals(6, 0, 40, 15, 'url(#lt-g)', '#7d8a99') + petals(6, 30, 27, 10, '#f7fbff', '#9aa7b5') +
+      '<circle cx="50" cy="50" r="6.5" fill="#efe2a2" stroke="#a39457" stroke-width="1.2"/>' +
+      '<circle cx="47" cy="48" r="1.4" fill="#a39457"/><circle cx="53" cy="49" r="1.4" fill="#a39457"/><circle cx="50" cy="53" r="1.4" fill="#a39457"/></svg>',
+    fox: '<svg viewBox="0 0 100 100"><path d="M50 93C39 85 26 71 22 53L15 17l20 15c8-4 22-4 30 0l20-15-7 36c-4 18-17 32-28 40z" fill="#f6f1e6" stroke="#2e2a26" stroke-width="2.4" stroke-linejoin="round"/>' +
+      '<path d="M19 24l12 10-8 9zM81 24L69 34l8 9z" fill="#c8473a"/>' +
+      '<path d="M30 52q7-5 14 2-7 2-14-2zM70 52q-7-5-14 2 7 2 14-2z" fill="#2e2a26"/>' +
+      '<path d="M28 44q8-6 16 0M72 44q-8-6-16 0M33 63q-4 5-2 10M67 63q4 5 2 10" fill="none" stroke="#c8473a" stroke-width="2.6" stroke-linecap="round"/>' +
+      '<path d="M50 36c-3 3-3 7 0 10 3-3 3-7 0-10z" fill="#c8473a"/><ellipse cx="50" cy="80" rx="4" ry="3" fill="#2e2a26"/>' +
+      '<path d="M44 86q6 3 12 0" fill="none" stroke="#2e2a26" stroke-width="1.8" stroke-linecap="round"/></svg>',
+    machine: '<svg viewBox="0 0 100 100"><defs><radialGradient id="mh-g" cx="38%" cy="32%" r="70%"><stop offset="0" stop-color="#c79f74"/>' +
+      '<stop offset="1" stop-color="#6b4d35"/></radialGradient></defs>' +
+      '<rect x="4" y="44" width="10" height="16" rx="3" fill="#8d6c4e" stroke="#2e2a26" stroke-width="2"/><rect x="86" y="44" width="10" height="16" rx="3" fill="#8d6c4e" stroke="#2e2a26" stroke-width="2"/>' +
+      '<circle cx="50" cy="52" r="38" fill="url(#mh-g)" stroke="#2e2a26" stroke-width="2.6"/>' +
+      '<path d="M14 58q36 16 72 0" fill="none" stroke="#3d2c1f" stroke-width="2"/><path d="M50 14v10" stroke="#3d2c1f" stroke-width="2"/>' +
+      '<circle cx="36" cy="49" r="10" fill="#2a211b"/><circle cx="64" cy="49" r="10" fill="#2a211b"/>' +
+      '<circle cx="36" cy="49" r="6" fill="#ffc35a"/><circle cx="64" cy="49" r="6" fill="#ffc35a"/>' +
+      '<circle cx="34" cy="47" r="2" fill="#fff6d8"/><circle cx="62" cy="47" r="2" fill="#fff6d8"/>' +
+      '<ellipse cx="38" cy="28" rx="11" ry="6" fill="#fff" opacity=".25" transform="rotate(-20 38 28)"/></svg>',
+    emil: '<svg viewBox="0 0 100 100"><defs><radialGradient id="em-g" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#fbf5e8"/>' +
+      '<stop offset="1" stop-color="#c9bda5"/></radialGradient></defs>' +
+      '<circle cx="50" cy="50" r="43" fill="url(#em-g)" stroke="#2e2a26" stroke-width="2.6"/>' +
+      '<circle cx="34" cy="43" r="12" fill="#1f1c1a"/><circle cx="66" cy="43" r="12" fill="#1f1c1a"/>' +
+      '<circle cx="31" cy="39" r="3.6" fill="#fff"/><circle cx="63" cy="39" r="3.6" fill="#fff"/>' +
+      '<path d="M21 62q29 30 58 0-29 12-58 0z" fill="#1f1c1a"/>' +
+      '<path d="M27 65.5l3 5M34 68l2 5.5M41 69.5l1 5.5M48 70v5.5M55 69.6l-1 5.4M62 68.2l-2 5.4M69 65.8l-3 5" stroke="#f3ecdc" stroke-width="2.2" stroke-linecap="round"/></svg>'
+  };
+  ACC_SVG.flower = ACC_SVG.tear;
+  // Gradient ids must be unique per copy: a reference to a copy inside a hidden view draws nothing.
+  let svgSeq = 0;
+  const accSvg = (id) => {
+    const n = ++svgSeq;
+    return (ACC_SVG[id] || '').replace(/(id="|url\(#)([a-z]+-g)/g, (m, a, b) => a + b + n);
+  };
+
+  // Where an accessory sits on the detected head: offset from the top-centre of the head and size, in head
+  // half-widths, plus a tilt. Hair pieces sit high on one side; the masks cover the whole head.
+  const ACC_FIT = {
+    pink: { dx: 0.62, dy: 0.32, size: 1.35, rot: 16 },
+    blue: { dx: 0.62, dy: 0.32, size: 1.35, rot: 16 },
+    tear: { dx: 0.66, dy: 0.42, size: 1.25, rot: -8 },
+    fox: { dx: 0.8, dy: 0.66, size: 1.6, rot: 24 },
+    machine: { dx: 0, dy: 1.02, size: 2.75, rot: 0 },
+    emil: { dx: 0, dy: 1.0, size: 2.9, rot: 0 }
+  };
+
+  const BOND_XP = [0, 60, 150, 280, 450, 660, 920, 1230, 1600, 2050];
+  const OUTFIT_LV = [1, 4, 6, 8, 10];
+  const bondLv = (xp) => {
+    let lv = 0;
+    while (lv < BOND_XP.length && xp >= BOND_XP[lv]) lv++;
+    return lv;
+  };
+  const outfitLv = (i) => OUTFIT_LV[Math.min(i, OUTFIT_LV.length - 1)];
+
+  const unitDefault = () => ({
+    name: '', outfit: '', acc: 'none', integrity: 85, energy: 85, morale: 75, xp: 0, xpFrac: 0,
+    items: { small: 3, medium: 1, large: 0, tear: 0, mackerel: 0 }, tears: 0, drills: 0,
+    born: Date.now(), last: Date.now(), supply: dayKey(new Date()), rest: 0, garden: -1, seen: null
+  });
+  const U = Object.assign(unitDefault(), store.get('unit', {}));
+  U.items = Object.assign(unitDefault().items, U.items || {});
+  let unitSavedAt = 0;
+  const saveUnit = () => {
+    unitSavedAt = Date.now();
+    store.set('unit', U);
+  };
+  const resting = () => U.rest > Date.now();
+
+  // ----- who the unit is -----
+
+  const sameName = (f, n) => parseCharName(f).name.toLowerCase() === String(n).toLowerCase();
+
+  // The assigned unit, else the record named like the Unit name property, else whoever is on the desktop.
+  function unitName() {
+    const files = gallery.files;
+    if (U.name && (!files.length || files.some((f) => sameName(f, U.name)))) return U.name;
+    const u = unit();
+    if (!files.length || files.some((f) => sameName(f, u))) return u;
+    if (gallery.pinned) return parseCharName(gallery.pinned).name;
+    if (gallery.current) return parseCharName(gallery.current).name;
+    return parseCharName(files[0]).name;
+  }
+  const unitOutfits = () => gallery.files.filter((f) => sameName(f, unitName()));
+  const outfitOpen = (i) => bondLv(U.xp) >= outfitLv(i);
+  function unitFile() {
+    const o = unitOutfits();
+    const i = o.findIndex((f) => baseName(f) === U.outfit);
+    return i >= 0 && outfitOpen(i) ? o[i] : o[0] || '';
+  }
+  const isUnit = (file) => !!file && sameName(file, unitName());
+
+  function accOpen(a) {
+    if (a.lv) return bondLv(U.xp) >= a.lv;
+    if (a.gifts) return U.tears >= a.gifts;
+    if (a.drills) return U.drills >= a.drills;
+    return true;
+  }
+  function accLock(a) {
+    if (a.lv) return T('BOND LV {n}', { n: a.lv });
+    if (a.gifts) return T('GIVE {n} LUNAR TEARS ({have}/{n})', { n: a.gifts, have: Math.min(U.tears, a.gifts) });
+    if (a.drills) return T('FINISH {n} DRILLS ({have}/{n})', { n: a.drills, have: Math.min(U.drills, a.drills) });
+    return '';
+  }
+
+  // ----- figures: the unit with its accessory, fitted into a box -----
+
+  const figCache = {}; // file -> { head, nw, nh } (head null for opaque portraits)
+
+  function makeFig(box) {
+    const body = document.createElement('div');
+    body.className = 'fig-body';
+    const img = document.createElement('img');
+    img.className = 'char-img';
+    img.alt = '';
+    const acc = document.createElement('div');
+    acc.className = 'acc';
+    body.append(img, acc);
+    box.appendChild(body);
+    const f = { box: box, body: body, img: img, acc: acc, file: '', accId: '', info: null };
+    img.addEventListener('load', () => {
+      if (!f.file) return;
+      let info = figCache[f.file];
+      if (!info) {
+        const fig = analyzeFigure(img);
+        info = figCache[f.file] = { head: fig && !fig.frame ? fig : null, nw: img.naturalWidth, nh: img.naturalHeight };
+      }
+      f.info = info;
+      img.classList.add('on');
+      box.classList.add('has-fig');
+      layoutFig(f);
+    });
+    return f;
+  }
+
+  function setFig(f, file, accId) {
+    if (file !== f.file) {
+      f.file = file;
+      f.info = null;
+      f.img.classList.remove('on');
+      f.box.classList.toggle('has-fig', false);
+      placeAcc(f.acc, '', null);
+      if (file) f.img.src = fileUrl(file);
+      else f.img.removeAttribute('src');
+    }
+    f.accId = accId;
+    layoutFig(f);
+  }
+
+  // Fit the image box into the container, feet on the floor, then hang the accessory on the head.
+  function layoutFig(f) {
+    const info = f.info;
+    const RW = f.box.clientWidth, RH = f.box.clientHeight;
+    if (!info || !RW || !RH) return;
+    const s = Math.min(RW / info.nw, RH / info.nh);
+    const w = Math.round(info.nw * s), h = Math.round(info.nh * s);
+    f.body.style.width = w + 'px';
+    f.body.style.height = h + 'px';
+    f.body.style.left = Math.round((RW - w) / 2) + 'px';
+    f.body.style.top = (RH - h) + 'px';
+    placeAcc(f.acc, f.accId, info.head, info.nw, info.nh);
+  }
+
+  function placeAcc(el, id, head, nw, nh) {
+    const fit = ACC_FIT[id];
+    if (!fit || !head || !nw || !nh) {
+      el.classList.remove('on');
+      return;
+    }
+    if (el.dataset.id !== id) {
+      el.innerHTML = accSvg(id);
+      el.dataset.id = id;
+    }
+    const asp = nw / nh;
+    const R = head.hw, size = fit.size * R;
+    const cx = head.hx + fit.dx * R, cy = head.hy + fit.dy * R * asp;
+    el.style.width = (size * 100).toFixed(2) + '%';
+    el.style.height = (size * asp * 100).toFixed(2) + '%';
+    el.style.left = ((cx - size / 2) * 100).toFixed(2) + '%';
+    el.style.top = ((cy - size * asp / 2) * 100).toFixed(2) + '%';
+    el.style.transform = 'rotate(' + fit.rot + 'deg)';
+    el.classList.add('on');
+  }
+
+  // The accessory also rides on the desktop character whenever the unit is the one standing there.
+  function syncDesktopAcc() {
+    const on = actor.ready && !actor.frame && actor.head && actor.head !== CORNER_HEAD && isUnit(gallery.current);
+    placeAcc($('actor-acc'), on ? U.acc : '', on ? actor.head : null, actor.nw, actor.nh);
+  }
+
+  const figs = {};
+  function figFor(id) {
+    if (!figs[id]) figs[id] = makeFig($(id));
+    return figs[id];
+  }
+
+  // A small reaction in the maintenance bay: a hop, shake or float plus an emote over the head.
+  function bayReact(move, kind) {
+    const f = figs['bay-fig'];
+    if (!f || nav.place !== 'unit' || nav.sel !== 'care') return;
+    f.body.classList.remove('fa-hop', 'fa-shake', 'fa-float');
+    void f.body.offsetWidth;
+    if (move) f.body.classList.add('fa-' + move);
+    if (!kind) return;
+    const b = $('bay-emote');
+    b.className = 'emote';
+    if (EMOTE_SVG[kind] || ACC_SVG[kind]) b.innerHTML = EMOTE_SVG[kind] || accSvg(kind);
+    else b.textContent = EMOTE_TEXT[kind] || '!';
+    const info = f.info;
+    const bw = f.body.offsetWidth, bh = f.body.offsetHeight;
+    const hx = info && info.head ? info.head.hx : 0.8, hy = info && info.head ? info.head.hy : 0.05;
+    const hw = info && info.head ? info.head.hw : 0.1;
+    const x = f.body.offsetLeft + (hx + hw * 0.7) * bw, y = f.body.offsetTop + hy * bh;
+    b.style.left = Math.round(Math.min(x, f.box.clientWidth - b.offsetWidth - 8)) + 'px';
+    b.style.top = Math.max(4, Math.round(y - b.offsetHeight * 1.1)) + 'px';
+    void b.offsetWidth;
+    b.classList.add('show');
+    clearTimeout(bayReact.timer);
+    bayReact.timer = setTimeout(() => b.classList.remove('show'), 2000);
+  }
+
+  function unitNote(text) {
+    setText($('un-note'), text);
+    unitNote.at = Date.now();
+  }
+
+  // ----- care over time -----
+
+  const drillSeen = { b: -1, i: -1, l: -1 };
+  const lastAt = (g) => (g && g.stats().last ? g.stats().last.at || 0 : 0);
+
+  function unitTick(now) {
+    if (now - U.last < 5000) return;
+    const dt = now - U.last;
+    const away = dt > 180000; // the wallpaper was closed or paused
+    const span = Math.min(dt, 8 * 3600000);
+    const floor = away ? 15 : 0;
+    const restMs = U.rest > U.last ? Math.min(U.rest, now) - U.last : 0;
+    const h = span / 3600000, restH = Math.min(restMs, span) / 3600000, awakeH = Math.max(0, h - restH);
+    const drop = (k, hours, rate) => {
+      if (U[k] > floor) U[k] = Math.max(floor, U[k] - rate * hours);
+    };
+    drop('integrity', h, 2.5);
+    drop('energy', awakeH, 4);
+    drop('morale', awakeH, 3.5);
+    if (restH) U.energy = Math.min(100, U.energy + restH * 180);
+    if (!away && musicActive() && !resting()) U.morale = Math.min(100, U.morale + h * 10); // music cheers the unit up
+    if (!away && U.integrity >= 50 && U.energy >= 50 && U.morale >= 50) U.xpFrac += h * 6; // well kept: 1 bond per 10 min
+    U.last = now;
+    if (U.xpFrac >= 1) {
+      const n = Math.floor(U.xpFrac);
+      U.xpFrac -= n;
+      gainBond(n);
+    }
+    if (U.rest && (U.rest <= now || U.energy >= 100)) {
+      U.rest = 0;
+      U.energy = Math.min(100, Math.max(U.energy, 99.5));
+      say('Report', T('{c} has left sleep mode. Energy {n}%.', { c: unitName(), n: Math.round(U.energy) }));
+      bayReact('hop', 'sparkle');
+    }
+
+    const today = dayKey(new Date(now));
+    if (U.supply !== today) {
+      U.supply = today;
+      U.items.small += 2;
+      say('Report', T('Daily supply drop from the Bunker: Small Recovery x2.'));
+    }
+    if (garden) {
+      const total = garden.stats().total;
+      if (U.garden < 0) {
+        U.garden = total;
+        U.items.tear += Math.min(2, Math.floor(total / 3));
+      }
+      if (total < U.garden) U.garden = total;
+      while (total - U.garden >= 3) {
+        U.garden += 3;
+        U.items.tear++;
+        say('Report', T('A Lunar Tear from the GARDEN was set aside for {c}.', { c: unitName() }));
+      }
+    }
+    const b = lastAt(breach), i = lastAt(intercept), l = logic ? logic.stats().solved : 0;
+    if (drillSeen.b < 0) {
+      drillSeen.b = b;
+      drillSeen.i = i;
+      drillSeen.l = l;
+    } else if (b !== drillSeen.b || i !== drillSeen.i || l !== drillSeen.l) {
+      drillSeen.b = b;
+      drillSeen.i = i;
+      drillSeen.l = l;
+      unitEvent('drill');
+    }
+    checkUnlocks(false);
+    if (now - unitSavedAt > 30000) saveUnit();
+    unitRefresh(false);
+  }
+
+  // Rewards from the rest of the terminal.
+  function unitEvent(kind, sub) {
+    const c = unitName();
+    if (kind === 'wellness') {
+      U.morale = Math.min(100, U.morale + 4);
+      gainBond(8);
+      if (sub === 'water' && Math.random() < 0.08) {
+        U.items.mackerel++;
+        say('Report', T('A mackerel was recovered from the water supply. Do not ask how.'));
+      } else if (Math.random() < 0.34) {
+        U.items.small++;
+        say('Report', T('{c} noticed you looking after yourself. Small Recovery x1 received.', { c: c }));
+      }
+    } else if (kind === 'orders') {
+      U.items.large++;
+      gainBond(15);
+      say('Report', T('Daily orders rewarded: Large Recovery x1 for {c}.', { c: c }));
+    } else if (kind === 'timer') {
+      U.items.medium++;
+      gainBond(10);
+      say('Report', T('Focus operation rewarded: Medium Recovery x1 for {c}.', { c: c }));
+    } else if (kind === 'drill') {
+      U.morale = Math.min(100, U.morale + 8);
+      U.energy = Math.max(0, U.energy - 6);
+      U.drills++;
+      gainBond(10);
+    }
+    checkUnlocks(true);
+    saveUnit();
+    unitRefresh(true);
+  }
+
+  function gainBond(n) {
+    const lv0 = bondLv(U.xp);
+    U.xp += n;
+    const lv = bondLv(U.xp);
+    if (lv > lv0) {
+      say('Report', T('Bond with {c} reached level {n}.', { c: unitName(), n: lv }));
+      if (isUnit(gallery.current)) {
+        act('float');
+        emote('heart');
+      }
+    }
+  }
+
+  // Announce what just became available, once. The first look only records what is already open.
+  function checkUnlocks(announce) {
+    const open = ACCS.filter((a) => a.id !== 'none' && accOpen(a)).map((a) => 'a.' + a.id);
+    for (let i = 1; i < OUTFIT_LV.length; i++) if (outfitOpen(i)) open.push('o.' + i);
+    if (!U.seen) {
+      U.seen = open;
+      return;
+    }
+    const fresh = open.filter((k) => !U.seen.includes(k));
+    if (!fresh.length) return;
+    U.seen = U.seen.concat(fresh);
+    saveUnit();
+    if (announce === false && fresh.length > 3) return;
+    const outs = unitOutfits();
+    for (const k of fresh) {
+      let what = '';
+      if (k.startsWith('a.')) what = T(accById(k.slice(2)).name);
+      else if (outs[Number(k.slice(2))]) what = (parseCharName(outs[Number(k.slice(2))]).sub || T('OUTFIT')).toUpperCase();
+      if (what) say('Report', T('Unlocked for {c}: {item}. Equip it in UNIT > WARDROBE.', { c: unitName(), item: what }));
+    }
+  }
+
+  // ----- care actions -----
+
+  function unitRepair(itemId) {
+    const need = 100 - U.integrity;
+    if (need < 2) {
+      unitNote(T('No repairs needed. Integrity is at {n}%.', { n: Math.round(U.integrity) }));
+      return;
+    }
+    const kinds = ['small', 'medium', 'large'];
+    const pick = itemId || kinds.find((id) => U.items[id] > 0 && itemById(id).heal >= need) ||
+      kinds.slice().reverse().find((id) => U.items[id] > 0);
+    if (!pick || !U.items[pick]) {
+      unitNote(T('No recovery items. A supply drop arrives every day; wellness proposals and focus operations earn more.'));
+      bayReact('shake', 'sweat');
+      return;
+    }
+    U.items[pick]--;
+    U.integrity = Math.min(100, U.integrity + itemById(pick).heal);
+    gainBond(need > 20 ? 8 : 3);
+    unitNote(T('{item} applied. Integrity {n}%.', { item: T(itemById(pick).name), n: Math.round(U.integrity) }));
+    const bay = $('bay');
+    bay.classList.remove('repairing');
+    void bay.offsetWidth;
+    bay.classList.add('repairing');
+    bayReact('float', 'sparkle');
+    saveUnit();
+    unitRefresh(true);
+  }
+
+  function unitRest() {
+    const c = unitName();
+    if (resting()) {
+      U.rest = 0;
+      unitNote(T('{c} woke up. Energy {n}%.', { c: c, n: Math.round(U.energy) }));
+      bayReact('hop', 'surprise');
+    } else if (U.energy >= 97) {
+      unitNote(T('{c} is fully charged and refuses to sleep.', { c: c }));
+      bayReact('shake', 'dots');
+      return;
+    } else {
+      const mins = Math.max(1, Math.ceil((100 - U.energy) / 3));
+      U.rest = Date.now() + mins * 60000;
+      gainBond(U.energy < 60 ? 6 : 2);
+      unitNote(T('{c} entered sleep mode. Full charge in about {n} min.', { c: c, n: mins }));
+      bayReact(null, 'sleep');
+    }
+    saveUnit();
+    unitRefresh(true);
+  }
+
+  const patLog = [];
+  let patWarned = 0;
+  function unitPat(fromDesk) {
+    const now = Date.now(), c = unitName();
+    while (patLog.length && now - patLog[0] > 120000) patLog.shift();
+    patLog.push(now);
+    if (patLog.length > 8) {
+      U.morale = Math.max(0, U.morale - 2);
+      unitNote(T('{c} has had enough attention for now.', { c: c }));
+      if (!fromDesk) bayReact('shake', 'anger');
+      if (!fromDesk && now - patWarned > 30000) {
+        patWarned = now;
+        say('Query', T('Why are you poking {c}?', { c: c }));
+      }
+    } else {
+      U.morale = Math.min(100, U.morale + 5);
+      if (patLog.length <= 4) gainBond(2);
+      unitNote(resting() ? T('{c} stirs, still asleep.', { c: c }) : T('{c} seems pleased. Morale {n}%.', { c: c, n: Math.round(U.morale) }));
+      if (!fromDesk) bayReact(resting() ? null : 'hop', resting() ? 'sleep' : U.morale > 90 ? 'heart' : 'sparkle');
+    }
+    saveUnit();
+    unitRefresh(true);
+  }
+
+  function unitGift() {
+    const c = unitName();
+    if (!U.items.tear) {
+      unitNote(T('No Lunar Tears in supply. One is set aside for every 3 flowers planted in the GARDEN.'));
+      bayReact('shake', 'question');
+      return;
+    }
+    U.items.tear--;
+    U.tears++;
+    U.morale = Math.min(100, U.morale + 25);
+    gainBond(30);
+    say('Report', T('{c} accepted the Lunar Tear. Lunar Tears given: {n}.', { c: c, n: U.tears }));
+    unitNote(T('{c} holds the flower carefully. Morale {n}%.', { c: c, n: Math.round(U.morale) }));
+    bayReact('float', 'flower');
+    checkUnlocks(true);
+    saveUnit();
+    unitRefresh(true);
+  }
+
+  // Androids and mackerel do not mix (the game has an ending about it). The Pod will not allow it.
+  function unitMackerel() {
+    if (!U.items.mackerel) return;
+    say('Warning', T('Mackerel is lethal to androids. Gift refused. This unit is keeping it away from {c}.', { c: unitName() }));
+    unitNote(T('Mackerel is lethal to androids. Pod 042 refused to hand it over.'));
+    bayReact('shake', 'alert');
+  }
+
+  function useItem(id) {
+    if (!U.items[id]) return;
+    if (id === 'tear') unitGift();
+    else if (id === 'mackerel') unitMackerel();
+    else unitRepair(id);
+    if (nav.place === 'unit' && nav.sel === 'items') renderItems();
+  }
+
+  function assignUnit(file) {
+    if (!file) return;
+    const info = parseCharName(file);
+    U.name = info.name;
+    const outs = unitOutfits();
+    const i = outs.indexOf(file);
+    U.outfit = baseName(i >= 0 && outfitOpen(i) ? file : outs[0] || file);
+    saveUnit();
+    say('Report', T('{c} assigned as your unit. Bond and supplies carry over.', { c: info.name }));
+    syncDesktopAcc();
+    unitRefresh(true);
+    if (nav.place === 'archive') refreshArcLive();
+  }
+
+  function deployUnit() {
+    const f = unitFile();
+    const i = gallery.files.indexOf(f);
+    if (i < 0) {
+      say('Alert', T('No image of {c} in the character archive.', { c: unitName() }));
+      return;
+    }
+    deployRecord(i);
+  }
+
+  function equipOutfit(file) {
+    U.outfit = baseName(file);
+    saveUnit();
+    // A unit held on the desktop changes clothes there too.
+    if (gallery.pinned && isUnit(gallery.pinned) && gallery.pinned !== file) deployRecord(gallery.files.indexOf(file));
+    unitRefresh(true);
+  }
+
+  function equipAcc(id) {
+    U.acc = id;
+    saveUnit();
+    syncDesktopAcc();
+    unitRefresh(true);
+  }
+
+  // ----- views -----
+
+  function unitCond() {
+    if (resting()) return K('SLEEP MODE');
+    if (U.integrity < 25) return K('DAMAGED');
+    if (U.energy < 20) return K('EXHAUSTED');
+    if (U.morale < 20) return K('SULKING');
+    if (Math.min(U.integrity, U.energy, U.morale) < 45) return K('FATIGUED');
+    if (U.morale >= 90 && U.integrity >= 70 && U.energy >= 70) return K('EXCELLENT');
+    return K('NOMINAL');
+  }
+
+  // What the unit needs most, for emotes and the Pod: '', 'rest', 'tired', 'sad', 'hurt' or 'happy'.
+  function unitNeed() {
+    if (resting()) return 'rest';
+    if (U.integrity < 25) return 'hurt';
+    if (U.energy < 25) return 'tired';
+    if (U.morale < 25) return 'sad';
+    if (U.morale >= 90 && U.energy >= 60) return 'happy';
+    return '';
+  }
+
+  function setMeter(id, v, label) {
+    const el = $(id);
+    if (!el._m) el._m = { v: el.querySelector('.m-val'), f: el.querySelector('.fill') };
+    setText(el._m.v, label !== undefined ? label : Math.round(v) + '%');
+    const w = clamp(v, 0, 100).toFixed(1) + '%';
+    if (el._m.f.style.width !== w) el._m.f.style.width = w;
+    el.classList.toggle('low', v < 25);
+  }
+
+  function bondInfo() {
+    const lv = bondLv(U.xp);
+    if (lv >= BOND_XP.length) return { lv: lv, pct: 100, label: T('LV {n}', { n: lv }) + '  //  ' + T('MAX') };
+    const a = BOND_XP[lv - 1], b = BOND_XP[lv];
+    return { lv: lv, pct: (U.xp - a) / (b - a) * 100, label: T('LV {n}', { n: lv }) + '  //  ' + (U.xp - a) + ' / ' + (b - a) };
+  }
+
+  function updateUnitPreview() {
+    const f = figFor('un-mini');
+    setFig(f, unitFile(), U.acc);
+    setText($('hu-name'), unitName().toUpperCase());
+    fitText($('hu-name'));
+    setText($('hu-cond'), T(unitCond()));
+    setMeter('hu-int', U.integrity);
+    setMeter('hu-en', U.energy);
+    setMeter('hu-mo', U.morale);
+    const bi = bondInfo();
+    setMeter('hu-bond', bi.pct, bi.label);
+  }
+
+  function renderCare(now, force) {
+    const f = figFor('bay-fig');
+    if (force || f.file !== unitFile() || f.accId !== U.acc) setFig(f, unitFile(), U.acc);
+    $('bay').classList.toggle('no-fig', !unitFile());
+    const info = parseCharName(unitFile() || unitName());
+    setText($('un-name'), unitName().toUpperCase());
+    fitText($('un-name'));
+    setText($('un-sub'), unitFile() ? info.sub : '');
+    setText($('un-cond'), T(unitCond()));
+    const days = Math.max(1, Math.floor((now - U.born) / 86400000) + 1);
+    setText($('un-age'), TN(days, '{n} DAY|{n} DAYS'));
+    setMeter('un-int', U.integrity);
+    setMeter('un-en', U.energy);
+    setMeter('un-mo', U.morale);
+    const bi = bondInfo();
+    setMeter('un-bond', bi.pct, bi.label);
+    const rest = resting();
+    $('bay').classList.toggle('sleeping', rest);
+    setText($('bay-sleep'), rest ? T('SLEEP MODE  //  {n} MIN', { n: Math.max(1, Math.ceil((U.rest - now) / 60000)) }) : '');
+    const heals = U.items.small + U.items.medium + U.items.large;
+    setText($('un-repair'), T('REPAIR') + '  x' + heals);
+    $('un-repair').classList.toggle('off', !heals || U.integrity > 98);
+    setText($('un-rest'), rest ? T('WAKE') : T('SLEEP'));
+    setText($('un-gift'), T('GIFT LUNAR TEAR') + '  x' + U.items.tear);
+    $('un-gift').classList.toggle('off', !U.items.tear);
+    if (!unitNote.at || now - unitNote.at > 12000) {
+      const need = unitNeed();
+      unitNote.at = 0;
+      setText($('un-note'), need === 'hurt' ? T('Integrity is low. Repair with a recovery item.')
+        : need === 'tired' ? T('Energy is low. Sleep mode recharges it.')
+          : need === 'sad' ? T('Morale is low. A pat or a Lunar Tear will help.')
+            : rest ? T('Sleeping. Morale holds while the unit rests.')
+              : T('Click the unit to pat it. Music, drills and your own wellness breaks also lift it.'));
+    }
+  }
+
+  function renderWardrobe() {
+    setFig(figFor('wd-fig'), unitFile(), U.acc);
+    const outs = unitOutfits(), cur = unitFile();
+    const go = $('wd-outfits');
+    go.textContent = '';
+    if (!outs.length) go.appendChild(emptyRow(T('NO IMAGES OF THIS UNIT')));
+    outs.forEach((file, i) => {
+      const open = outfitOpen(i);
+      const card = document.createElement('div');
+      card.className = 'wd-card' + (file === cur ? ' on' : '') + (open ? '' : ' locked');
+      const pic = document.createElement('div');
+      pic.className = 'wd-pic';
+      const img = document.createElement('img');
+      img.className = 'char-img on';
+      img.alt = '';
+      img.decoding = 'async';
+      img.src = fileUrl(file);
+      pic.appendChild(img);
+      const nm = document.createElement('span');
+      nm.className = 'nm';
+      nm.textContent = (parseCharName(file).sub || T('STANDARD')).toUpperCase();
+      const st = document.createElement('span');
+      st.className = 'st';
+      st.textContent = !open ? T('BOND LV {n}', { n: outfitLv(i) }) : file === cur ? T('EQUIPPED') : T('EQUIP');
+      card.append(pic, nm, st);
+      if (open) card.addEventListener('click', () => equipOutfit(file));
+      go.appendChild(card);
+    });
+    const ga = $('wd-acc');
+    ga.textContent = '';
+    for (const a of ACCS) {
+      const open = accOpen(a);
+      const card = document.createElement('div');
+      card.className = 'wd-card acc-card' + (a.id === U.acc ? ' on' : '') + (open ? '' : ' locked');
+      const pic = document.createElement('div');
+      pic.className = 'wd-pic';
+      pic.innerHTML = accSvg(a.id);
+      const nm = document.createElement('span');
+      nm.className = 'nm';
+      nm.textContent = T(a.name);
+      const ds = document.createElement('span');
+      ds.className = 'ds';
+      ds.textContent = T(a.desc);
+      const st = document.createElement('span');
+      st.className = 'st';
+      st.textContent = !open ? accLock(a) : a.id === U.acc ? T('EQUIPPED') : T('EQUIP');
+      card.append(pic, nm, ds, st);
+      if (open) card.addEventListener('click', () => equipAcc(a.id));
+      ga.appendChild(card);
+    }
+    const frame = figs['wd-fig'] && figs['wd-fig'].info && !figs['wd-fig'].info.head;
+    setText($('wd-note'), frame ? T('This image is not a transparent cutout, so accessories cannot be placed on it.') : '');
+  }
+
+  function renderItems() {
+    const t = $('items-table');
+    t.textContent = '';
+    t.appendChild(trow([['c-m', T('ITEM')], ['c-n', T('HELD')], ['c-s', T('EFFECT')], ['c-r', T('SOURCE')], ['c-u', '']], true));
+    for (const it of ITEMS) {
+      const r = trow([['c-m', T(it.name)], ['c-n', String(U.items[it.id] || 0)], ['c-s', T(it.desc)], ['c-r', T(it.src)]]);
+      const b = document.createElement('span');
+      b.className = 'btn c-u' + (U.items[it.id] ? '' : ' off');
+      b.textContent = it.id === 'tear' || it.id === 'mackerel' ? T('GIFT') : T('USE');
+      b.addEventListener('click', () => useItem(it.id));
+      r.appendChild(b);
+      t.appendChild(r);
+    }
+    setText($('items-stats'), T('LUNAR TEARS GIVEN {a}  //  DRILLS FINISHED {b}', { a: U.tears, b: U.drills }));
+  }
+
+  // Refresh whatever shows the unit right now.
+  function unitRefresh(force) {
+    if (nav.place === 'unit') {
+      if (nav.sel === 'care') renderCare(Date.now(), force);
+      else if (force && nav.sel === 'wardrobe') renderWardrobe();
+      else if (force && nav.sel === 'items') renderItems();
+      refreshSideValues();
+    } else if (!nav.place && state.panel === 'unit') {
+      updateUnitPreview();
+    }
+  }
+
+  $('un-repair').addEventListener('click', () => unitRepair());
+  $('un-rest').addEventListener('click', unitRest);
+  $('un-pat').addEventListener('click', () => unitPat(false));
+  $('un-gift').addEventListener('click', unitGift);
+  $('bay-fig').addEventListener('click', () => unitPat(false));
+
+  hooks.unit = {
+    sub(id) {
+      if (id === 'wardrobe') renderWardrobe();
+      else if (id === 'items') renderItems();
+    },
+    refresh(now, force) {
+      if (nav.sel === 'care') renderCare(now, force);
+      else if (force && nav.sel === 'wardrobe') renderWardrobe();
+      else if (force && nav.sel === 'items') renderItems();
+      if (force) for (const id in figs) layoutFig(figs[id]);
+      refreshSideValues();
     }
   };
 
@@ -3208,6 +4356,8 @@
     { label: K('POD LOG'), field: 'showLog', opts: [[true, K('ON')], [false, K('OFF')]] },
     { label: K('AUDIO LOG'), field: 'audioLog', opts: [['keep', K('KEEP')], ['music', K('MUSIC ONLY')], ['session', K('THIS SESSION ONLY')], ['off', K('OFF')]] },
     { label: K('AUDIO VISUALIZER'), field: 'showViz', opts: [[true, K('ON')], [false, K('OFF')]] },
+    { label: K('AUDIO SENSITIVITY'), field: 'audioGain', opts: [[50, '50%', true], [100, '100%', true], [200, '200%', true], [400, '400%', true], [800, '800%', true]], fmt: (v) => Math.round(v) + '%' },
+    { label: K('AUTO-BOOST QUIET AUDIO'), field: 'audioAuto', opts: [[true, K('ON')], [false, K('OFF')]] },
     { label: K('PARTICLES'), field: 'particles', opts: [[0, K('OFF')], [40, K('LOW')], [70, K('NORMAL')], [150, K('HIGH')]] },
     { label: K('SCANLINES AND GRAIN'), field: 'scanlines', opts: [[true, K('ON')], [false, K('OFF')]] },
     { label: K('GLITCH EFFECT'), field: 'glitch', opts: [[true, K('ON')], [false, K('OFF')]] },
@@ -3238,7 +4388,7 @@
     for (const s of SETTINGS) {
       const opts = typeof s.opts === 'function' ? s.opts() : s.opts;
       const cur = opts.find((o) => o[0] === cfg[s.field]);
-      let shown = cur ? (cur[2] ? cur[1] : T(cur[1])) : String(cfg[s.field]).toUpperCase();
+      let shown = cur ? (cur[2] ? cur[1] : T(cur[1])) : s.fmt ? s.fmt(cfg[s.field]) : String(cfg[s.field]).toUpperCase();
       if (s.field === 'language' && cfg.language === 'auto') shown += ' // ' + langName(I18N.code);
       box.appendChild(settingRow(T(s.label), s.field in overrides ? T('CUSTOM') : '', shown, () => {
         const i = opts.findIndex((o) => o[0] === cfg[s.field]);
@@ -3365,6 +4515,8 @@
     actorTick();
     podTick(now);
     timerTick(now);
+    wellTick(now);
+    unitTick(now);
     refreshPanel(now);
     placeTick(now);
     if (cfg.theme === 'auto' && now - state.themeCheck > 20000) {
@@ -3376,6 +4528,7 @@
   }
 
   window.addEventListener('resize', () => {
+    for (const id in figs) layoutFig(figs[id]);
     positionCursor();
     positionSideCursor();
     layoutActor();

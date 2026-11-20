@@ -11,6 +11,7 @@ MAPA
 MISSÕES
 INTELIGÊNCIA
 ARQUIVO
+UNIDADE
 HACKING
 JARDIM
 SISTEMA
@@ -24,6 +25,7 @@ OPERAÇÃO SEMANAL
 OPERAÇÃO MENSAL
 OPERAÇÃO ANUAL
 ORDENS DIÁRIAS
+BEM-ESTAR
 SEM SINAL
 TÍTULO
 ARTISTA
@@ -37,6 +39,11 @@ AFILIAÇÃO
 STATUS
 ARQUIVADO
 PRÓXIMO REGISTRO
+ESTADO
+INTEGRIDADE
+ENERGIA
+MORAL
+VÍNCULO
 BRECHA
 Um exercício de intrusão em 3D. Pilote a sonda, quebre os nós do escudo e destrua cada núcleo.
 MELHOR PONTUAÇÃO
@@ -53,7 +60,6 @@ ILUMINAÇÃO
 PRÓXIMA LUA CHEIA
 LÁGRIMAS LUNARES
 Um campo tranquilo atrás das ruínas. Clique no chão para plantar lágrimas lunares e agite o vento com o cursor.
-UNIDADE
 TEMPO DE SESSÃO
 FUSO HORÁRIO
 TELA
@@ -63,6 +69,9 @@ LINK DE MÍDIA
 CAIXA-PRETA
 NOMINAL
 HISTÓRICO DO SINAL // 60 S
+PROPOSTA DE MANUTENÇÃO
+FEITO
+DEPOIS
 POD 042 // REGISTRO
 OBSERVANDO
 CENTRAL
@@ -81,13 +90,26 @@ CONCLUÍDAS HOJE
 TEMPO DE FOCO HOJE
 0 MIN
 O TIMER CONTINUA NA CENTRAL // VEJA A BARRA SUPERIOR
+PROPOSTAS: DESLIGADAS
+AS PROPOSTAS APARECEM QUANDO A ÁREA DE TRABALHO ESTÁ VISÍVEL // HORÁRIOS DAS REFEIÇÕES NAS PROPRIEDADES DO PAPEL DE PAREDE
 ÁREA DE TRABALHO
 COLOCAR NA ÁREA DE TRABALHO
 RETOMAR ROTAÇÃO
+DEFINIR COMO UNIDADE
 SEM ARQUIVO DE PERSONAGENS
 Defina uma 'Pasta de personagens' nas propriedades do papel de parede
 Defina uma imagem nas propriedades do papel de parede
 REGISTRO VISUAL // NENHUM
+BAIA DE MANUTENÇÃO // 01
+Defina uma pasta de personagens ou adicione imagens com o nome da sua unidade
+EM SERVIÇO
+REPARAR
+DORMIR
+AFAGAR
+DAR LÁGRIMA
+TRAJES
+TRAJES SÃO IMAGENS COM O NOME DA UNIDADE, COMO '2B - REVEALING OUTFIT.PNG'
+ACESSÓRIOS
 BRECHA // MELHORES PARTIDAS
 INTERCEPTAÇÃO // MELHORES PARTIDAS
 TRAVA LÓGICA // MAIS RÁPIDAS
@@ -116,6 +138,7 @@ VISÃO ORBITAL
 PROGRESSO DAS OPERAÇÕES
 REGISTRO DE ÁUDIO
 REGISTRO VISUAL
+BAIA DE MANUTENÇÃO
 EXERCÍCIOS DE INTRUSÃO
 CAMPO DE LÁGRIMAS LUNARES
 DIAGNÓSTICO DA UNIDADE
@@ -161,6 +184,9 @@ Não foi possível decodificar o registro de vídeo. Só .webm é suportado.
 RESTAM {time}
 {done} / {total} CONCLUÍDAS
 NADA ATRIBUÍDO
+DESLIGADO
+{name} {when}
+FEITO HOJE
 TOCANDO
 PAUSADO
 PARADO
@@ -175,6 +201,7 @@ LIMITE {n}
 SIMULADO
 ATIVO
 SILÊNCIO
+GANHO X{g}
 INDISPONÍVEL
 OFFLINE
 ONLINE
@@ -226,12 +253,23 @@ Por que você está cutucando {c}?
 VISÃO ORBITAL // RECONHECIMENTO
 OPERAÇÕES E ORDENS
 ARQUIVO DE SINAIS
+MANUTENÇÃO E VÍNCULO
 CONFIGURAÇÃO DA UNIDADE
 OPERAÇÕES
 Progresso da hora, do dia, da semana, do mês e do ano atuais.
 Sua própria lista. Clique em uma ordem para marcá-la como concluída. Reinicia todo dia.
 TIMER DE FOCO
 Uma operação cronometrada para trabalho focado. O Pod avisa quando termina, mesmo da central.
+Propostas para descansar os olhos, beber água, se alongar, conferir a postura e comer. Clique num intervalo para mudá-lo.
+CUIDADOS
+Cuide da sua unidade. Os medidores caem com o tempo; reparos, sono e atenção os recuperam e fortalecem o vínculo.
+GUARDA-ROUPA
+Trajes e acessórios ganhos com o vínculo. Clique para equipar.
+SUPRIMENTOS
+Itens que você tem, o que fazem e como ganhar mais.
+Mantenha sua unidade na área de trabalho com o traje e o acessório atuais.
+TROCAR UNIDADE
+Escolha outro personagem em ARQUIVO > PERSONAGENS com DEFINIR COMO UNIDADE. Vínculo e suprimentos são mantidos.
 TOCANDO AGORA
 Sinal de mídia ao vivo pela integração de mídia do Wallpaper Engine.
 Faixas captadas pelo terminal, da mais recente para a mais antiga. Escolha o que é guardado em AJUSTES RÁPIDOS // REGISTRO DE ÁUDIO.
@@ -324,9 +362,36 @@ Timer de operação iniciado. Restam {time}.
 Timer de operação concluído. Recomenda-se uma pausa curta.
 OPERAÇÃO {time}
 OPERAÇÃO CONCLUÍDA
+PROPOSTA // {name}
 PAUSAR
 RETOMAR
 {n} MIN
+DESCANSO DOS OLHOS
+Descanso dos olhos registrado. Hoje: {n}.
+20-20-20: olhe para algo a uns 6 m por 20 segundos e pisque devagar algumas vezes.
+HIDRATAÇÃO
+Hidratação registrada. Hoje: {n}.
+Beba um copo de água. Pouco e sempre é melhor do que muito de uma vez.
+ALONGAMENTO
+Alongamento registrado. Hoje: {n}.
+Levante-se. Gire os ombros, alongue costas, pescoço e pulsos e caminhe um minuto se puder.
+POSTURA
+Postura conferida. Hoje: {n}.
+Pés apoiados, costas encostadas na cadeira, ombros soltos, tela na altura dos olhos e a um braço de distância.
+REFEIÇÃO
+Refeição registrada. Reservas de combustível restauradas.
+Hora de comer alguma coisa. Refeições regulares mantêm a energia e o foco estáveis.
+AGORA
+EM {n} MIN
+EM {h} H {m} MIN
+INICIAR {n} S
+HOJE {n}
+REGISTRAR
+PROPOSTAS: LIGADAS
+A CADA {n} MIN
+EXIBIDA
+{n} REGISTRADOS HOJE
+PRÓXIMO // {name} {when}
 RECEBIDO
 NENHUM SINAL DE ÁUDIO REGISTRADO
 HORA
@@ -340,6 +405,89 @@ NO ARQUIVO
 {name} não pode ficar na área de trabalho: é preciso um PNG transparente com pelo menos 600 px de altura.
 {name} colocado na área de trabalho. Rotação pausada.
 Rotação de personagens retomada.
+RECUPERAÇÃO PEQUENA
+Restaura 25% de integridade.
+Suprimento diário. Propostas de bem-estar.
+RECUPERAÇÃO MÉDIA
+Restaura 50% de integridade.
+Operações de foco concluídas.
+RECUPERAÇÃO GRANDE
+Restaura a integridade por completo.
+Concluir todas as ordens diárias.
+LÁGRIMA LUNAR
+Um presente. Aumenta muito a moral e o vínculo.
+Uma a cada 3 flores plantadas no JARDIM.
+CAVALINHA
+Um peixe. Letal para androides.
+Aparece raramente no abastecimento de água.
+Sem acessório.
+LAÇO ROSA
+Um laço de uma pequena máquina perdida no deserto.
+LAÇO AZUL
+A irmã mais velha guardava o par.
+Uma flor da lua branca. Dizem que realiza um desejo.
+MÁSCARA DE RAPOSA
+Uma máscara de festival, usada de lado.
+CABEÇA DE MÁQUINA
+Uma cabeça oca de forma de vida máquina. O Pod não recomenda.
+CABEÇA DO EMIL
+Uma cabeça reserva alegre e um pouco perturbadora.
+VÍNCULO NV. {n}
+DÊ {n} LÁGRIMAS LUNARES ({have}/{n})
+CONCLUA {n} EXERCÍCIOS ({have}/{n})
+{c} saiu do modo de repouso. Energia {n}%.
+Suprimento diário do Bunker: recuperação pequena x2.
+Uma lágrima lunar do JARDIM foi guardada para {c}.
+Uma cavalinha foi recuperada do abastecimento de água. Não pergunte como.
+{c} percebeu que você está se cuidando. Recuperação pequena x1 recebida.
+Ordens diárias recompensadas: recuperação grande x1 para {c}.
+Operação de foco recompensada: recuperação média x1 para {c}.
+O vínculo com {c} chegou ao nível {n}.
+TRAJE
+Desbloqueado para {c}: {item}. Equipe em UNIDADE > GUARDA-ROUPA.
+Nenhum reparo necessário. Integridade em {n}%.
+Sem itens de recuperação. Chega um suprimento por dia; propostas de bem-estar e operações de foco rendem mais.
+Item usado: {item}. Integridade {n}%.
+{c} acordou. Energia {n}%.
+{c} está com carga total e se recusa a dormir.
+{c} entrou no modo de repouso. Carga total em cerca de {n} min.
+{c} já recebeu atenção suficiente por agora.
+{c} se mexe, mas continua dormindo.
+{c} parece gostar. Moral {n}%.
+Nenhuma lágrima lunar no estoque. Uma é guardada a cada 3 flores plantadas no JARDIM.
+{c} aceitou a lágrima lunar. Lágrimas lunares dadas: {n}.
+{c} segura a flor com cuidado. Moral {n}%.
+Cavalinha é letal para androides. Presente recusado. Esta unidade vai mantê-la longe de {c}.
+Cavalinha é letal para androides. O Pod 042 se recusou a entregá-la.
+{c} agora é sua unidade. Vínculo e suprimentos são mantidos.
+Nenhuma imagem de {c} no arquivo de personagens.
+MODO DE REPOUSO
+AVARIAS
+EXAUSTÃO
+DE MAU HUMOR
+CANSAÇO
+EXCELENTE
+NV. {n}
+MÁX
+MODO DE REPOUSO  //  {n} MIN
+ACORDAR
+Integridade baixa. Repare com um item de recuperação.
+Energia baixa. O modo de repouso recarrega.
+Moral baixa. Um afago ou uma lágrima lunar vai ajudar.
+Dormindo. A moral se mantém enquanto a unidade descansa.
+Clique na unidade para afagá-la. Música, exercícios e suas próprias pausas de bem-estar também a animam.
+NENHUMA IMAGEM DESTA UNIDADE
+PADRÃO
+EQUIPADO
+EQUIPAR
+Esta imagem não é um recorte transparente, então não aceita acessórios.
+ITEM
+TEM
+EFEITO
+ORIGEM
+DAR
+USAR
+LÁGRIMAS LUNARES DADAS {a}  //  EXERCÍCIOS CONCLUÍDOS {b}
 Nº
 PONTOS
 BRECHAS
@@ -367,12 +515,13 @@ MENU À ESQUERDA
 MENU À DIREITA
 PERSONAGEM NA ÁREA DE TRABALHO
 LIGADO
-DESLIGADO
 REGISTRO DO POD
 GUARDAR
 SÓ MÚSICA
 SÓ ESTA SESSÃO
 VISUALIZADOR DE ÁUDIO
+SENSIBILIDADE DO ÁUDIO
+AMPLIFICAR ÁUDIO BAIXO
 PARTÍCULAS
 POUCAS
 NORMAL
@@ -474,7 +623,6 @@ INTEGRIDADE PERDIDA
 Exercício de brecha encerrado. {stages}, pontos {score}.
 {n} brecha superada|{n} brechas superadas
 ESCUDO DESATIVADO
-INTEGRIDADE
 PULSO PRONTO
 PULSO
 ABATA
@@ -861,6 +1009,50 @@ Report: Nenhuma entrada detectada. Voltando à central.
 ## pod.events.fullMoon
 Report: Lua cheia esta noite. Dizem que as lágrimas lunares brilham mais.
 
+## pod.events.wellEyes
+Proposal: Descanso óptico. Olhe para longe por vinte segundos. Esta unidade fica de guarda.
+Proposal: A unidade {u} está olhando para a tela há um tempo. Recomendo olhar para longe e piscar.
+Alert: Frequência de piscadas abaixo do recomendado. Esta unidade não consegue medir isso. Presume o pior.
+
+## pod.events.wellWater
+Proposal: Checagem do líquido de arrefecimento. Beba um copo de água.
+Proposal: Hora de se hidratar. Humanos são quase todo água e a perdem o tempo todo.
+Report: O tempo desde a última hidratação passou do recomendado. Proposta: água.
+
+## pod.events.wellStretch
+Proposal: Levante-se e alongue-se. Ficar muito tempo sentado reduz a eficiência em combate.
+Proposal: Rigidez nos atuadores prevista. Recomendo se mexer por um minuto.
+Proposal: Pausa para manutenção. Gire os ombros, alongue as costas e depois retome as operações.
+
+## pod.events.wellPosture
+Proposal: Checagem de postura. Ombros baixos, costas retas, pés no chão.
+Analysis: Estimativa atual da postura: abaixo do ideal. É um palpite. Prove que está errado.
+
+## pod.events.wellMeal
+Proposal: Reabastecimento programado. Coma alguma coisa.
+Proposal: Hora da refeição. Esta unidade não consegue ler seu medidor de combustível, então presume que está baixo.
+Report: São {t}. Recomendo uma refeição de verdade, não só lanches.
+
+## pod.events.unitTired
+Report: {mine} está com pouca energia. Proposta: modo de repouso, em UNIDADE.
+Query: {mine} vive cochilando. Há descanso programado?
+
+## pod.events.unitSad
+Report: A moral de {mine} está caindo. Proposta: atenção. Uma lágrima lunar também serviria.
+Analysis: {mine} parece estar de cara fechada. Emoções são proibidas. Esta unidade não vai relatar.
+
+## pod.events.unitHurt
+Alert: Integridade de {mine} abaixo do nível seguro. Proposta: reparos, em UNIDADE.
+Report: {mine} acumulou desgaste. Itens de recuperação recomendados.
+
+## pod.events.unitHappy
+Alert: A emissão emocional de {mine} excede as normas da YoRHa. Esta unidade vai fingir que não viu.
+Report: {mine} está em excelente estado. O mérito também é seu.
+
+## pod.events.unitFine
+Report: Estado de {mine}: normal. Nível de vínculo {bond}.
+Report: Registro de manutenção de {mine} atualizado. Nenhum problema encontrado.
+
 ## pod.events.place.map
 Report: Dados do mapa sincronizados. Proposta: explore um local.
 Report: Visão orbital pronta. O Bunker passa por cima a cada poucos minutos.
@@ -876,6 +1068,10 @@ Report: INTELIGÊNCIA aberta. As transmissões desta unidade ficam arquivadas aq
 ## pod.events.place.archive
 Report: Registros de personagens carregados. Entradas: {records}.
 Report: Arquivo aberto. Proposta: escolha alguém para lhe fazer companhia.
+
+## pod.events.place.unit
+Report: Baia de manutenção aberta. {mine} está esperando.
+Report: Registros da unidade carregados. Nível de vínculo com {mine}: {bond}.
 
 ## pod.events.place.hacking
 Report: Exercícios de intrusão prontos. Esta unidade marca os pontos. Sempre marca.

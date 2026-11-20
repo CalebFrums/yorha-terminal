@@ -42,7 +42,7 @@
   <!-- Desktop character: .actor is sized to the image, .actor-body carries the procedural motion -->
   <div id="showcase" class="filter-nier">
     <div class="actor" id="actor">
-      <div class="actor-body" id="actor-body"><img class="char-img" id="show-a" alt=""><img class="char-img" id="show-b" alt=""></div>
+      <div class="actor-body" id="actor-body"><img class="char-img" id="show-a" alt=""><img class="char-img" id="show-b" alt=""><div class="acc" id="actor-acc"></div></div>
       <div class="emote" id="emote"></div>
     </div>
     <div class="show-label"><span class="show-name" id="show-name"></span><span class="show-sub" id="show-sub"></span></div>
@@ -72,6 +72,7 @@
             <li data-panel="quests">QUESTS</li>
             <li data-panel="intel">INTEL</li>
             <li data-panel="archive">ARCHIVE</li>
+            <li data-panel="unit">UNIT</li>
             <li data-panel="hacking">HACKING</li>
             <li data-panel="garden">GARDEN</li>
             <li data-panel="system">SYSTEM</li>
@@ -115,6 +116,7 @@
               <div class="q-meta"><span class="q-state">IN PROGRESS</span><span class="q-rem">--</span></div>
             </div>
             <div class="kv"><span class="k">DAILY ORDERS</span><span class="v" id="hq-orders">--</span></div>
+            <div class="kv"><span class="k">WELLNESS</span><span class="v" id="hq-well">--</span></div>
           </div>
 
           <div class="view" id="view-intel">
@@ -163,6 +165,20 @@
                 <div class="kv"><span class="k">STATUS</span><span class="v" id="d-status">ARCHIVED</span></div>
                 <div class="kv"><span class="k">NEXT RECORD</span><span class="v" id="d-next">--</span></div>
                 <div class="dots" id="d-dots"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="view" id="view-unit">
+            <div class="un-wrap">
+              <div class="un-mini filter-nier" id="un-mini"></div>
+              <div class="un-info">
+                <div class="dossier-name" id="hu-name">--</div>
+                <div class="kv"><span class="k">CONDITION</span><span class="v" id="hu-cond">--</span></div>
+                <div class="meter" id="hu-int"><div class="m-row"><span class="m-name">INTEGRITY</span><span class="m-val">--</span></div><div class="bar"><div class="fill"></div></div></div>
+                <div class="meter" id="hu-en"><div class="m-row"><span class="m-name">ENERGY</span><span class="m-val">--</span></div><div class="bar"><div class="fill"></div></div></div>
+                <div class="meter" id="hu-mo"><div class="m-row"><span class="m-name">MORALE</span><span class="m-val">--</span></div><div class="bar"><div class="fill"></div></div></div>
+                <div class="meter bond" id="hu-bond"><div class="m-row"><span class="m-name">BOND</span><span class="m-val">--</span></div><div class="bar"><div class="fill"></div></div></div>
               </div>
             </div>
           </div>
@@ -225,6 +241,13 @@
       <div id="spacer"></div>
 
       <div id="rightcol">
+        <aside id="well-card">
+          <div class="wc-head"><span class="wc-icon" id="wc-icon"></span><span class="wc-kind">MAINTENANCE PROPOSAL</span><span class="wc-today" id="wc-today"></span></div>
+          <div class="wc-title" id="wc-title"></div>
+          <div class="wc-text" id="wc-text"></div>
+          <div class="wc-hint" id="wc-hint"></div>
+          <div class="wc-foot"><span class="wc-count" id="wc-count"></span><span class="btn" id="wc-done">DONE</span><span class="btn ghost" id="wc-later">LATER</span></div>
+        </aside>
         <aside id="podlog">
           <div class="pod-head"><span class="sq"></span>POD 042 // LOG<span class="pod-state" id="pod-state">OBSERVING</span></div>
           <div id="pod-lines"></div>
@@ -292,6 +315,12 @@
             </div>
           </div>
 
+          <div class="pview" id="pv-quests-wellness">
+            <div class="orders-head"><span class="btn" id="wl-toggle">PROPOSALS OFF</span><span id="wl-total">--</span><span id="wl-next">--</span></div>
+            <div class="well-list" id="well-list"></div>
+            <div class="note">PROPOSALS APPEAR WHILE THE DESKTOP IS IN VIEW // SET MEAL TIMES IN THE WALLPAPER PROPERTIES</div>
+          </div>
+
           <div class="pview" id="pv-intel-now">
             <div class="intel-wrap big">
               <div class="frame thumb big filter-nier" id="pm-thumb-frame">
@@ -337,7 +366,7 @@
               <div class="kv"><span class="k">RECORD</span><span class="v" id="arc-rec">--</span></div>
               <div class="kv"><span class="k">AFFILIATION</span><span class="v" id="arc-aff">--</span></div>
               <div class="kv"><span class="k">DESKTOP</span><span class="v" id="arc-desk">--</span></div>
-              <div class="btn-row"><span class="btn" id="arc-deploy">DEPLOY TO DESKTOP</span><span class="btn" id="arc-resume">RESUME ROTATION</span></div>
+              <div class="btn-row"><span class="btn" id="arc-deploy">DEPLOY TO DESKTOP</span><span class="btn" id="arc-resume">RESUME ROTATION</span><span class="btn" id="arc-assign">SET AS UNIT</span></div>
             </div>
             <div class="arc-empty" id="arc-empty">NO CHARACTER ARCHIVE<small>Set 'Character folder' in the wallpaper properties</small></div>
           </div>
@@ -350,6 +379,51 @@
               <div class="empty-note">NO VISUAL RECORD<small>Assign an image in the wallpaper properties</small></div>
             </div>
             <div class="caption"><span class="sq"></span><span id="pa-caption">VISUAL RECORD // NONE</span></div>
+          </div>
+
+          <div class="pview" id="pv-unit-care">
+            <div class="bay" id="bay">
+              <div class="bay-floor"></div>
+              <div class="bay-fig filter-nier" id="bay-fig"></div>
+              <div class="emote" id="bay-emote"></div>
+              <div class="bay-scan"></div>
+              <div class="bay-tag">MAINTENANCE BAY // 01</div>
+              <div class="bay-sleep" id="bay-sleep"></div>
+              <div class="bay-empty">NO VISUAL RECORD<small>Set a character folder, or add images named after your unit</small></div>
+            </div>
+            <div class="unit-side">
+              <div class="dossier-name" id="un-name">--</div>
+              <div class="dossier-sub" id="un-sub"></div>
+              <div class="kv"><span class="k">CONDITION</span><span class="v" id="un-cond">--</span></div>
+              <div class="kv"><span class="k">IN SERVICE</span><span class="v" id="un-age">--</span></div>
+              <div class="meter" id="un-int"><div class="m-row"><span class="m-name">INTEGRITY</span><span class="m-val">--</span></div><div class="bar"><div class="fill"></div></div></div>
+              <div class="meter" id="un-en"><div class="m-row"><span class="m-name">ENERGY</span><span class="m-val">--</span></div><div class="bar"><div class="fill"></div></div></div>
+              <div class="meter" id="un-mo"><div class="m-row"><span class="m-name">MORALE</span><span class="m-val">--</span></div><div class="bar"><div class="fill"></div></div></div>
+              <div class="meter bond" id="un-bond"><div class="m-row"><span class="m-name">BOND</span><span class="m-val">--</span></div><div class="bar"><div class="fill"></div></div></div>
+              <div class="un-btns"><span class="btn" id="un-repair">REPAIR</span><span class="btn" id="un-rest">SLEEP</span><span class="btn" id="un-pat">PAT</span><span class="btn" id="un-gift">GIFT LUNAR TEAR</span></div>
+              <div class="un-note" id="un-note"></div>
+            </div>
+          </div>
+
+          <div class="pview" id="pv-unit-wardrobe">
+            <div class="wd-prev">
+              <div class="wd-fig filter-nier" id="wd-fig"></div>
+              <div class="note" id="wd-note"></div>
+            </div>
+            <div class="wd-col">
+              <div class="rec-title"><span class="sq"></span>OUTFITS</div>
+              <div class="wd-grid filter-nier" id="wd-outfits"></div>
+              <div class="note">OUTFITS ARE IMAGES THAT SHARE THE UNIT'S NAME, SUCH AS '2B - REVEALING OUTFIT.PNG'</div>
+            </div>
+            <div class="wd-col">
+              <div class="rec-title"><span class="sq"></span>ACCESSORIES</div>
+              <div class="wd-grid acc-grid filter-nier" id="wd-acc"></div>
+            </div>
+          </div>
+
+          <div class="pview" id="pv-unit-items">
+            <div class="table" id="items-table"></div>
+            <div class="note" id="items-stats"></div>
           </div>
 
           <div class="pview game" id="pv-hacking-breach"><canvas id="g-breach"></canvas></div>

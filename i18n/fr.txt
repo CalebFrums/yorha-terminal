@@ -11,6 +11,7 @@ CARTE
 QUÊTES
 RENSEIGNEMENTS
 ARCHIVES
+UNITÉ
 PIRATAGE
 JARDIN
 SYSTÈME
@@ -24,6 +25,7 @@ OPÉRATION DE LA SEMAINE
 OPÉRATION DU MOIS
 OPÉRATION ANNUELLE
 ORDRES DU JOUR
+BIEN-ÊTRE
 AUCUN SIGNAL
 TITRE
 ARTISTE
@@ -37,6 +39,11 @@ AFFILIATION
 STATUT
 ARCHIVÉ
 FICHE SUIVANTE
+ÉTAT
+INTÉGRITÉ
+ÉNERGIE
+MORAL
+LIEN
 BRÈCHE
 Un exercice d'intrusion en 3D. Pilotez la sonde, brisez les nœuds du bouclier et détruisez chaque noyau.
 MEILLEUR SCORE
@@ -53,7 +60,6 @@ PHASE LUNAIRE
 PROCHAINE PLEINE LUNE
 LARMES DE LUNE
 Un champ paisible derrière les ruines. Cliquez sur le sol pour planter des Larmes de lune et soulevez le vent avec le curseur.
-UNITÉ
 DURÉE DE SESSION
 FUSEAU HORAIRE
 AFFICHAGE
@@ -63,6 +69,9 @@ LIEN MÉDIA
 BOÎTE NOIRE
 NOMINAL
 HISTORIQUE DU SIGNAL // 60 S
+PROPOSITION DE MAINTENANCE
+FAIT
+PLUS TARD
 POD 042 // JOURNAL
 OBSERVATION
 CENTRE
@@ -81,13 +90,26 @@ TERMINÉES AUJOURD'HUI
 TEMPS DE CONCENTRATION
 0 MIN
 LE MINUTEUR CONTINUE DANS LE CENTRE // VOIR LA BARRE DU HAUT
+PROPOSITIONS : NON
+LES PROPOSITIONS APPARAISSENT QUAND LE BUREAU EST VISIBLE // HEURES DES REPAS DANS LES PROPRIÉTÉS DU FOND D'ÉCRAN
 BUREAU
 DÉPLOYER SUR LE BUREAU
 REPRENDRE LA ROTATION
+DÉFINIR COMME UNITÉ
 AUCUNE ARCHIVE DE PERSONNAGES
 Choisissez un « Dossier de personnages » dans les propriétés du fond d'écran
 Choisissez une image dans les propriétés du fond d'écran
 ENREGISTREMENT VISUEL // AUCUN
+BAIE DE MAINTENANCE // 01
+Choisissez un dossier de personnages ou ajoutez des images au nom de votre unité
+EN SERVICE
+RÉPARER
+VEILLE
+CARESSER
+OFFRIR UNE LARME
+TENUES
+LES TENUES SONT LES IMAGES AU NOM DE L'UNITÉ, PAR EX. '2B - REVEALING OUTFIT.PNG'
+ACCESSOIRES
 BRÈCHE // MEILLEURES PARTIES
 INTERCEPTION // MEILLEURES PARTIES
 VERROU LOGIQUE // LES PLUS RAPIDES
@@ -116,6 +138,7 @@ VUE ORBITALE
 PROGRESSION DES OPÉRATIONS
 JOURNAL AUDIO
 ENREGISTREMENT VISUEL
+BAIE DE MAINTENANCE
 EXERCICES D'INTRUSION
 CHAMP DE LARMES DE LUNE
 DIAGNOSTIC DE L'UNITÉ
@@ -161,6 +184,9 @@ Impossible de décoder l'enregistrement vidéo. Seul le format .webm est pris en
 RESTANT {time}
 {done} / {total} TERMINÉS
 AUCUN ATTRIBUÉ
+NON
+{name} {when}
+FAIT AUJOURD'HUI
 LECTURE
 EN PAUSE
 ARRÊTÉ
@@ -175,6 +201,7 @@ LIMITE {n}
 SIMULÉ
 ACTIF
 SILENCIEUX
+GAIN X{g}
 INDISPONIBLE
 HORS LIGNE
 EN LIGNE
@@ -226,12 +253,23 @@ Pourquoi touchez-vous {c} ?
 VUE ORBITALE // RECONNAISSANCE
 OPÉRATIONS ET ORDRES
 ARCHIVE DES SIGNAUX
+MAINTENANCE ET LIEN
 CONFIGURATION DE L'UNITÉ
 OPÉRATIONS
 Progression de l'heure, du jour, de la semaine, du mois et de l'année en cours.
 Votre propre liste. Cliquez sur un ordre pour le marquer comme terminé. Remise à zéro chaque jour.
 MINUTEUR
 Une opération chronométrée pour travailler concentré. Le Pod annonce la fin, même depuis le centre.
+Propositions pour reposer vos yeux, boire de l'eau, vous étirer, vérifier votre posture et manger. Cliquez sur un intervalle pour le changer.
+SOINS
+Prenez soin de votre unité. Ses jauges baissent avec le temps ; réparations, veille et attention les remontent et renforcent le lien.
+GARDE-ROBE
+Tenues et accessoires gagnés grâce au lien. Cliquez pour équiper.
+PROVISIONS
+Objets possédés, leurs effets et comment en obtenir plus.
+Garder votre unité sur le bureau dans sa tenue et son accessoire actuels.
+CHANGER D'UNITÉ
+Choisissez un autre personnage dans ARCHIVES > PERSONNAGES avec DÉFINIR COMME UNITÉ. Le lien et les provisions sont conservés.
 EN LECTURE
 Signal média en direct via l'intégration média de Wallpaper Engine.
 Morceaux captés par le terminal, du plus récent au plus ancien. Choisissez ce qui est conservé dans RÉGLAGES RAPIDES // JOURNAL AUDIO.
@@ -324,9 +362,36 @@ Minuteur d'opération lancé. {time} restantes.
 Minuteur d'opération terminé. Une courte pause est recommandée.
 OPÉRATION {time}
 OPÉRATION TERMINÉE
+PROPOSITION // {name}
 PAUSE
 REPRENDRE
 {n} MIN
+REPOS DES YEUX
+Repos des yeux enregistré. Aujourd'hui : {n}.
+20-20-20 : regardez quelque chose à environ 6 m pendant 20 secondes et clignez lentement des yeux plusieurs fois.
+HYDRATATION
+Hydratation enregistrée. Aujourd'hui : {n}.
+Buvez un verre d'eau. Un peu et souvent vaut mieux que beaucoup d'un coup.
+ÉTIREMENTS
+Étirements enregistrés. Aujourd'hui : {n}.
+Levez-vous. Faites rouler vos épaules, étirez le dos, la nuque et les poignets, et marchez une minute si possible.
+POSTURE
+Posture vérifiée. Aujourd'hui : {n}.
+Pieds à plat, dos contre le dossier, épaules détendues, écran à hauteur des yeux et à une longueur de bras.
+REPAS
+Repas enregistré. Réserves de carburant rétablies.
+Il est temps de manger. Des repas réguliers gardent l'énergie et la concentration stables.
+MAINTENANT
+DANS {n} MIN
+DANS {h} H {m}
+DÉMARRER {n} S
+AUJ. {n}
+NOTER
+PROPOSITIONS : OUI
+TOUTES LES {n} MIN
+AFFICHÉE
+{n} NOTÉS AUJOURD'HUI
+SUIVANT // {name} {when}
 REÇU
 AUCUN SIGNAL AUDIO ENREGISTRÉ
 HEURE
@@ -340,6 +405,89 @@ DANS LES ARCHIVES
 {name} ne peut pas tenir sur le bureau : il faut un PNG transparent d'au moins 600 px de haut.
 {name} déployé sur le bureau. Rotation suspendue.
 Rotation des personnages reprise.
+PETIT SOIN
+Restaure 25 % d'intégrité.
+Ravitaillement quotidien. Propositions bien-être.
+SOIN MOYEN
+Restaure 50 % d'intégrité.
+Opérations de concentration terminées.
+SOIN MAJEUR
+Restaure entièrement l'intégrité.
+Accomplir tous les ordres du jour.
+LARME DE LUNE
+Un cadeau. Augmente beaucoup le moral et le lien.
+Une pour 3 fleurs plantées au JARDIN.
+MAQUEREAU
+Un poisson. Mortel pour les androïdes.
+Se trouve rarement dans l'eau courante.
+Aucun accessoire.
+RUBAN ROSE
+Le ruban d'une petite machine perdue dans le désert.
+RUBAN BLEU
+Sa grande sœur gardait le même.
+Une fleur de lune blanche. La légende dit qu'elle exauce un vœu.
+MASQUE DE RENARD
+Un masque de fête, porté sur le côté.
+TÊTE DE MACHINE
+Une tête creuse de forme de vie machine. Le Pod la déconseille.
+TÊTE D'EMIL
+Une tête de rechange joyeuse, un peu inquiétante.
+LIEN NIV. {n}
+OFFRIR {n} LARMES DE LUNE ({have}/{n})
+TERMINER {n} EXERCICES ({have}/{n})
+{c} a quitté le mode veille. Énergie {n} %.
+Ravitaillement quotidien du Bunker : petit soin x2.
+Une Larme de lune du JARDIN a été mise de côté pour {c}.
+Un maquereau a été récupéré dans l'eau courante. Ne demandez pas comment.
+{c} a remarqué que vous prenez soin de vous. Petit soin x1 reçu.
+Ordres du jour récompensés : soin majeur x1 pour {c}.
+Opération de concentration récompensée : soin moyen x1 pour {c}.
+Le lien avec {c} atteint le niveau {n}.
+TENUE
+Débloqué pour {c} : {item}. À équiper dans UNITÉ > GARDE-ROBE.
+Aucune réparation nécessaire. Intégrité à {n} %.
+Aucun objet de soin. Un ravitaillement arrive chaque jour ; les propositions bien-être et les opérations de concentration en rapportent d'autres.
+{item} appliqué. Intégrité {n} %.
+{c} se réveille. Énergie {n} %.
+{c} a la batterie pleine et refuse de dormir.
+{c} passe en mode veille. Charge complète dans environ {n} min.
+{c} a eu assez d'attention pour l'instant.
+{c} remue sans se réveiller.
+Cela plaît à {c}. Moral {n} %.
+Aucune Larme de lune en stock. Une est mise de côté pour 3 fleurs plantées au JARDIN.
+{c} accepte la Larme de lune. Larmes de lune offertes : {n}.
+{c} tient la fleur avec soin. Moral {n} %.
+Le maquereau est mortel pour les androïdes. Cadeau refusé. Cette unité le garde loin de {c}.
+Le maquereau est mortel pour les androïdes. Le Pod 042 a refusé de le donner.
+{c} est désormais votre unité. Le lien et les provisions sont conservés.
+Aucune image de {c} dans les archives de personnages.
+MODE VEILLE
+AVARIES
+ÉPUISEMENT
+BOUDERIE
+FATIGUE
+EXCELLENT
+NIV. {n}
+MAX
+MODE VEILLE  //  {n} MIN
+RÉVEILLER
+Intégrité faible. Réparez avec un objet de soin.
+Énergie faible. Le mode veille la recharge.
+Moral en baisse. Une caresse ou une Larme de lune aidera.
+En veille. Le moral tient pendant que l'unité se repose.
+Cliquez sur l'unité pour la caresser. La musique, les exercices et vos propres pauses bien-être lui remontent aussi le moral.
+AUCUNE IMAGE DE CETTE UNITÉ
+STANDARD
+ÉQUIPÉ
+ÉQUIPER
+Cette image n'est pas un détourage transparent : impossible d'y placer un accessoire.
+OBJET
+STOCK
+EFFET
+SOURCE
+OFFRIR
+UTILISER
+LARMES DE LUNE OFFERTES {a}  //  EXERCICES TERMINÉS {b}
 N°
 SCORE
 BRÈCHES
@@ -367,12 +515,13 @@ MENU À GAUCHE
 MENU À DROITE
 PERSONNAGE SUR LE BUREAU
 OUI
-NON
 JOURNAL DU POD
 CONSERVER
 MUSIQUE SEULEMENT
 CETTE SESSION SEULEMENT
 VISUALISEUR AUDIO
+SENSIBILITÉ AUDIO
+AMPLIFIER LE SON FAIBLE
 PARTICULES
 FAIBLE
 NORMAL
@@ -474,7 +623,6 @@ INTÉGRITÉ PERDUE
 Exercice de brèche terminé. {stages}, score {score}.
 {n} brèche franchie|{n} brèches franchies
 BOUCLIER TOMBÉ
-INTÉGRITÉ
 IMPULSION PRÊTE
 IMPULSION
 ABATTEZ-LE
@@ -861,6 +1009,50 @@ Report: Aucune saisie détectée. Retour au centre.
 ## pod.events.fullMoon
 Report: Pleine lune ce soir. On dit que les Larmes de lune brillent davantage.
 
+## pod.events.wellEyes
+Proposal: Repos optique. Regardez au loin pendant vingt secondes. Cette unité monte la garde.
+Proposal: L'unité {u} fixe l'écran depuis un moment. Recommandation : regarder au loin et cligner des yeux.
+Alert: Fréquence de clignement inférieure aux recommandations. Cette unité ne peut pas la mesurer. Elle suppose le pire.
+
+## pod.events.wellWater
+Proposal: Contrôle du liquide de refroidissement. Buvez un verre d'eau.
+Proposal: Hydratation requise. Les humains sont surtout faits d'eau et en perdent sans cesse.
+Report: Le délai depuis la dernière hydratation dépasse l'intervalle recommandé. Proposition : de l'eau.
+
+## pod.events.wellStretch
+Proposal: Levez-vous et étirez-vous. Rester assis longtemps réduit l'efficacité au combat.
+Proposal: Raideur des actionneurs prévue. Recommandation : bouger une minute.
+Proposal: Pause maintenance. Faites rouler les épaules, étirez le dos, puis reprenez les opérations.
+
+## pod.events.wellPosture
+Proposal: Contrôle de posture. Épaules basses, dos droit, pieds au sol.
+Analysis: Estimation actuelle de la posture : sous-optimale. C'est une supposition. Prouvez le contraire.
+
+## pod.events.wellMeal
+Proposal: Ravitaillement programmé. Mangez quelque chose.
+Proposal: L'heure du repas. Cette unité ne peut pas lire votre jauge de carburant, elle la suppose basse.
+Report: Il est {t}. Recommandation : un vrai repas, pas seulement des en-cas.
+
+## pod.events.unitTired
+Report: L'énergie de {mine} baisse. Proposition : mode veille, dans UNITÉ.
+Query: {mine} n'arrête pas de s'assoupir. Un repos est-il prévu ?
+
+## pod.events.unitSad
+Report: Le moral de {mine} baisse. Proposition : de l'attention. Une Larme de lune ferait aussi l'affaire.
+Analysis: {mine} semble bouder. Les émotions sont interdites. Cette unité ne le signalera pas.
+
+## pod.events.unitHurt
+Alert: Intégrité de {mine} sous le seuil de sécurité. Proposition : réparations, dans UNITÉ.
+Report: {mine} accuse de l'usure. Objets de soin recommandés.
+
+## pod.events.unitHappy
+Alert: La production émotionnelle de {mine} dépasse les règles de YoRHa. Cette unité regardera ailleurs.
+Report: {mine} est en excellent état. Le mérite vous revient aussi.
+
+## pod.events.unitFine
+Report: État de {mine} nominal. Niveau de lien {bond}.
+Report: Journal de maintenance de {mine} mis à jour. Aucun problème détecté.
+
 ## pod.events.place.map
 Report: Données cartographiques synchronisées. Proposition : explorer un lieu.
 Report: Vue orbitale prête. Le Bunker passe au-dessus toutes les quelques minutes.
@@ -876,6 +1068,10 @@ Report: RENSEIGNEMENTS ouvert. Les transmissions de cette unité sont archivées
 ## pod.events.place.archive
 Report: Fiches de personnages chargées. Entrées : {records}.
 Report: Archives ouvertes. Proposition : choisissez quelqu'un pour vous tenir compagnie.
+
+## pod.events.place.unit
+Report: Baie de maintenance ouverte. {mine} attend.
+Report: Fiche de l'unité chargée. Niveau de lien avec {mine} : {bond}.
 
 ## pod.events.place.hacking
 Report: Exercices d'intrusion prêts. Cette unité tient les scores. Elle les tient toujours.
