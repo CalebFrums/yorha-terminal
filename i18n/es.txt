@@ -264,7 +264,7 @@ Propuestas para descansar la vista, beber agua, estirarte, revisar tu postura y 
 CUIDADOS
 Cuida de tu unidad. Sus medidores bajan con el tiempo; reparaciones, sueño y atención los recuperan y fortalecen el vínculo.
 VESTUARIO
-Trajes y accesorios ganados con el vínculo. Haz clic para equiparlos.
+Cambia de traje libremente; los accesorios se ganan con el vínculo. Haz clic para equiparlos.
 SUMINISTROS
 Objetos que tienes, qué hacen y cómo conseguir más.
 Mantén tu unidad en el escritorio con su traje y accesorio actuales.
@@ -443,7 +443,6 @@ Se recuperó una caballa del suministro de agua. No preguntes cómo.
 Órdenes diarias recompensadas: recuperación grande x1 para {c}.
 Operación de concentración recompensada: recuperación mediana x1 para {c}.
 El vínculo con {c} alcanzó el nivel {n}.
-TRAJE
 Desbloqueado para {c}: {item}. Equípalo en UNIDAD > VESTUARIO.
 No hace falta reparar. Integridad al {n} %.
 No hay objetos de recuperación. Cada día llega un suministro; las propuestas de bienestar y las operaciones de concentración dan más.

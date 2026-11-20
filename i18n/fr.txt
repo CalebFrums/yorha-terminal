@@ -264,7 +264,7 @@ Propositions pour reposer vos yeux, boire de l'eau, vous étirer, vérifier votr
 SOINS
 Prenez soin de votre unité. Ses jauges baissent avec le temps ; réparations, veille et attention les remontent et renforcent le lien.
 GARDE-ROBE
-Tenues et accessoires gagnés grâce au lien. Cliquez pour équiper.
+Changez de tenue librement ; les accessoires se gagnent grâce au lien. Cliquez pour équiper.
 PROVISIONS
 Objets possédés, leurs effets et comment en obtenir plus.
 Garder votre unité sur le bureau dans sa tenue et son accessoire actuels.
@@ -443,7 +443,6 @@ Un maquereau a été récupéré dans l'eau courante. Ne demandez pas comment.
 Ordres du jour récompensés : soin majeur x1 pour {c}.
 Opération de concentration récompensée : soin moyen x1 pour {c}.
 Le lien avec {c} atteint le niveau {n}.
-TENUE
 Débloqué pour {c} : {item}. À équiper dans UNITÉ > GARDE-ROBE.
 Aucune réparation nécessaire. Intégrité à {n} %.
 Aucun objet de soin. Un ravitaillement arrive chaque jour ; les propositions bien-être et les opérations de concentration en rapportent d'autres.

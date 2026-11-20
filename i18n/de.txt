@@ -264,7 +264,7 @@ Vorschläge: Augen ausruhen, Wasser trinken, dehnen, Haltung prüfen und essen. 
 PFLEGE
 Kümmere dich um deine Einheit. Ihre Werte sinken mit der Zeit; Reparaturen, Schlaf und Zuwendung heben sie wieder und stärken die Bindung.
 GARDEROBE
-Outfits und Accessoires, durch Bindung verdient. Klicke darauf, um sie anzulegen.
+Outfits frei wechseln; Accessoires werden durch Bindung verdient. Klicke darauf, um sie anzulegen.
 VORRÄTE
 Vorhandene Gegenstände, was sie bewirken und wie man mehr bekommt.
 Behalte deine Einheit im aktuellen Outfit und Accessoire auf dem Desktop.
@@ -443,7 +443,6 @@ Aus der Wasserversorgung wurde eine Makrele geborgen. Frag nicht, wie.
 Tagesbefehle belohnt: Große Heilung x1 für {c}.
 Fokus-Operation belohnt: Mittlere Heilung x1 für {c}.
 Bindung mit {c} hat Stufe {n} erreicht.
-OUTFIT
 Für {c} freigeschaltet: {item}. Anlegen unter EINHEIT > GARDEROBE.
 Keine Reparatur nötig. Integrität liegt bei {n} %.
 Keine Heilgegenstände. Jeden Tag kommt eine Lieferung; Wohlbefinden-Vorschläge und Fokus-Operationen bringen mehr.

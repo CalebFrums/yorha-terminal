@@ -1,10 +1,26 @@
 {
 	"approved": true,
 	"contentrating": "Everyone",
-	"description": "Fan-made NieR:Automata style desktop terminal. Not affiliated with Square Enix.\n\nNEW (21/11/2026): UNIT, WELLNESS AND AUDIO SENSITIVITY\nThanks for the ideas in the comments.\n- UNIT: look after your character, Tamagotchi style. Integrity, energy and morale drift down in real time. Repair with recovery items, put the unit in sleep mode, pat it, and give it Lunar Tears grown in the GARDEN. Care builds bond, which unlocks accessories from the game (Pink Ribbon, Blue Ribbon, Lunar Tear, Fox Mask, Machine Head, Emil's Head) and outfits: any character images that share your unit's name, such as 2B's Reincarnation render. Accessories show on the desktop too. Pick your unit in ARCHIVE > SET AS UNIT. Nothing is ever lost: an empty meter only means a tired or sulking unit. Do not feed it mackerel.\n- QUESTS > WELLNESS: optional reminders to rest your eyes (20-20-20 rule), drink water, stretch, check your posture and eat at your meal times. The Pod proposes them on a small card: DONE, LATER, or a 20-second eye-rest countdown. Switch them on in the properties or in QUESTS > WELLNESS, and click an interval to change it. Reminders appear while the desktop is in view. Looking after yourself also rewards your unit.\n- Audio sensitivity slider (25 to 800%) and Auto-boost for quiet audio (on by default), so calm, quiet music moves the visualizer, the particles and the character. Both are also in SYSTEM > QUICK SETTINGS.\n\nLANGUAGES\nEnglish, 简体中文, 日本語, 한국어, Русский, Deutsch, Français, Español, Português (Brasil). 'Language' starts on Auto, which follows the language Wallpaper Engine reports and falls back to English. Pick one in the properties or in SYSTEM > QUICK SETTINGS.\n\nHUB AND PLACES\nThe desktop is the hub. Hover a menu entry to preview it, click to go there; HUB brings you back, or the terminal returns on its own when idle.\n- MAP: drag the globe, click locations to survey them\n- QUESTS: time progress, your own daily orders checklist, focus timer, wellness reminders\n- INTEL: now playing, audio log, Pod archive\n- ARCHIVE: character grid; click a record to deploy it to the desktop or set it as your unit\n- UNIT: care for your character, bond, outfits, accessories and supplies\n- HACKING: BREACH, a 3D intrusion drill (fly the probe with the cursor, break the shield nodes, destroy every core), the 2D drills INTERCEPT (click packets before they reach the core) and LOGIC LOCK (rotate tiles until every terminal is powered), and your records\n- GARDEN: plant Lunar Tears, stir the wind with the cursor\n- SYSTEM: diagnostics and quick settings you can change from the desktop\n\nFEATURES\n- Live clock and date in the YoRHa menu style\n- Audio visualizer with adjustable sensitivity, Pod log with time-aware messages, floating particles, scanlines and glitches\n- Daylight, night or automatic theme (switches by the clock; set the hours in the properties)\n- Menu on the left or right, works on ultrawide and portrait monitors\n- Your own image or .webm video as a duotone background\n\nCHARACTERS\nA character set is included and appears right away. To use your own, set 'Character folder' to a folder of PNG renders. The file name is the name on screen: '01 - 2B - YoRHa No.2 Type B.png' shows 2B with the subtitle; the leading number only sets the order. Tall transparent PNGs (600 px high or more) stand beside the panel, breathe, emote, say your custom lines and react to clicks; other images stay in ARCHIVE. Click a record in ARCHIVE > CHARACTERS to keep it on the desktop. Images with the same name as your unit ('2B - Revealing Outfit.png') become outfits in UNIT > WARDROBE.\n\nPRIVACY\nINTEL > AUDIO LOG lists what Media Integration picks up, browser videos included. Clear it with INTEL > CLEAR AUDIO LOG, and choose Keep, Music only, This session only or Off under 'Audio log' (also in SYSTEM > QUICK SETTINGS).\n\nTIPS\n- Turn on Media Integration in Wallpaper Engine's settings for the INTEL panel\n- Allow mouse input for menu hover, character reactions and the UNIT and WELLNESS buttons\n- Quiet music barely moving the bars? Raise 'Audio sensitivity' or keep 'Auto-boost quiet audio' on",
+	"description": "Fan-made NieR:Automata style desktop terminal. Not affiliated with Square Enix.\n\nNEW (21/11/2026): UNIT, WELLNESS AND AUDIO SENSITIVITY\nThanks for the ideas in the comments.\n- UNIT: look after your character, Tamagotchi style. Integrity, energy and morale drift down in real time. Repair with recovery items, put the unit in sleep mode, pat it, and give it Lunar Tears grown in the GARDEN. Care builds bond, which unlocks accessories from the game (Pink Ribbon, Blue Ribbon, Lunar Tear, Fox Mask, Machine Head, Emil's Head); they show on the desktop too. UNIT > WARDROBE also switches your unit between its outfits, any character images that share its name, such as 2B's Reincarnation render. Pick your unit in ARCHIVE > SET AS UNIT. Nothing is ever lost: an empty meter only means a tired or sulking unit. Do not feed it mackerel.\n- QUESTS > WELLNESS: optional reminders to rest your eyes (20-20-20 rule), drink water, stretch, check your posture and eat at your meal times. The Pod proposes them on a small card: DONE, LATER, or a 20-second eye-rest countdown. Switch them on in the properties or in QUESTS > WELLNESS, and click an interval to change it. Reminders appear while the desktop is in view. Looking after yourself also rewards your unit.\n- Audio sensitivity slider (25 to 800%) and Auto-boost for quiet audio (on by default), so calm, quiet music moves the visualizer, the particles and the character. Both are also in SYSTEM > QUICK SETTINGS.\n\nLANGUAGES\nEnglish, 简体中文, 日本語, 한국어, Русский, Deutsch, Français, Español, Português (Brasil). 'Language' starts on Auto, which follows the language Wallpaper Engine reports and falls back to English. Pick one in the properties or in SYSTEM > QUICK SETTINGS.\n\nHUB AND PLACES\nThe desktop is the hub. Hover a menu entry to preview it, click to go there; HUB brings you back, or the terminal returns on its own when idle.\n- MAP: drag the globe, click locations to survey them\n- QUESTS: time progress, your own daily orders checklist, focus timer, wellness reminders\n- INTEL: now playing, audio log, Pod archive\n- ARCHIVE: character grid; click a record to deploy it to the desktop or set it as your unit\n- UNIT: care for your character, bond, outfits, accessories and supplies\n- HACKING: BREACH, a 3D intrusion drill (fly the probe with the cursor, break the shield nodes, destroy every core), the 2D drills INTERCEPT (click packets before they reach the core) and LOGIC LOCK (rotate tiles until every terminal is powered), and your records\n- GARDEN: plant Lunar Tears, stir the wind with the cursor\n- SYSTEM: diagnostics and quick settings you can change from the desktop\n\nFEATURES\n- Live clock and date in the YoRHa menu style\n- Audio visualizer with adjustable sensitivity, Pod log with time-aware messages, floating particles, scanlines and glitches\n- Daylight, night or automatic theme (switches by the clock; set the hours in the properties)\n- Menu on the left or right, works on ultrawide and portrait monitors\n- Your own image or .webm video as a duotone background\n\nCHARACTERS\nA character set is included and appears right away. To use your own, set 'Character folder' to a folder of PNG renders. The file name is the name on screen: '01 - 2B - YoRHa No.2 Type B.png' shows 2B with the subtitle; the leading number only sets the order. Tall transparent PNGs (600 px high or more) stand beside the panel, breathe, emote, say your custom lines and react to clicks; other images stay in ARCHIVE. Click a record in ARCHIVE > CHARACTERS to keep it on the desktop. Images with the same name as your unit ('2B - Revealing Outfit.png') become outfits in UNIT > WARDROBE.\n\nPRIVACY\nINTEL > AUDIO LOG lists what Media Integration picks up, browser videos included. Clear it with INTEL > CLEAR AUDIO LOG, and choose Keep, Music only, This session only or Off under 'Audio log' (also in SYSTEM > QUICK SETTINGS).\n\nTIPS\n- Turn on Media Integration in Wallpaper Engine's settings for the INTEL panel\n- Allow mouse input for menu hover, character reactions and the UNIT and WELLNESS buttons\n- Quiet music barely moving the bars? Raise 'Audio sensitivity' or keep 'Auto-boost quiet audio' on",
 	"file": "index.html",
 	"general": {
 		"properties": {
+			"audioauto": {
+				"index": 19,
+				"order": 119,
+				"text": "Auto-boost quiet audio",
+				"type": "bool",
+				"value": true
+			},
+			"audiogain": {
+				"index": 18,
+				"max": 800,
+				"min": 25,
+				"order": 118,
+				"text": "Audio sensitivity (%) - raise it for quiet music",
+				"type": "slider",
+				"value": 100
+			},
 			"audiolog": {
 				"index": 15,
 				"options": [
@@ -41,7 +57,7 @@
 				"value": 12
 			},
 			"bgwash": {
-				"index": 26,
+				"index": 28,
 				"max": 90,
 				"min": 0,
 				"order": 128,
@@ -50,7 +66,7 @@
 				"value": 30
 			},
 			"charfolder": {
-				"index": 27,
+				"index": 29,
 				"mode": "fetchall",
 				"order": 129,
 				"text": "Character folder (empty = included set; PNG renders, file name = character name)",
@@ -58,7 +74,7 @@
 				"value": ""
 			},
 			"charinterval": {
-				"index": 28,
+				"index": 30,
 				"max": 300,
 				"min": 3,
 				"order": 130,
@@ -67,7 +83,7 @@
 				"value": 20
 			},
 			"charmode": {
-				"index": 30,
+				"index": 32,
 				"options": [
 					{
 						"label": "Beside the panel",
@@ -84,7 +100,7 @@
 				"value": "stand"
 			},
 			"charshuffle": {
-				"index": 29,
+				"index": 31,
 				"order": 131,
 				"text": "Shuffle characters",
 				"type": "bool",
@@ -98,7 +114,7 @@
 				"value": true
 			},
 			"customimage": {
-				"index": 22,
+				"index": 24,
 				"order": 124,
 				"text": "Your image (screenshot or art)",
 				"type": "file",
@@ -106,14 +122,14 @@
 			},
 			"customvideo": {
 				"fileType": "video",
-				"index": 23,
+				"index": 25,
 				"order": 125,
 				"text": "Your video background (.webm only)",
 				"type": "file",
 				"value": ""
 			},
 			"dailyorders": {
-				"index": 34,
+				"index": 36,
 				"order": 136,
 				"text": "Daily orders for QUESTS (separate with |)",
 				"type": "textinput",
@@ -131,7 +147,7 @@
 			},
 			"emotefreq": {
 				"condition": "charmode.value == 'stand'",
-				"index": 32,
+				"index": 34,
 				"max": 10,
 				"min": 0,
 				"order": 134,
@@ -141,11 +157,21 @@
 			},
 			"emotelines": {
 				"condition": "charmode.value == 'stand'",
-				"index": 33,
+				"index": 35,
 				"order": 135,
 				"text": "Custom lines (separate with |)",
 				"type": "textinput",
 				"value": "Glory to Mankind.|...|Hm.|Systems nominal.|Is something wrong?|Proceeding with the mission."
+			},
+			"eyesevery": {
+				"condition": "wellness.value == true",
+				"index": 38,
+				"max": 120,
+				"min": 0,
+				"order": 138,
+				"text": "Eye break every N minutes (0 = off)",
+				"type": "slider",
+				"value": 20
 			},
 			"footertext": {
 				"index": 6,
@@ -155,14 +181,14 @@
 				"value": "Glory to Mankind"
 			},
 			"glitch": {
-				"index": 20,
+				"index": 22,
 				"order": 122,
 				"text": "Random glitch effect",
 				"type": "bool",
 				"value": true
 			},
 			"hubreturn": {
-				"index": 35,
+				"index": 43,
 				"max": 600,
 				"min": 0,
 				"order": 143,
@@ -171,7 +197,7 @@
 				"value": 120
 			},
 			"imagefilter": {
-				"index": 25,
+				"index": 27,
 				"options": [
 					{
 						"label": "YoRHa duotone",
@@ -192,7 +218,7 @@
 				"value": "nier"
 			},
 			"imageplacement": {
-				"index": 24,
+				"index": 26,
 				"options": [
 					{
 						"label": "Background and ARCHIVE panel",
@@ -288,6 +314,14 @@
 				"type": "slider",
 				"value": 40
 			},
+			"mealtimes": {
+				"condition": "wellness.value == true",
+				"index": 42,
+				"order": 142,
+				"text": "Meal reminder times, 24 h (separate with |, empty = off)",
+				"type": "textinput",
+				"value": "08:00|12:30|18:30"
+			},
 			"nightstart": {
 				"condition": "theme.value == 'auto'",
 				"index": 3,
@@ -299,14 +333,14 @@
 				"value": 19
 			},
 			"parallax": {
-				"index": 21,
+				"index": 23,
 				"order": 123,
 				"text": "Mouse parallax",
 				"type": "bool",
 				"value": true
 			},
 			"particles": {
-				"index": 18,
+				"index": 20,
 				"max": 300,
 				"min": 0,
 				"order": 120,
@@ -314,8 +348,18 @@
 				"type": "slider",
 				"value": 70
 			},
+			"postureevery": {
+				"condition": "wellness.value == true",
+				"index": 41,
+				"max": 240,
+				"min": 0,
+				"order": 141,
+				"text": "Posture check every N minutes (0 = off)",
+				"type": "slider",
+				"value": 0
+			},
 			"scanlines": {
-				"index": 19,
+				"index": 21,
 				"order": 121,
 				"text": "Scanlines and film grain",
 				"type": "bool",
@@ -329,7 +373,7 @@
 			},
 			"showcasesize": {
 				"condition": "charmode.value == 'stand'",
-				"index": 31,
+				"index": 33,
 				"max": 100,
 				"min": 30,
 				"order": 133,
@@ -407,6 +451,16 @@
 				"type": "combo",
 				"value": "map"
 			},
+			"stretchevery": {
+				"condition": "wellness.value == true",
+				"index": 40,
+				"max": 240,
+				"min": 0,
+				"order": 140,
+				"text": "Stretch break every N minutes (0 = off)",
+				"type": "slider",
+				"value": 45
+			},
 			"theme": {
 				"index": 1,
 				"options": [
@@ -454,76 +508,22 @@
 				"type": "slider",
 				"value": 12
 			},
-			"audiogain": {
-				"index": 36,
+			"waterevery": {
+				"condition": "wellness.value == true",
+				"index": 39,
+				"max": 240,
+				"min": 0,
+				"order": 139,
+				"text": "Drink water every N minutes (0 = off)",
 				"type": "slider",
-				"text": "Audio sensitivity (%) - raise it for quiet music",
-				"min": 25,
-				"max": 800,
-				"value": 100,
-				"order": 118
-			},
-			"audioauto": {
-				"index": 37,
-				"type": "bool",
-				"text": "Auto-boost quiet audio",
-				"value": true,
-				"order": 119
+				"value": 60
 			},
 			"wellness": {
-				"index": 38,
-				"type": "bool",
+				"index": 37,
+				"order": 137,
 				"text": "Wellness reminders (QUESTS > WELLNESS)",
-				"value": false,
-				"order": 137
-			},
-			"eyesevery": {
-				"index": 39,
-				"type": "slider",
-				"text": "Eye break every N minutes (0 = off)",
-				"min": 0,
-				"max": 120,
-				"value": 20,
-				"condition": "wellness.value == true",
-				"order": 138
-			},
-			"waterevery": {
-				"index": 40,
-				"type": "slider",
-				"text": "Drink water every N minutes (0 = off)",
-				"min": 0,
-				"max": 240,
-				"value": 60,
-				"condition": "wellness.value == true",
-				"order": 139
-			},
-			"stretchevery": {
-				"index": 41,
-				"type": "slider",
-				"text": "Stretch break every N minutes (0 = off)",
-				"min": 0,
-				"max": 240,
-				"value": 45,
-				"condition": "wellness.value == true",
-				"order": 140
-			},
-			"postureevery": {
-				"index": 42,
-				"type": "slider",
-				"text": "Posture check every N minutes (0 = off)",
-				"min": 0,
-				"max": 240,
-				"value": 0,
-				"condition": "wellness.value == true",
-				"order": 141
-			},
-			"mealtimes": {
-				"index": 43,
-				"type": "textinput",
-				"text": "Meal reminder times, 24 h (separate with |, empty = off)",
-				"value": "08:00|12:30|18:30",
-				"condition": "wellness.value == true",
-				"order": 142
+				"type": "bool",
+				"value": false
 			}
 		},
 		"supportsaudioprocessing": true
@@ -536,7 +536,7 @@
 	],
 	"title": "YoRHa Terminal - NieR:Automata UI",
 	"type": "web",
-	"version": 9,
+	"version": 10,
 	"visibility": "public",
 	"workshopid": "3830732662",
 	"workshopurl": "steam://url/CommunityFilePage/3830732662"

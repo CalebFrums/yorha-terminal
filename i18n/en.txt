@@ -269,7 +269,7 @@ Proposals to rest your eyes, drink water, stretch, check your posture and eat. C
 CARE
 Look after your unit. Its meters drift down over time; repairs, sleep and attention bring them back and build bond.
 WARDROBE
-Outfits and accessories earned through bond. Click one to equip it.
+Change outfits freely; accessories are earned through bond. Click one to equip it.
 SUPPLIES
 Items held, what they do and how to earn more.
 Keep your unit on the desktop in its current outfit and accessory.
@@ -448,7 +448,6 @@ A mackerel was recovered from the water supply. Do not ask how.
 Daily orders rewarded: Large Recovery x1 for {c}.
 Focus operation rewarded: Medium Recovery x1 for {c}.
 Bond with {c} reached level {n}.
-OUTFIT
 Unlocked for {c}: {item}. Equip it in UNIT > WARDROBE.
 No repairs needed. Integrity is at {n}%.
 No recovery items. A supply drop arrives every day; wellness proposals and focus operations earn more.

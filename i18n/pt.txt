@@ -264,7 +264,7 @@ Propostas para descansar os olhos, beber água, se alongar, conferir a postura e
 CUIDADOS
 Cuide da sua unidade. Os medidores caem com o tempo; reparos, sono e atenção os recuperam e fortalecem o vínculo.
 GUARDA-ROUPA
-Trajes e acessórios ganhos com o vínculo. Clique para equipar.
+Troque de traje à vontade; os acessórios são ganhos com o vínculo. Clique para equipar.
 SUPRIMENTOS
 Itens que você tem, o que fazem e como ganhar mais.
 Mantenha sua unidade na área de trabalho com o traje e o acessório atuais.
@@ -443,7 +443,6 @@ Uma cavalinha foi recuperada do abastecimento de água. Não pergunte como.
 Ordens diárias recompensadas: recuperação grande x1 para {c}.
 Operação de foco recompensada: recuperação média x1 para {c}.
 O vínculo com {c} chegou ao nível {n}.
-TRAJE
 Desbloqueado para {c}: {item}. Equipe em UNIDADE > GUARDA-ROUPA.
 Nenhum reparo necessário. Integridade em {n}%.
 Sem itens de recuperação. Chega um suprimento por dia; propostas de bem-estar e operações de foco rendem mais.

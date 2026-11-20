@@ -2357,7 +2357,7 @@
       case 'unit':
         return [
           { id: 'care', label: K('CARE'), desc: K('Look after your unit. Its meters drift down over time; repairs, sleep and attention bring them back and build bond.') },
-          { id: 'wardrobe', label: K('WARDROBE'), desc: K('Outfits and accessories earned through bond. Click one to equip it.') },
+          { id: 'wardrobe', label: K('WARDROBE'), desc: K('Change outfits freely; accessories are earned through bond. Click one to equip it.') },
           { id: 'items', label: K('SUPPLIES'), desc: K('Items held, what they do and how to earn more.') },
           { id: 'deploy', label: K('DEPLOY TO DESKTOP'), desc: K('Keep your unit on the desktop in its current outfit and accessory.'), action: deployUnit },
           { id: 'change', label: K('CHANGE UNIT'), desc: K('Pick another character in ARCHIVE > CHARACTERS with SET AS UNIT. Bond and supplies carry over.'),
@@ -3509,7 +3509,8 @@
   // One unit (a character name). Integrity, energy and morale drift down in real time; repairs, sleep
   // mode and attention bring them back, and so does the rest of the terminal (wellness proposals, daily
   // orders, focus operations, drills, Lunar Tears from the GARDEN, music). Care builds BOND, which unlocks
-  // outfits (character images that share the unit's name) and accessories from the game.
+  // accessories from the game. Outfits (character images that share the unit's name) are never locked:
+  // the same images are already free to deploy from ARCHIVE.
   // Nothing is ever lost: an empty meter only means a tired or sulking unit, and time away is capped.
 
   const ITEMS = [
@@ -3602,13 +3603,11 @@
   };
 
   const BOND_XP = [0, 60, 150, 280, 450, 660, 920, 1230, 1600, 2050];
-  const OUTFIT_LV = [1, 4, 6, 8, 10];
   const bondLv = (xp) => {
     let lv = 0;
     while (lv < BOND_XP.length && xp >= BOND_XP[lv]) lv++;
     return lv;
   };
-  const outfitLv = (i) => OUTFIT_LV[Math.min(i, OUTFIT_LV.length - 1)];
 
   const unitDefault = () => ({
     name: '', outfit: '', acc: 'none', integrity: 85, energy: 85, morale: 75, xp: 0, xpFrac: 0,
@@ -3639,11 +3638,10 @@
     return parseCharName(files[0]).name;
   }
   const unitOutfits = () => gallery.files.filter((f) => sameName(f, unitName()));
-  const outfitOpen = (i) => bondLv(U.xp) >= outfitLv(i);
   function unitFile() {
     const o = unitOutfits();
     const i = o.findIndex((f) => baseName(f) === U.outfit);
-    return i >= 0 && outfitOpen(i) ? o[i] : o[0] || '';
+    return i >= 0 ? o[i] : o[0] || '';
   }
   const isUnit = (file) => !!file && sameName(file, unitName());
 
@@ -3899,7 +3897,6 @@
   // Announce what just became available, once. The first look only records what is already open.
   function checkUnlocks(announce) {
     const open = ACCS.filter((a) => a.id !== 'none' && accOpen(a)).map((a) => 'a.' + a.id);
-    for (let i = 1; i < OUTFIT_LV.length; i++) if (outfitOpen(i)) open.push('o.' + i);
     if (!U.seen) {
       U.seen = open;
       return;
@@ -3909,11 +3906,8 @@
     U.seen = U.seen.concat(fresh);
     saveUnit();
     if (announce === false && fresh.length > 3) return;
-    const outs = unitOutfits();
     for (const k of fresh) {
-      let what = '';
-      if (k.startsWith('a.')) what = T(accById(k.slice(2)).name);
-      else if (outs[Number(k.slice(2))]) what = (parseCharName(outs[Number(k.slice(2))]).sub || T('OUTFIT')).toUpperCase();
+      const what = k.startsWith('a.') ? T(accById(k.slice(2)).name) : '';
       if (what) say('Report', T('Unlocked for {c}: {item}. Equip it in UNIT > WARDROBE.', { c: unitName(), item: what }));
     }
   }
@@ -4033,7 +4027,7 @@
     U.name = info.name;
     const outs = unitOutfits();
     const i = outs.indexOf(file);
-    U.outfit = baseName(i >= 0 && outfitOpen(i) ? file : outs[0] || file);
+    U.outfit = baseName(i >= 0 ? file : outs[0] || file);
     saveUnit();
     say('Report', T('{c} assigned as your unit. Bond and supplies carry over.', { c: info.name }));
     syncDesktopAcc();
@@ -4160,9 +4154,8 @@
     go.textContent = '';
     if (!outs.length) go.appendChild(emptyRow(T('NO IMAGES OF THIS UNIT')));
     outs.forEach((file, i) => {
-      const open = outfitOpen(i);
       const card = document.createElement('div');
-      card.className = 'wd-card' + (file === cur ? ' on' : '') + (open ? '' : ' locked');
+      card.className = 'wd-card' + (file === cur ? ' on' : '');
       const pic = document.createElement('div');
       pic.className = 'wd-pic';
       const img = document.createElement('img');
@@ -4176,9 +4169,9 @@
       nm.textContent = (parseCharName(file).sub || T('STANDARD')).toUpperCase();
       const st = document.createElement('span');
       st.className = 'st';
-      st.textContent = !open ? T('BOND LV {n}', { n: outfitLv(i) }) : file === cur ? T('EQUIPPED') : T('EQUIP');
+      st.textContent = file === cur ? T('EQUIPPED') : T('EQUIP');
       card.append(pic, nm, st);
-      if (open) card.addEventListener('click', () => equipOutfit(file));
+      card.addEventListener('click', () => equipOutfit(file));
       go.appendChild(card);
     });
     const ga = $('wd-acc');
