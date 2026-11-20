@@ -278,7 +278,7 @@ Historique complet des transmissions du Pod pendant cette session.
 EFFACER LE JOURNAL
 Efface tous les morceaux du journal audio. Cliquez deux fois pour confirmer.
 PERSONNAGES
-Survolez une fiche pour l'examiner. Cliquez pour la déployer sur le bureau ; la rotation reste suspendue jusqu'à ce que vous la repreniez. Seuls les PNG transparents et hauts tiennent sur le bureau.
+Cliquez sur une fiche pour la sélectionner. Double-cliquez pour la déployer sur le bureau ; la rotation reste suspendue jusqu'à ce que vous la repreniez. Seuls les PNG transparents et hauts tiennent sur le bureau.
 L'image choisie dans les propriétés du fond d'écran.
 Exercice en 3D. La sonde suit le curseur et tire toute seule ; cliquez pour une impulsion. Brisez les nœuds du bouclier, puis détruisez chaque noyau avant la fin du temps.
 Cliquez sur les paquets d'intrusion avant qu'ils n'atteignent le noyau. Les caisses de soutien du Pod nettoient l'écran et le réparent.

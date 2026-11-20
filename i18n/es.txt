@@ -278,7 +278,7 @@ Registro completo de las transmisiones del Pod en esta sesión.
 BORRAR REGISTRO
 Borra todas las pistas del registro de audio. Haz clic dos veces para confirmar.
 PERSONAJES
-Pasa el cursor sobre un registro para examinarlo. Haz clic para desplegarlo en el escritorio; la rotación se detiene hasta que la reanudes. Solo los PNG altos y transparentes se quedan en el escritorio.
+Haz clic en un registro para seleccionarlo. Haz doble clic para desplegarlo en el escritorio; la rotación se detiene hasta que la reanudes. Solo los PNG altos y transparentes se quedan en el escritorio.
 La imagen asignada en las propiedades del fondo.
 Ejercicio en 3D. La sonda sigue al cursor y dispara sola; haz clic para lanzar un pulso. Rompe los nodos del escudo y destruye cada núcleo antes de que se acabe el tiempo.
 Haz clic en los paquetes de intrusión antes de que lleguen al núcleo. Las cajas de apoyo del Pod limpian la pantalla y lo reparan.

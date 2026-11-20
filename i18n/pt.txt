@@ -278,7 +278,7 @@ Registro completo das transmissões do Pod nesta sessão.
 APAGAR REGISTRO
 Apaga todas as faixas do registro de áudio. Clique duas vezes para confirmar.
 PERSONAGENS
-Passe o cursor sobre um registro para examiná-lo. Clique para colocá-lo na área de trabalho; a rotação fica pausada até você retomá-la. Só PNGs altos e transparentes ficam na área de trabalho.
+Clique em um registro para selecioná-lo. Clique duas vezes para colocá-lo na área de trabalho; a rotação fica pausada até você retomá-la. Só PNGs altos e transparentes ficam na área de trabalho.
 A imagem definida nas propriedades do papel de parede.
 Exercício em 3D. A sonda segue o cursor e atira sozinha; clique para um pulso. Quebre os nós do escudo e destrua cada núcleo antes que o tempo acabe.
 Clique nos pacotes de intrusão antes que cheguem ao núcleo. As caixas de suporte do Pod limpam a tela e o reparam.

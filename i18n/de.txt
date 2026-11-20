@@ -278,7 +278,7 @@ Vollständige Aufzeichnung der Pod-Meldungen dieser Sitzung.
 PROTOKOLL LÖSCHEN
 Alle Titel im Audioprotokoll löschen. Zum Bestätigen zweimal klicken.
 CHARAKTERE
-Fahre über einen Eintrag, um ihn anzusehen. Klicke ihn an, um ihn auf den Desktop zu setzen; die Rotation pausiert, bis du sie fortsetzt. Nur hohe transparente PNGs stehen auf dem Desktop.
+Klicke einen Eintrag an, um ihn auszuwählen. Doppelklicke ihn, um ihn auf den Desktop zu setzen; die Rotation pausiert, bis du sie fortsetzt. Nur hohe transparente PNGs stehen auf dem Desktop.
 Das in den Hintergrund-Eigenschaften festgelegte Bild.
 3D-Übung. Die Sonde folgt dem Cursor und feuert von selbst; ein Klick löst einen Impuls aus. Zerstöre die Schildknoten, dann jeden Kern, bevor die Zeit abläuft.
 Klicke Eindringpakete an, bevor sie den Kern erreichen. Pod-Versorgungskisten räumen den Bildschirm und reparieren ihn.

@@ -2373,7 +2373,7 @@
         ];
       case 'archive':
         return [
-          { id: 'chars', label: K('CHARACTERS'), desc: K('Hover a record to inspect it. Click it to deploy it to the desktop; rotation holds until you resume it. Only tall transparent PNGs stand on the desktop.') },
+          { id: 'chars', label: K('CHARACTERS'), desc: K('Click a record to select it. Double-click it to deploy it to the desktop; rotation holds until you resume it. Only tall transparent PNGs stand on the desktop.') },
           { id: 'visual', label: K('VISUAL RECORD'), desc: K('The image assigned in the wallpaper properties.') }
         ];
       case 'hacking':
@@ -3365,7 +3365,7 @@
     }
   };
 
-  // ----- ARCHIVE: character grid; click deploys a record to the desktop -----
+  // ----- ARCHIVE: character grid; click selects a record, double-click deploys it to the desktop -----
 
   const arcv = { page: 0, per: 12, view: -1 }; // view: record shown in the dossier (-1 = desktop record)
 
@@ -3398,8 +3398,10 @@
       nm.className = 'nm';
       nm.textContent = parseCharName(gallery.files[i]).name.toUpperCase();
       card.append(img, no, pin, nm);
-      card.addEventListener('mouseenter', () => showArcDossier(i));
-      card.addEventListener('click', () => deployRecord(i));
+      // Click selects (the dossier and its buttons stay on that record while the mouse travels to them);
+      // double-click deploys. Hover only highlights, so crossing other cards changes nothing.
+      card.addEventListener('click', () => selectArcRecord(i));
+      card.addEventListener('dblclick', () => deployRecord(i));
       grid.appendChild(card);
     }
     pagerBar($('arc-pager'), arcv.page, pages, (to) => {
@@ -3410,12 +3412,20 @@
   }
 
   function refreshArcLive() {
+    const sel = arcIndex();
     for (const card of $('arc-grid').children) {
-      const f = gallery.files[Number(card.dataset.i)];
+      const i = Number(card.dataset.i), f = gallery.files[i];
       card.classList.toggle('live', f === gallery.current);
       card.classList.toggle('pinned', !!gallery.pinned && f === gallery.pinned);
+      card.classList.toggle('sel', i === sel);
     }
     showArcDossier(arcv.view);
+  }
+
+  function selectArcRecord(i) {
+    if (!gallery.files[i]) return;
+    arcv.view = i;
+    refreshArcLive();
   }
 
   function arcIndex() {

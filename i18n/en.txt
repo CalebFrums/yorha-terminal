@@ -283,7 +283,7 @@ Full record of Pod transmissions this session.
 CLEAR AUDIO LOG
 Erase every track in the audio log. Click twice to confirm.
 CHARACTERS
-Hover a record to inspect it. Click it to deploy it to the desktop; rotation holds until you resume it. Only tall transparent PNGs stand on the desktop.
+Click a record to select it. Double-click it to deploy it to the desktop; rotation holds until you resume it. Only tall transparent PNGs stand on the desktop.
 The image assigned in the wallpaper properties.
 3D drill. The probe follows the cursor and fires on its own; click for a pulse. Break the shield nodes, then destroy every core before time runs out.
 Click intrusion packets before they reach the core. Pod support crates clear the screen and repair it.

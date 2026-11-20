@@ -1347,6 +1347,7 @@ body.no-log #place-hint { visibility: hidden; }
 .arc-card.pinned .pin { display: block; }
 .arc-card.live { border-color: var(--ink); outline: 1px solid var(--ink); outline-offset: -0.25rem; }
 .arc-card.live .nm { background: var(--ink); color: var(--hl-text); }
+.arc-card.sel { border-color: var(--ink); background-color: rgba(var(--ink-rgb), 0.16); box-shadow: 0 0 0 2px var(--ink); }
 .arc-right { width: 22rem; flex: none; display: flex; flex-direction: column; }
 .arc-art {
   position: relative;
