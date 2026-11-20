@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>GIF Capture</title>
+<!-- Dev-only: records the Workshop preview GIF frame by frame in the built-in browser pane (not shipped).
+     The wallpaper runs in an iframe on a virtual clock: cap.frame(i) applies the tour step for frame i,
+     advances requestAnimationFrame, timers and CSS animations by exactly one frame, and the 400x400 box
+     at the top left is captured after each call. -->
+<style>
+  html, body { margin: 0; background: #1d1c19; overflow: hidden; }
+  #box { position: absolute; left: 0; top: 0; width: 400px; height: 400px; overflow: hidden; background: rgb(218, 212, 187); }
+  #wp { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; border: 0; transform-origin: 0 0; }
+  #info { position: absolute; left: 410px; top: 6px; color: #aaa; font: 12px Consolas, monospace; white-space: pre; }
+</style>
+</head>
+<body>
+<div id="box"><iframe id="wp"></iframe></div>
+<!-- Stops stray clicks in the pane from reaching the wallpaper; the tour dispatches its own events. -->
+<div id="shield" style="position:absolute;left:0;top:0;width:100%;height:100%;z-index:5"></div>
+<div id="info"></div>
+<script>
+(function () {
+  'use strict';
+  const FRAME = 80; // ms per frame (12.5 fps, like the previous preview)
+  const wp = document.getElementById('wp');
+  const info = document.getElementById('info');
+  wp.src = '../index.html?cap=' + Date.now() + '#theme=light&charmode=off&showseconds=false&particles=false&scanlines=false&glitch=false&hubreturn=3600&parallax=false&autocycle=false';
+
+  let W = null, V = null;
+
+  // Take over the iframe's clock: rAF, timers, performance.now, Date.now and CSS animations.
+  function virtualize() {
+    W = wp.contentWindow;
+    const doc = W.document;
+    const realDate = W.Date.now.bind(W.Date);
+    V = { t: W.performance.now(), base: realDate() - W.performance.now(), raf: [], timers: [], seq: 1 };
+    W.performance.now = () => V.t;
+    W.Date.now = () => V.base + V.t;
+    W.requestAnimationFrame = (cb) => { V.raf.push(cb); return ++V.seq; };
+    W.cancelAnimationFrame = () => {};
+    W.setTimeout = (fn, ms, ...a) => { const id = ++V.seq; V.timers.push({ id: id, at: V.t + (Number(ms) || 0), fn: fn, a: a, every: 0 }); return id; };
+    W.setInterval = (fn, ms, ...a) => { const id = ++V.seq; const e = Math.max(1, Number(ms) || 0); V.timers.push({ id: id, at: V.t + e, fn: fn, a: a, every: e }); return id; };
+    W.clearTimeout = W.clearInterval = (id) => { V.timers = V.timers.filter((x) => x.id !== id); };
+    // Hide the remaining moving noise (big for a GIF) and the cursor.
+    const st = doc.createElement('style');
+    st.textContent = '#rings, #scanband, #grain, #transit-label { display: none !important; } * { cursor: none !important; }';
+    doc.head.appendChild(st);
+  }
+
+  function step(ms) {
+    const end = V.t + ms;
+    for (;;) {
+      let next = null;
+      for (const x of V.timers) if (x.at <= end && (!next || x.at < next.at)) next = x;
+      if (!next) break;
+      V.t = Math.max(V.t, next.at);
+      if (next.every) next.at += next.every;
+      else V.timers = V.timers.filter((x) => x !== next);
+      try { if (typeof next.fn === 'function') next.fn.apply(W, next.a); } catch (e) { console.error(e); }
+    }
+    V.t = end;
+    for (const a of W.document.getAnimations()) {
+      if (a.__vs === undefined) { a.__vs = V.t - ms; a.pause(); }
+      a.currentTime = V.t - a.__vs;
+    }
+    const cbs = V.raf;
+    V.raf = [];
+    for (const cb of cbs) { try { cb(V.t); } catch (e) { console.error(e); } }
+  }
+
+  const $ = (sel) => W.document.querySelector(sel);
+  function fire(el, type, x, y, Ctor) {
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const o = { bubbles: true, cancelable: true, clientX: r.left + x, clientY: r.top + y, button: 0, pointerType: 'mouse', isPrimary: true, pointerId: 1 };
+    el.dispatchEvent(new (Ctor || W.PointerEvent)(type, o));
+  }
+
+  // Crop: (cx, cy) is the centre of a size x size square of the 1920x1080 wallpaper.
+  function crop(cx, cy, size) {
+    const s = 400 / size;
+    wp.style.transform = 'scale(' + s + ') translate(' + (size / 2 - cx) + 'px,' + (size / 2 - cy) + 'px)';
+  }
+
+  window.cap = { FRAME: FRAME, virtualize: virtualize, step: step, crop: crop, fire: fire, $: $, get W() { return W; }, get V() { return V; }, info: (t) => { info.textContent = t; } };
+})();
+</script>
+<script src="capture-tour.js"></script>
+</body>
+</html>

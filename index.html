@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YoRHa Terminal</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Alpha-preserving duotone filters for transparent character renders -->
+  <svg id="filters" width="0" height="0" aria-hidden="true">
+    <filter id="duo-light" color-interpolation-filters="sRGB">
+      <feColorMatrix type="matrix" values="0.2126 0.7152 0.0722 0 0  0.2126 0.7152 0.0722 0 0  0.2126 0.7152 0.0722 0 0  0 0 0 1 0"/>
+      <feComponentTransfer>
+        <feFuncR type="table" tableValues="0.235 0.870"/>
+        <feFuncG type="table" tableValues="0.224 0.847"/>
+        <feFuncB type="table" tableValues="0.196 0.757"/>
+      </feComponentTransfer>
+    </filter>
+    <filter id="duo-dark" color-interpolation-filters="sRGB">
+      <feColorMatrix type="matrix" values="0.2126 0.7152 0.0722 0 0  0.2126 0.7152 0.0722 0 0  0.2126 0.7152 0.0722 0 0  0 0 0 1 0"/>
+      <feComponentTransfer>
+        <feFuncR type="table" tableValues="0.090 0.804"/>
+        <feFuncG type="table" tableValues="0.086 0.784"/>
+        <feFuncB type="table" tableValues="0.075 0.690"/>
+      </feComponentTransfer>
+    </filter>
+  </svg>
+
+  <!-- Background: user image/video with duotone layers, then procedural grid -->
+  <div id="bg-layer" class="filter-nier">
+    <img id="bg-image" alt="">
+    <video id="bg-video" muted loop playsinline></video>
+    <div class="duo-hi"></div>
+    <div class="duo-lo"></div>
+    <div id="bg-wash"></div>
+  </div>
+  <div id="grid"></div>
+  <div id="rings"><div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div></div>
+  <div id="scanband"></div>
+  <canvas id="viz"></canvas>
+  <!-- Desktop character: .actor is sized to the image, .actor-body carries the procedural motion -->
+  <div id="showcase" class="filter-nier">
+    <div class="actor" id="actor">
+      <div class="actor-body" id="actor-body"><img class="char-img" id="show-a" alt=""><img class="char-img" id="show-b" alt=""></div>
+      <div class="emote" id="emote"></div>
+    </div>
+    <div class="show-label"><span class="show-name" id="show-name"></span><span class="show-sub" id="show-sub"></span></div>
+  </div>
+  <canvas id="fx"></canvas>
+
+  <div id="ui">
+    <header id="topbar">
+      <div class="brand"><span class="sq"></span>YoRHa<span class="dim">// TACTICAL TERMINAL</span></div>
+      <div class="rule"></div>
+      <div class="top-right"><span id="unit-label">UNIT 2B</span><span class="dim">//</span><span id="status-label">SYS NOMINAL</span></div>
+    </header>
+
+    <!-- ===== HUB ===== -->
+    <div id="mainrow">
+      <div id="leftcol">
+        <section id="clock-block">
+          <div id="clock"><span id="clock-hm">00:00</span><span id="clock-s">00</span><span id="clock-ampm"></span></div>
+          <div class="ticks"></div>
+          <div id="date"><span class="sq"></span><span id="date-text">---</span></div>
+        </section>
+
+        <nav id="menu">
+          <div class="menu-title">MENU</div>
+          <ul>
+            <li data-panel="map">MAP</li>
+            <li data-panel="quests">QUESTS</li>
+            <li data-panel="intel">INTEL</li>
+            <li data-panel="archive">ARCHIVE</li>
+            <li data-panel="hacking">HACKING</li>
+            <li data-panel="garden">GARDEN</li>
+            <li data-panel="system">SYSTEM</li>
+            <li id="cursor" aria-hidden="true"></li>
+          </ul>
+        </nav>
+      </div>
+
+      <main id="panel">
+        <div class="panel-head"><span class="sq"></span><span id="panel-title">MAP</span><span class="panel-sub" id="panel-sub"></span><span class="enter-btn" id="enter-btn">ENTER<span class="chev"></span></span></div>
+        <div class="panel-body" id="panel-body">
+
+          <div class="view" id="view-map">
+            <canvas id="globe"></canvas>
+            <div class="readout">
+              <div class="kv"><span class="k">TARGET</span><span class="v" id="map-target">--</span></div>
+              <div class="kv"><span class="k">SIGNALS</span><span class="v" id="map-signals">--</span></div>
+              <div class="kv"><span class="k">BUNKER UPLINK</span><span class="v" id="map-pass">--</span></div>
+            </div>
+          </div>
+
+          <div class="view" id="view-quests">
+            <div class="quest" id="q-day">
+              <div class="q-row"><span class="q-name">DAILY OPERATION</span><span class="q-pct">--</span></div>
+              <div class="bar"><div class="fill"></div></div>
+              <div class="q-meta"><span class="q-state">IN PROGRESS</span><span class="q-rem">--</span></div>
+            </div>
+            <div class="quest" id="q-week">
+              <div class="q-row"><span class="q-name">WEEKLY OPERATION</span><span class="q-pct">--</span></div>
+              <div class="bar"><div class="fill"></div></div>
+              <div class="q-meta"><span class="q-state">IN PROGRESS</span><span class="q-rem">--</span></div>
+            </div>
+            <div class="quest" id="q-month">
+              <div class="q-row"><span class="q-name">MONTHLY OPERATION</span><span class="q-pct">--</span></div>
+              <div class="bar"><div class="fill"></div></div>
+              <div class="q-meta"><span class="q-state">IN PROGRESS</span><span class="q-rem">--</span></div>
+            </div>
+            <div class="quest" id="q-year">
+              <div class="q-row"><span class="q-name">ANNUAL OPERATION</span><span class="q-pct">--</span></div>
+              <div class="bar"><div class="fill"></div></div>
+              <div class="q-meta"><span class="q-state">IN PROGRESS</span><span class="q-rem">--</span></div>
+            </div>
+            <div class="kv"><span class="k">DAILY ORDERS</span><span class="v" id="hq-orders">--</span></div>
+          </div>
+
+          <div class="view" id="view-intel">
+            <div class="intel-wrap">
+              <div class="frame thumb filter-nier" id="m-thumb-frame">
+                <img id="m-thumb" alt="">
+                <div class="duo-hi"></div>
+                <div class="duo-lo"></div>
+                <div class="empty-note">NO SIGNAL</div>
+              </div>
+              <div class="intel-info">
+                <div class="kv"><span class="k">TITLE</span><span class="v" id="m-title">--</span></div>
+                <div class="kv"><span class="k">ARTIST</span><span class="v" id="m-artist">--</span></div>
+                <div class="kv"><span class="k">ALBUM</span><span class="v" id="m-album">--</span></div>
+                <div class="kv"><span class="k">STATE</span><span class="v" id="m-state">--</span></div>
+                <div class="timeline">
+                  <div class="bar"><div class="fill" id="m-fill"></div></div>
+                  <div class="times"><span id="m-pos">0:00</span><span id="m-dur">0:00</span></div>
+                </div>
+              </div>
+            </div>
+            <canvas id="intel-viz"></canvas>
+            <div class="note" id="m-note"></div>
+          </div>
+
+          <div class="view" id="view-archive">
+            <div class="archive-single">
+              <div class="frame archive filter-nier" id="archive-frame">
+                <img id="archive-img" alt="">
+                <div class="duo-hi"></div>
+                <div class="duo-lo"></div>
+                <div class="empty-note">NO VISUAL RECORD<small>Assign an image or a character folder in the wallpaper properties</small></div>
+              </div>
+              <div class="caption"><span class="sq"></span><span id="archive-caption">VISUAL RECORD // 001</span></div>
+            </div>
+            <div class="dossier">
+              <div class="dossier-art filter-nier" id="dossier-art">
+                <img class="char-img" id="dos-a" alt="">
+                <img class="char-img" id="dos-b" alt="">
+              </div>
+              <div class="dossier-info">
+                <div class="dossier-name" id="d-name">--</div>
+                <div class="dossier-sub" id="d-sub"></div>
+                <div class="kv"><span class="k">RECORD</span><span class="v" id="d-record">--</span></div>
+                <div class="kv"><span class="k">AFFILIATION</span><span class="v" id="d-aff">--</span></div>
+                <div class="kv"><span class="k">STATUS</span><span class="v" id="d-status">ARCHIVED</span></div>
+                <div class="kv"><span class="k">NEXT RECORD</span><span class="v" id="d-next">--</span></div>
+                <div class="dots" id="d-dots"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="view" id="view-hacking">
+            <div class="hk-cards">
+              <div class="hk-card" data-go="breach">
+                <div class="hk-title"><span class="sq"></span>BREACH</div>
+                <div class="hk-desc">A 3D intrusion drill. Fly the probe, break the shield nodes and destroy every core.</div>
+                <div class="kv"><span class="k">BEST SCORE</span><span class="v" id="hv-br-best">--</span></div>
+                <div class="kv"><span class="k">LAST RUN</span><span class="v" id="hv-br-last">--</span></div>
+              </div>
+              <div class="hk-card" data-go="intercept">
+                <div class="hk-title"><span class="sq"></span>INTERCEPT</div>
+                <div class="hk-desc">Intrusion packets converge on the core. Click them before they reach it.</div>
+                <div class="kv"><span class="k">BEST SCORE</span><span class="v" id="hv-int-best">--</span></div>
+                <div class="kv"><span class="k">LAST RUN</span><span class="v" id="hv-int-last">--</span></div>
+              </div>
+              <div class="hk-card" data-go="logic">
+                <div class="hk-title"><span class="sq"></span>LOGIC LOCK</div>
+                <div class="hk-desc">Rotate circuit tiles until every terminal on the board receives power.</div>
+                <div class="kv"><span class="k">LOCKS RELEASED</span><span class="v" id="hv-log-solved">--</span></div>
+                <div class="kv"><span class="k">CURRENT LEVEL</span><span class="v" id="hv-log-level">--</span></div>
+              </div>
+            </div>
+            <div class="note">CLICK A DRILL OR HACKING TO ENTER</div>
+          </div>
+
+          <div class="view" id="view-garden">
+            <div class="gd-wrap">
+              <canvas id="moon-mini"></canvas>
+              <div class="gd-info">
+                <div class="kv"><span class="k">MOON PHASE</span><span class="v" id="gv-phase">--</span></div>
+                <div class="kv"><span class="k">ILLUMINATION</span><span class="v" id="gv-illum">--</span></div>
+                <div class="kv"><span class="k">NEXT FULL MOON</span><span class="v" id="gv-full">--</span></div>
+                <div class="kv"><span class="k">LUNAR TEARS</span><span class="v" id="gv-count">--</span></div>
+                <p class="gd-desc">A quiet field behind the ruins. Click the ground to plant Lunar Tears and stir the wind with the cursor.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="view" id="view-system">
+            <div class="sys-grid">
+              <div class="kv"><span class="k">UNIT</span><span class="v" id="sys-unit">--</span></div>
+              <div class="kv"><span class="k">SESSION UPTIME</span><span class="v" id="sys-uptime">--</span></div>
+              <div class="kv"><span class="k">TIME ZONE</span><span class="v" id="sys-tz">--</span></div>
+              <div class="kv"><span class="k">DISPLAY</span><span class="v" id="sys-display">--</span></div>
+              <div class="kv"><span class="k">RENDER RATE</span><span class="v" id="sys-fps">--</span></div>
+              <div class="kv"><span class="k">AUDIO INPUT</span><span class="v" id="sys-audio">--</span></div>
+              <div class="kv"><span class="k">MEDIA LINK</span><span class="v" id="sys-media">--</span></div>
+              <div class="kv"><span class="k">BLACK BOX</span><span class="v" id="sys-blackbox">NOMINAL</span></div>
+            </div>
+            <div class="spark-title"><span class="sq"></span>SIGNAL HISTORY // 60 SEC</div>
+            <canvas id="sys-spark"></canvas>
+          </div>
+
+        </div>
+      </main>
+
+      <div id="spacer"></div>
+
+      <div id="rightcol">
+        <aside id="podlog">
+          <div class="pod-head"><span class="sq"></span>POD 042 // LOG<span class="pod-state" id="pod-state">OBSERVING</span></div>
+          <div id="pod-lines"></div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- ===== PLACES (full-screen destinations opened from the hub) ===== -->
+    <section id="place">
+      <nav id="place-tabs">
+        <div class="tab-back" id="tab-back"><span class="chev"></span>HUB</div>
+        <ul id="tab-list"></ul>
+        <div class="tab-clock" id="tab-clock">00:00</div>
+      </nav>
+
+      <div id="place-body">
+        <aside id="place-side">
+          <div class="side-head"><span class="sq"></span><span id="side-title">MAP</span></div>
+          <div class="side-sub" id="place-sub"></div>
+          <ul id="side-list"></ul>
+          <div class="side-desc" id="side-desc"></div>
+        </aside>
+
+        <main id="place-main">
+
+          <div class="pview" id="pv-map">
+            <canvas id="pmap-globe"></canvas>
+            <div class="pmap-info">
+              <div class="loc-name" id="loc-name">--</div>
+              <div class="loc-sub" id="loc-sub"></div>
+              <div class="kv"><span class="k">COORDINATES</span><span class="v" id="loc-coord">--</span></div>
+              <div class="kv"><span class="k">LOCAL TIME</span><span class="v" id="loc-time">--</span></div>
+              <div class="kv"><span class="k">CONDITIONS</span><span class="v" id="loc-cond">--</span></div>
+              <div class="kv"><span class="k">MACHINE SIGNALS</span><span class="v" id="loc-sig">--</span></div>
+              <div class="kv"><span class="k">THREAT LEVEL</span><span class="v"><span class="threat" id="loc-threat"></span></span></div>
+              <p class="loc-desc" id="loc-desc"></p>
+              <div class="note">DRAG THE GLOBE TO ROTATE // CLICK A MARKER TO SURVEY</div>
+            </div>
+          </div>
+
+          <div class="pview" id="pv-quests-ops"><div class="ops-list" id="ops-list"></div></div>
+
+          <div class="pview" id="pv-quests-orders">
+            <div class="orders-head"><span id="ord-date">--</span><span id="ord-count">--</span><span id="ord-streak">--</span></div>
+            <ul class="orders" id="orders"></ul>
+            <div class="note">EDIT THE LIST IN THE WALLPAPER PROPERTIES // DAILY ORDERS (SEPARATE WITH |)</div>
+          </div>
+
+          <div class="pview" id="pv-quests-timer">
+            <div class="timer-wrap">
+              <div class="timer-ring">
+                <canvas id="timer-canvas"></canvas>
+                <div class="timer-read"><div id="timer-left">25:00</div><div class="timer-state" id="timer-state">STANDBY</div></div>
+              </div>
+              <div class="timer-ctrl">
+                <div class="ctrl-title">OPERATION LENGTH</div>
+                <div class="chips" id="timer-chips">
+                  <span data-min="5">5</span><span data-min="15">15</span><span data-min="25">25</span><span data-min="45">45</span><span data-min="60">60</span><span data-min="90">90</span>
+                </div>
+                <div class="btn-row"><span class="btn" id="timer-go">START</span><span class="btn" id="timer-reset">RESET</span></div>
+                <div class="kv"><span class="k">COMPLETED TODAY</span><span class="v" id="timer-today">0</span></div>
+                <div class="kv"><span class="k">FOCUS TIME TODAY</span><span class="v" id="timer-total">0 MIN</span></div>
+                <div class="note">THE TIMER KEEPS RUNNING IN THE HUB // SEE THE TOP BAR</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pview" id="pv-intel-now">
+            <div class="intel-wrap big">
+              <div class="frame thumb big filter-nier" id="pm-thumb-frame">
+                <img id="pm-thumb" alt="">
+                <div class="duo-hi"></div>
+                <div class="duo-lo"></div>
+                <div class="empty-note">NO SIGNAL</div>
+              </div>
+              <div class="intel-info">
+                <div class="kv"><span class="k">TITLE</span><span class="v" id="pm-title">--</span></div>
+                <div class="kv"><span class="k">ARTIST</span><span class="v" id="pm-artist">--</span></div>
+                <div class="kv"><span class="k">ALBUM</span><span class="v" id="pm-album">--</span></div>
+                <div class="kv"><span class="k">STATE</span><span class="v" id="pm-state">--</span></div>
+                <div class="timeline">
+                  <div class="bar"><div class="fill" id="pm-fill"></div></div>
+                  <div class="times"><span id="pm-pos">0:00</span><span id="pm-dur">0:00</span></div>
+                </div>
+              </div>
+            </div>
+            <canvas id="pm-viz"></canvas>
+            <div class="note" id="pm-note"></div>
+          </div>
+
+          <div class="pview" id="pv-intel-audio">
+            <div class="table" id="audio-table"></div>
+            <div class="pager" id="audio-pager"></div>
+          </div>
+
+          <div class="pview" id="pv-intel-pod">
+            <div class="table" id="pod-table"></div>
+            <div class="pager" id="pod-pager"></div>
+          </div>
+
+          <div class="pview" id="pv-archive-chars">
+            <div class="arc-left">
+              <div class="arc-grid filter-nier" id="arc-grid"></div>
+              <div class="pager" id="arc-pager"></div>
+            </div>
+            <div class="arc-right">
+              <div class="arc-art filter-nier" id="arc-art"><img class="arc-img" id="arc-img" alt=""></div>
+              <div class="dossier-name" id="arc-name">--</div>
+              <div class="dossier-sub" id="arc-sub"></div>
+              <div class="kv"><span class="k">RECORD</span><span class="v" id="arc-rec">--</span></div>
+              <div class="kv"><span class="k">AFFILIATION</span><span class="v" id="arc-aff">--</span></div>
+              <div class="kv"><span class="k">DESKTOP</span><span class="v" id="arc-desk">--</span></div>
+              <div class="btn-row"><span class="btn" id="arc-deploy">DEPLOY TO DESKTOP</span><span class="btn" id="arc-resume">RESUME ROTATION</span></div>
+            </div>
+            <div class="arc-empty" id="arc-empty">NO CHARACTER ARCHIVE<small>Set 'Character folder' in the wallpaper properties</small></div>
+          </div>
+
+          <div class="pview" id="pv-archive-visual">
+            <div class="frame archive filter-nier" id="pa-frame">
+              <img id="pa-img" alt="">
+              <div class="duo-hi"></div>
+              <div class="duo-lo"></div>
+              <div class="empty-note">NO VISUAL RECORD<small>Assign an image in the wallpaper properties</small></div>
+            </div>
+            <div class="caption"><span class="sq"></span><span id="pa-caption">VISUAL RECORD // NONE</span></div>
+          </div>
+
+          <div class="pview game" id="pv-hacking-breach"><canvas id="g-breach"></canvas></div>
+          <div class="pview game" id="pv-hacking-intercept"><canvas id="g-intercept"></canvas></div>
+          <div class="pview game" id="pv-hacking-logic"><canvas id="g-logic"></canvas></div>
+          <div class="pview" id="pv-hacking-records">
+            <div class="rec-cols">
+              <div class="rec-col"><div class="rec-title"><span class="sq"></span>BREACH // TOP RUNS</div><div class="table" id="rec-br"></div></div>
+              <div class="rec-col"><div class="rec-title"><span class="sq"></span>INTERCEPT // TOP RUNS</div><div class="table" id="rec-int"></div></div>
+              <div class="rec-col"><div class="rec-title"><span class="sq"></span>LOGIC LOCK // FASTEST LOCKS</div><div class="table" id="rec-log"></div></div>
+            </div>
+          </div>
+
+          <div class="pview game" id="pv-garden-field"><canvas id="g-garden"></canvas></div>
+
+          <div class="pview" id="pv-system-diag">
+            <div class="sys-grid">
+              <div class="kv"><span class="k">UNIT</span><span class="v" id="ps-unit">--</span></div>
+              <div class="kv"><span class="k">SESSION UPTIME</span><span class="v" id="ps-uptime">--</span></div>
+              <div class="kv"><span class="k">TIME ZONE</span><span class="v" id="ps-tz">--</span></div>
+              <div class="kv"><span class="k">DISPLAY</span><span class="v" id="ps-display">--</span></div>
+              <div class="kv"><span class="k">RENDER RATE</span><span class="v" id="ps-fps">--</span></div>
+              <div class="kv"><span class="k">AUDIO INPUT</span><span class="v" id="ps-audio">--</span></div>
+              <div class="kv"><span class="k">MEDIA LINK</span><span class="v" id="ps-media">--</span></div>
+              <div class="kv"><span class="k">CHARACTER RECORDS</span><span class="v" id="ps-chars">--</span></div>
+            </div>
+            <div class="spark-title"><span class="sq"></span>SIGNAL HISTORY // 60 SEC</div>
+            <canvas id="ps-spark"></canvas>
+          </div>
+
+          <div class="pview" id="pv-system-settings">
+            <div class="settings" id="settings"></div>
+            <div class="note">SAVED ON THIS PC // CHANGING THE SAME PROPERTY IN WALLPAPER ENGINE REPLACES IT</div>
+          </div>
+
+          <div class="pview" id="pv-system-about">
+            <div class="about">
+              <div class="about-title">YoRHa TACTICAL TERMINAL</div>
+              <p>Fan-made desktop terminal in the style of NieR:Automata. Not affiliated with Square Enix. The interface is drawn in code. Characters come from the included set, or from your own folder once you choose one.</p>
+              <p>The hub is home. Each menu entry is a place with its own sub-menu. Use HUB in the top left to come back, or leave the mouse alone and the terminal returns on its own.</p>
+              <p>Mouse input must be allowed in Wallpaper Engine for the hub and the places to respond. Media integration feeds INTEL.</p>
+              <div class="about-foot">GLORY TO MANKIND</div>
+            </div>
+          </div>
+
+        </main>
+      </div>
+
+      <div id="place-hint"><span class="hint-tag">POD</span><span id="hint-pod"></span></div>
+    </section>
+
+    <footer id="footer"><div class="rule"></div><span id="footer-text">Glory to Mankind</span></footer>
+  </div>
+
+  <div id="transit">
+    <div class="tb" style="--i:0"></div><div class="tb" style="--i:1"></div><div class="tb" style="--i:2"></div><div class="tb" style="--i:3"></div>
+    <div class="tb" style="--i:4"></div><div class="tb" style="--i:5"></div><div class="tb" style="--i:6"></div><div class="tb" style="--i:7"></div>
+    <div id="transit-label"></div>
+  </div>
+  <div id="glitch"></div>
+  <div id="grain"></div>
+  <div id="scanlines"></div>
+  <div id="vignette"></div>
+  <script src="lang/index.js"></script>
+  <script src="i18n.js"></script>
+  <script src="bundled.js"></script>
+  <script src="podlines.js"></script>
+  <script src="games.js"></script>
+  <script src="breach3d.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

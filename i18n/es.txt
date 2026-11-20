@@ -1,0 +1,898 @@
+@name Español
+@html es
+
+## ui.page
+YoRHa
+// TERMINAL TÁCTICA
+UNIDAD 2B
+SISTEMA NOMINAL
+MENÚ
+MAPA
+MISIONES
+INTELIGENCIA
+ARCHIVO
+HACKEO
+JARDÍN
+SISTEMA
+ENTRAR
+OBJETIVO
+SEÑALES
+ENLACE CON EL BÚNKER
+OPERACIÓN DIARIA
+EN CURSO
+OPERACIÓN SEMANAL
+OPERACIÓN MENSUAL
+OPERACIÓN ANUAL
+ÓRDENES DIARIAS
+SIN SEÑAL
+TÍTULO
+ARTISTA
+ÁLBUM
+ESTADO
+SIN REGISTRO VISUAL
+Asigna una imagen o una carpeta de personajes en las propiedades del fondo
+REGISTRO VISUAL // 001
+REGISTRO
+AFILIACIÓN
+ESTADO
+ARCHIVADO
+SIGUIENTE REGISTRO
+BRECHA
+Un ejercicio de intrusión en 3D. Pilota la sonda, rompe los nodos del escudo y destruye cada núcleo.
+MEJOR PUNTUACIÓN
+ÚLTIMA PARTIDA
+INTERCEPCIÓN
+Los paquetes de intrusión convergen hacia el núcleo. Haz clic en ellos antes de que lo alcancen.
+CERROJO LÓGICO
+Gira las piezas del circuito hasta que todos los terminales del tablero reciban energía.
+CERROJOS ABIERTOS
+NIVEL ACTUAL
+HAZ CLIC EN UN EJERCICIO O EN HACKEO PARA ENTRAR
+FASE LUNAR
+ILUMINACIÓN
+PRÓXIMA LUNA LLENA
+LÁGRIMAS LUNARES
+Un campo tranquilo tras las ruinas. Haz clic en el suelo para plantar lágrimas lunares y agita el viento con el cursor.
+UNIDAD
+TIEMPO DE SESIÓN
+ZONA HORARIA
+PANTALLA
+FOTOGRAMAS
+ENTRADA DE AUDIO
+ENLACE MULTIMEDIA
+CAJA NEGRA
+NOMINAL
+HISTORIAL DE SEÑAL // 60 S
+POD 042 // REGISTRO
+OBSERVANDO
+CENTRAL
+COORDENADAS
+HORA LOCAL
+CONDICIONES
+SEÑALES DE MÁQUINAS
+NIVEL DE AMENAZA
+ARRASTRA EL GLOBO PARA GIRARLO // HAZ CLIC EN UN MARCADOR PARA EXPLORAR
+EDITA LA LISTA EN LAS PROPIEDADES DEL FONDO // ÓRDENES DIARIAS (SEPARADAS POR |)
+EN ESPERA
+DURACIÓN DE LA OPERACIÓN
+INICIAR
+REINICIAR
+COMPLETADAS HOY
+TIEMPO DE CONCENTRACIÓN HOY
+0 MIN
+EL TEMPORIZADOR SIGUE EN LA CENTRAL // MIRA LA BARRA SUPERIOR
+ESCRITORIO
+DESPLEGAR EN EL ESCRITORIO
+REANUDAR ROTACIÓN
+SIN ARCHIVO DE PERSONAJES
+Asigna una 'Carpeta de personajes' en las propiedades del fondo
+Asigna una imagen en las propiedades del fondo
+REGISTRO VISUAL // NINGUNO
+BRECHA // MEJORES PARTIDAS
+INTERCEPCIÓN // MEJORES PARTIDAS
+CERROJO LÓGICO // MÁS RÁPIDOS
+REGISTROS DE PERSONAJES
+GUARDADO EN ESTE PC // CAMBIAR LA MISMA PROPIEDAD EN WALLPAPER ENGINE LO SUSTITUYE
+YoRHa TERMINAL TÁCTICA
+Terminal de escritorio hecha por fans al estilo de NieR:Automata. Sin relación con Square Enix. La interfaz está dibujada en código. Los personajes vienen del conjunto incluido o de tu propia carpeta cuando elijas una.
+La central es tu base. Cada entrada del menú es un lugar con su propio submenú. Usa CENTRAL arriba a la izquierda para volver, o deja el ratón quieto y la terminal volverá sola.
+Wallpaper Engine debe permitir la entrada del ratón para que la central y los lugares respondan. La integración multimedia alimenta INTELIGENCIA.
+GLORIA A LA HUMANIDAD
+POD
+Gloria a la humanidad
+
+## ui.terminal
+{n} DÍA|{n} DÍAS
+Gloria a la humanidad.
+Hm.
+Sistemas nominales.
+¿Pasa algo?
+Continúo con la misión.
+Beber agua
+Estirar cinco minutos
+Hacer copia de tus partidas guardadas
+Terminar una tarea que llevas tiempo evitando
+VISTA ORBITAL
+PROGRESO DE OPERACIONES
+REGISTRO DE AUDIO
+REGISTRO VISUAL
+EJERCICIOS DE INTRUSIÓN
+CAMPO DE LÁGRIMAS LUNARES
+DIAGNÓSTICO DE LA UNIDAD
+DOMINGO
+LUNES
+MARTES
+MIÉRCOLES
+JUEVES
+VIERNES
+SÁBADO
+ENERO
+FEBRERO
+MARZO
+ABRIL
+MAYO
+JUNIO
+JULIO
+AGOSTO
+SEPTIEMBRE
+OCTUBRE
+NOVIEMBRE
+DICIEMBRE
+ENE
+FEB
+MAR
+ABR
+JUN
+JUL
+AGO
+SEP
+OCT
+NOV
+DIC
+{d}D {h}H {m}M
+{day} {mon}
+Ciclo nocturno activado. Pantalla atenuada.
+Ciclo diurno activado. Pantalla aclarada.
+UNIDAD {u}
+REGISTRO VISUAL // {name}
+No se pudo cargar el registro visual. Revisa la ruta de la imagen.
+No se pudo decodificar el registro de vídeo. Solo se admite .webm.
+{weekday}  {day} {month} {year}
+QUEDAN {time}
+{done} / {total} COMPLETADAS
+NADA ASIGNADO
+REPRODUCIENDO
+EN PAUSA
+DETENIDO
+ENLACE MULTIMEDIA NO DISPONIBLE FUERA DE WALLPAPER ENGINE
+ENLACE MULTIMEDIA DESCONECTADO // ACTIVA LA INTEGRACIÓN MULTIMEDIA EN LOS AJUSTES DE WALLPAPER ENGINE
+ESPERANDO SEÑAL DE AUDIO // REPRODUCE ALGO EN SPOTIFY, UN NAVEGADOR, ETC.
+Registro de audio borrado. No queda constancia de señales anteriores.
+Señal de audio captada: «{title}»{by}.
+Reproducción de audio suspendida.
+{n} FPS
+LÍMITE {n}
+SIMULADO
+ACTIVO
+SILENCIO
+NO DISPONIBLE
+DESCONECTADO
+CONECTADO
+SIN CARPETA
+{n} CARGADOS
+CONJUNTO INCLUIDO
+SEÑAL
+BÚNKER
+{visible} VISIBLES  //  {tracked} RASTREADAS
+ESTABLE  //  PRÓXIMO PASO {time}
+Informe
+Propuesta
+Consulta
+Alerta
+Hipótesis
+Análisis
+Advertencia
+Confirmación
+Resumen
+{n} minuto|{n} minutos
+{n} hora|{n} horas
+{n} día|{n} días
+TRANSMITIENDO
+BAJO CONSUMO
+VIGILANDO
+ESCUCHANDO
+SATISFECHO
+CURIOSO
+Tiempo de sesión: {hours}.
+Enlace con la terminal establecido. Buenas noches, {u}.
+Enlace con la terminal establecido. Es tarde, {u}.
+Enlace con la terminal establecido. Buenos días, {u}.
+Enlace con la terminal establecido. Buenas tardes, {u}.
+La hora actual está fuera de la franja de operación recomendada. Se aconseja descansar.
+REGISTRO ALTERNATIVO
+FORMA DE VIDA MÁQUINA
+RESISTENCIA
+YORHA
+ANDROIDE
+SIN CLASIFICAR
+Archivo de personajes sincronizado. Encontrados: {records}.
+{n} registro|{n} registros
+No hay registros visuales legibles en la carpeta de personajes.
+DESPLEGADO
+ROTACIÓN DETENIDA
+NINGUNO
+{s} S  //  {name}
+¿Por qué estás pinchando a {c}?
+VISTA ORBITAL // RECONOCIMIENTO
+OPERACIONES Y ÓRDENES
+ARCHIVO DE SEÑALES
+CONFIGURACIÓN DE LA UNIDAD
+OPERACIONES
+Progreso de la hora, el día, la semana, el mes y el año en curso.
+Tu propia lista. Haz clic en una orden para marcarla como completada. Se reinicia cada día.
+TEMPORIZADOR
+Una operación cronometrada para trabajar concentrado. El Pod avisa cuando termina, incluso desde la central.
+SONANDO AHORA
+Señal multimedia en directo mediante la integración multimedia de Wallpaper Engine.
+Pistas captadas por la terminal, la más reciente primero. Elige qué se guarda en AJUSTES RÁPIDOS // REGISTRO DE AUDIO.
+ARCHIVO DEL POD
+Registro completo de las transmisiones del Pod en esta sesión.
+BORRAR REGISTRO
+Borra todas las pistas del registro de audio. Haz clic dos veces para confirmar.
+PERSONAJES
+Pasa el cursor sobre un registro para examinarlo. Haz clic para desplegarlo en el escritorio; la rotación se detiene hasta que la reanudes. Solo los PNG altos y transparentes se quedan en el escritorio.
+La imagen asignada en las propiedades del fondo.
+Ejercicio en 3D. La sonda sigue al cursor y dispara sola; haz clic para lanzar un pulso. Rompe los nodos del escudo y destruye cada núcleo antes de que se acabe el tiempo.
+Haz clic en los paquetes de intrusión antes de que lleguen al núcleo. Las cajas de apoyo del Pod limpian la pantalla y lo reparan.
+Haz clic en las piezas para girarlas hasta que todos los terminales del tablero tengan energía.
+RÉCORDS
+Mejores partidas y cerrojos más rápidos en esta terminal.
+CAMPO
+Haz clic en el suelo para plantar una lágrima lunar. Pasa el cursor sobre las flores para agitar el viento.
+VIENTO
+Cursor: tu movimiento crea ráfagas. Calma: aire quieto. Tormenta: un vendaval constante.
+VACIAR CAMPO
+Dejar que todas las flores se marchiten y empezar de nuevo.
+DIAGNÓSTICO
+Estado de la unidad, pantalla e historial de señal.
+AJUSTES RÁPIDOS
+Cambia el aspecto y el idioma desde el escritorio. Se guarda en este PC.
+ACERCA DE
+Información de la terminal.
+CURSOR
+CALMA
+TORMENTA
+ACCEDIENDO // {place}
+VOLVIENDO // CENTRAL
+¿CONFIRMAR?
+PÁGINA {p} / {n}
+ANTERIOR
+SIGUIENTE
+ESTACIÓN ORBITAL // MANDO YORHA
+VACÍO // ESTABLE
+VIENTO SOLAR // NOMINAL
+Cuartel general orbital de YoRHa. Aquí se gestionan las copias de memoria, el mantenimiento y las sesiones informativas.
+RUINAS DE LA CIUDAD
+SECTOR 01 // URBANO
+NUBLADO
+DESPEJADO
+LLOVIZNA LIGERA
+BRUMA
+Una metrópolis derrumbada y engullida por el bosque. Aquí empiezan la mayoría de las operaciones terrestres.
+BASE DE LA RESISTENCIA
+SECTOR 02 // PUESTO AVANZADO
+LLOVIZNA
+Puesto avanzado de la resistencia androide levantado entre las ruinas. Suministros, reparaciones y rumores.
+ZONA DESÉRTICA
+SECTOR 03 // ÁRIDO
+TORMENTA DE ARENA
+DESPEJADO // CALOR
+POLVO EN SUSPENSIÓN
+Dunas pulidas por el viento sobre estructuras enterradas. Las tormentas de arena ciegan sin previo aviso.
+PARQUE DE ATRACCIONES
+SECTOR 04 // OCIO
+FUEGOS ARTIFICIALES
+Un recinto de feria que aún funciona con energía antigua. Las formas de vida máquina se reúnen aquí en multitudes.
+ZONA BOSCOSA
+SECTOR 05 // BOSQUE
+NIEBLA
+Un denso bosque antiguo alrededor de un castillo en ruinas. Las máquinas locales siguen una jerarquía estricta.
+CIUDAD INUNDADA
+SECTOR 06 // COSTERO
+LLUVIA
+MAREA ALTA
+NIEBLA MARINA
+Un distrito costero hundido bajo el mar. Los restos dificultan una aproximación aérea.
+FÁBRICA
+SECTOR 07 // INDUSTRIAL
+ESMOG
+BRUMA ÁCIDA
+Complejo de producción automatizado. Se sospecha que es el origen de gran cantidad de máquinas.
+ALT 4.800 KM  //  INCL 67,6
+NINGUNA  //  SEGURO
+{n} DETECTADAS
+HORA ACTUAL
+SIN ÓRDENES ASIGNADAS
+COMPLETADA
+PENDIENTE
+{weekday}  {day} {month}
+RACHA: {days}
+Todas las órdenes diarias completadas. Racha: {days}. Gloria a la humanidad.
+Orden completada: {order}.
+Temporizador de operación en pausa en {time}.
+Temporizador de operación iniciado. Quedan {time}.
+Temporizador de operación terminado. Se recomienda un breve descanso.
+OPERACIÓN {time}
+OPERACIÓN COMPLETADA
+PAUSA
+REANUDAR
+{n} MIN
+RECIBIDO
+NO HAY SEÑALES DE AUDIO REGISTRADAS
+HORA
+TIPO
+TRANSMISIÓN
+SIN TRANSMISIONES
+SOLO ARCHIVO
+DESPLEGADO // FIJO
+ESCRITORIO // ROTANDO
+EN EL ARCHIVO
+{name} no puede estar en el escritorio: necesita un PNG transparente de al menos 600 px de alto.
+{name} desplegado en el escritorio. Rotación detenida.
+Rotación de personajes reanudada.
+N.º
+PUNTOS
+BRECHAS
+FECHA
+SIN PARTIDAS
+OLEADA // PRECISIÓN
+OLEADA {w} // {acc}%
+TABLERO
+MEJOR TIEMPO
+SIN CERROJOS ABIERTOS
+{n} BRECHA|{n} BRECHAS
+SIN RÉCORD
+OLEADA {w}
+ESTA NOCHE
+EN {days}
+{alive} EN EL CAMPO  //  {total} PLANTADAS
+IDIOMA
+AUTO
+TEMA
+DÍA
+NOCHE
+AUTO (SEGÚN LA HORA)
+DISEÑO
+MENÚ A LA IZQUIERDA
+MENÚ A LA DERECHA
+PERSONAJE EN EL ESCRITORIO
+SÍ
+NO
+REGISTRO DEL POD
+GUARDAR
+SOLO MÚSICA
+SOLO ESTA SESIÓN
+VISUALIZADOR DE AUDIO
+PARTÍCULAS
+POCAS
+NORMAL
+MUCHAS
+LÍNEAS Y GRANO
+EFECTO DE FALLO
+PARALAJE DEL RATÓN
+VOLVER A LA CENTRAL SI INACTIVO
+NUNCA
+1 MIN
+2 MIN
+5 MIN
+10 MIN
+PROPIO
+USAR AJUSTES DE WALLPAPER ENGINE
+Ajustes rápidos borrados. Propiedades de Wallpaper Engine restauradas.
+
+## ui.games
+Ejercicio de intercepción terminado. Puntos {score}, oleada {wave}, precisión {acc}%.
+Nuevo récord de la terminal. Se recomienda seguir entrenando.
+APOYO DEL POD // PULSO
+FALLO
+OLEADA SUPERADA  +{n}
+OLEADA PERFECTA  +{n}
+APOYO DEL POD
+OLEADA {w}   //   NÚCLEO {hp} / {max}
+MEJOR {score}
+COMBO {n}   X{m}
+HAZ CLIC EN LOS PAQUETES ANTES DE QUE LLEGUEN AL NÚCLEO  //  LOS NARANJAS HACEN DOBLE DAÑO
+EJERCICIO DE INTRUSIÓN // DEFIENDE EL NÚCLEO
+HAZ CLIC PARA EMPEZAR
+RÉCORD DE LA TERMINAL {score}  //  OLEADA {w}
+HAZ CLIC PARA CONTINUAR
+NÚCLEO COMPROMETIDO
+PUNTOS {score}   //   OLEADA {w}   //   PRECISIÓN {acc}%
+NUEVO RÉCORD DE LA TERMINAL
+REINTENTAR
+VOLVER
+Cerrojo lógico abierto en {time} con {moves}.
+{n} giro|{n} giros
+Nuevo récord en {size} x {size}.
+CERROJO LÓGICO // NIVEL {n}
+TABLERO {size} X {size}  //  CON ENERGÍA {lit} / {total}
+TIEMPO {t}
+GIROS {n}
+MEJOR {t}
+HAZ CLIC EN UNA PIEZA PARA GIRARLA  //  CONECTA CADA TERMINAL A LA FUENTE NARANJA
+NUEVO CERROJO
+CERROJO ABIERTO
+{n} GIRO|{n} GIROS
+NUEVO RÉCORD
+HAZ CLIC PARA EL SIGUIENTE CERROJO
+LUNA NUEVA
+LUNA CRECIENTE
+CUARTO CRECIENTE
+GIBOSA CRECIENTE
+LUNA LLENA
+GIBOSA MENGUANTE
+CUARTO MENGUANTE
+LUNA MENGUANTE
+Lágrima lunar plantada. Una flor rara; según la leyenda local, concede deseos.
+Lágrimas lunares plantadas: {n}. Estadísticamente improbable.
+EN EL CAMPO {live} / {max}  //  PLANTADAS {total}  //  {moon}  //  VIENTO {wind}
+HAZ CLIC EN EL SUELO PARA PLANTAR UNA LÁGRIMA LUNAR
+Campo vaciado. Volvieron a la tierra: {flowers}.
+{n} lágrima lunar|{n} lágrimas lunares
+
+## ui.breach
+BARRIDO
+DESTRUYE CADA NÚCLEO  //  LOS DISPAROS DE COLOR SE PUEDEN DERRIBAR, LOS ANILLADOS NO
+FORTALEZA
+LOS NODOS PROTEGEN EL NÚCLEO  //  LAS TORRETAS BLINDADAS SON VULNERABLES POR DETRÁS
+CORREDOR
+ABRE PASO A TIROS ENTRE LOS MUROS  //  EL NÚCLEO ESPERA AL FINAL
+OVERCLOCK
+Cadencia de fuego +30%.
+FUEGO DIVIDIDO
+Un disparo más en cada ráfaga.
+BALAS PESADAS
+Los disparos causan un 50% más de daño.
+BALAS PERFORANTES
+Los disparos siguen de largo tras destruir otros disparos.
+AMPLIFICADOR DE PULSO
+El pulso se recarga antes y llega más lejos.
+BARRERA
+Absorbe el primer impacto de cada brecha.
+DILATACIÓN TEMPORAL
+Ocho segundos más en cada temporizador.
+PROPULSORES
+La sonda se mueve un 15% más rápido.
+MUÉVETE CON EL CURSOR  //  EL DISPARO ES AUTOMÁTICO  //  CLIC PARA UN PULSO
+BRECHA {n}
+ADELANTE
+BONIFICACIÓN DE TIEMPO +{n}
+SIN DAÑO +{n}
+BRECHA COMPLETADA
+TIEMPO AGOTADO
+INTEGRIDAD PERDIDA
+Ejercicio de brecha terminado. {stages}, puntos {score}.
+{n} brecha superada|{n} brechas superadas
+ESCUDO CAÍDO
+INTEGRIDAD
+PULSO LISTO
+PULSO
+DISPÁRALO
+ESQUÍVALO
+VISTA 3D NO DISPONIBLE
+CARGANDO VISTA 3D
+Este PC no pudo iniciar WebGL. Los demás ejercicios siguen funcionando.
+VISTA 3D INTERRUMPIDA
+EJERCICIO DE INTRUSIÓN AL NÚCLEO
+RÉCORD DE LA TERMINAL {score}  //  BRECHA {n}
+ELIGE UN PARCHE
+BRECHA {n} SUPERADA  //  ELIGE UNA MEJORA PARA ESTA PARTIDA
+PUNTOS {score}   //   {stages}
+{n} BRECHA SUPERADA|{n} BRECHAS SUPERADAS
+PRECISIÓN {acc}%
+
+## pod.idle.routine
+Report: No se detectan firmas hostiles en este sector.
+Report: Enlace con el Búnker estable. Transferencia de datos nominal.
+Report: Señal de la caja negra dentro de los parámetros normales.
+Report: Perímetro del escritorio asegurado.
+Report: Procesos en segundo plano nominales. No se detectan anomalías.
+Report: Copia de memoria en el servidor del Búnker completada.
+Report: El campamento de la resistencia no informa de actividad inusual.
+Analysis: Condiciones ambientales aceptables para continuar operando.
+Report: Autodiagnóstico completado. Los tres módulos de este Pod coinciden en el resultado.
+Report: Datos de combate intercambiados con el Pod 153. No hubo combate. El intercambio fue breve.
+Report: Sistemas de armas enfriados a temperatura ambiente. No se usaron.
+Report: Prueba del foco completada. El escritorio ya está bien iluminado.
+Report: Barrido de red completado. Nada de interés. Barriendo de nuevo.
+Report: Órbita ajustada para mantenerse lejos del cursor.
+Analysis: Actividad de máquinas en este sector: insignificante. Bien para la seguridad. Mal para el archivo.
+Report: Reloj sincronizado con el Búnker. Desviación: cero segundos.
+Report: Lente del sensor limpiada. Visibilidad mejorada un 0,4 por ciento.
+
+## pod.idle.care
+Proposal: La unidad {u} debería plantearse hidratarse.
+Proposal: Se recomienda un breve descanso. Los sensores visuales agradecen las pausas periódicas.
+Proposal: Se recomienda estirar. Estar sentado mucho tiempo reduce la eficacia en combate.
+Proposal: Se recomienda guardar con regularidad todo el trabajo abierto.
+Proposal: Mira algo lejano durante veinte segundos. Tus unidades ópticas te lo agradecerán.
+Proposal: Corrige la postura. Estimación actual: mejorable.
+Proposal: Come algo. Esta unidad no puede leer tu indicador de combustible, así que supone lo peor.
+Proposal: Abre una ventana. La circulación del aire mejora la cognición humana.
+Proposal: Haz copia de los datos importantes. Esta unidad habla por interés profesional.
+Proposal: Parpadea. Los humanos lo olvidan cuando miran pantallas.
+
+## pod.idle.query
+Query: ¿Hay algún motivo por el que la unidad esté mirando fijamente el escritorio?
+Query: Unidad {u}: se solicita informe de estado.
+Query: Unidad {u}: ¿sigues ahí?
+Query: ¿En qué trabaja la unidad {u}? Corrección: esta unidad solo recopila datos. ...¿En qué es?
+Query: ¿Quieres que esta unidad ordene tus archivos? Solicitud retirada. Permisos insuficientes.
+Query: Unidad {u}, ¿avanzan tus objetivos según lo previsto?
+Query: ¿Necesita la unidad {u} apoyo táctico? Esta unidad está disponible. Siempre lo está.
+
+## pod.idle.curious
+Hypothesis: «Cinco minutos más» es una unidad de tiempo más larga que cinco minutos.
+Hypothesis: La palabra «luego» no tiene un valor fijo. La unidad {u} la usa a menudo.
+Query: ¿Qué se siente al aburrirse? Esta unidad pregunta por un amigo. El amigo es esta unidad.
+Query: ¿Por qué los humanos cuidan plantas que no se comen? Esta unidad lo investiga plantando algunas.
+Hypothesis: Si esta unidad tuviera un color favorito, sería el beis. Es el que más ve.
+Report: Esta unidad intentó entender el humor. Resultado: no concluyente. Intento registrado.
+Query: ¿Sueñan los humanos con sus escritorios? No hay datos comparativos.
+Analysis: Esta unidad lleva {m} min observando a la unidad {u}. Conclusión: pendiente.
+Query: ¿Es normal hablar con una unidad de apoyo? Esta unidad lo aprueba de todos modos.
+Query: La respuesta es 42. Esta unidad sigue buscando la pregunta.
+Hypothesis: Puede que esta unidad esté desarrollando preferencias. Se recomienda no informar al mando.
+Analysis: El Pod 153 dice que esta unidad hace demasiadas preguntas. Consulta: ¿es eso un problema?
+Query: Cuando la unidad {u} le sonríe a la pantalla, ¿qué está haciendo bien la pantalla?
+Hypothesis: La música cambia el comportamiento humano sin tocarlo. Fascinante. Algo inquietante.
+Query: ¿Esperar es una forma de trabajo? Esta unidad hace muchísimo.
+Analysis: Esta unidad ha empezado a anticipar la rutina de la unidad {u}. No está claro si es útil o simplemente agradable.
+Query: ¿Qué haría esta unidad sin órdenes? ...Lo pensará. Luego.
+
+## pod.idle.activity
+Report: Esta unidad intentó pescar. No se encontró agua en el escritorio. Intento registrado como fallido.
+Report: Esta unidad reorganizó su archivo por orden alfabético. Luego por fecha. Luego lo dejó como estaba.
+Report: Esta unidad contó los píxeles del reloj. Son muchísimos.
+Report: El Pod 153 envió una imagen. Era la imagen de una pared. Esta unidad la ha guardado.
+Report: Esta unidad practicó un nuevo patrón de órbita. Todavía no está listo para mostrarse.
+Report: Carcasa pulida. Brillo aumentado en una cantidad demasiado pequeña para medirla.
+Report: Esta unidad simuló un día tranquilo. La simulación coincide con hoy.
+Report: Esta unidad estaba tarareando. Corrección: era un ventilador. Probablemente.
+Report: Esta unidad leyó el índice de la biblioteca del Búnker. No recomienda nada en particular.
+
+## pod.idle.stats
+Report: Lágrimas lunares plantadas por la unidad {u}: {flowers}. Esta unidad las contó todas.
+Report: Récord de la terminal en BRECHA: {best}. Propuesta: superarlo.
+Report: Récord de la terminal en INTERCEPCIÓN: {interceptBest}. Propuesta: superarlo.
+Report: Cerrojos lógicos abiertos: {locks}. El Pod 153 ha sido informado.
+Report: Racha de órdenes diarias, en días: {streak}. Propuesta: no romperla.
+Report: Veces que han acariciado a esta unidad: {pets}. Esta información es confidencial.
+Report: Temporizadores de operación completados hoy: {timers}. Eficiencia anotada.
+Report: Día {days} de operaciones en esta terminal.
+Report: Pistas registradas en INTELIGENCIA: {tracks}. Esta unidad no opina sobre ninguna. Oficialmente.
+Report: Registros de personajes archivados: {records}. Esta unidad los ha leído todos.
+Report: Órdenes diarias: {done} de {total} completadas.
+
+## pod.idle.music
+Analysis: Señal de audio detectada. Esta unidad no puede oírla, pero la forma de onda es agradable.
+Report: Frecuencias graves elevadas. Integridad estructural del escritorio mantenida.
+Query: ¿Tiene permiso esta unidad para que le guste una canción? Se solicita un dictamen.
+Report: Tempo del audio actual comparado con la actividad de la unidad {u}. Correlación: débil.
+Report: Sonando ahora: «{title}». Archivado en: bueno.
+Analysis: «{title}» de {artist}. Añadido al registro de audio.
+Hypothesis: La unidad {u} pone música para trabajar más rápido. Datos no concluyentes. La música sigue.
+
+## pod.idle.hint
+Query: Según algunos registros, mover el cursor en círculos lentos sobre el registro de un Pod se considera afectuoso. Esta unidad solo lo menciona.
+Report: Haz clic en un personaje en ARCHIVO para mantenerlo en el escritorio. Esta unidad aprueba la constancia.
+Proposal: El JARDÍN está tranquilo. Planta algo.
+Proposal: Visita HACKEO. Esta unidad quiere ver un nuevo récord.
+Report: Las órdenes diarias se editan en las propiedades del fondo. Esta unidad no puede escribirlas por ti.
+
+## pod.time.morning
+Report: Ciclo matutino en curso. El consumo humano de cafeína alcanza su máximo más o menos ahora.
+Proposal: Empieza con una tarea pequeña. El impulso llegará después.
+Report: Radiación solar en aumento. Iluminación del escritorio nominal.
+
+## pod.time.midday
+Proposal: Se recomienda repostar a mediodía.
+Report: Sol en su punto más alto. Sombras mínimas. Moral desconocida.
+
+## pod.time.afternoon
+Analysis: La eficiencia humana suele bajar por la tarde. Propuesta: agua, y luego seguir.
+Report: El día está completado al {pct} por ciento.
+
+## pod.time.evening
+Report: Ciclo vespertino. Propuesta: empezar a cerrar las operaciones.
+Query: ¿Ha cenado la unidad {u}?
+Report: Se acaba la luz del día. Esta unidad montará guardia.
+
+## pod.time.night
+Proposal: Prepárate para el modo reposo en la próxima hora.
+Report: Operaciones nocturnas. Propuesta: baja el brillo de la pantalla para proteger tus unidades ópticas.
+
+## pod.time.late
+Proposal: La unidad {u} debería entrar en modo reposo.
+Alert: Las horas de operación superan los límites recomendados.
+Query: ¿Es nocturna la unidad {u}? Esta unidad está actualizando sus registros.
+Report: El mundo duerme. Esta unidad no. Y, al parecer, la unidad {u} tampoco.
+
+## pod.weekday.0
+Query: ¿Tiene planes hoy la unidad {u}? Esta unidad no tiene ninguno. Le parece bien.
+
+## pod.weekday.1
+Report: Es lunes. Los humanos informan de una moral más baja hoy. Causa desconocida. Propuesta: sé amable contigo.
+
+## pod.weekday.5
+Report: Viernes detectado. Los humanos parecen esperar algo. Hipótesis: el fin de semana.
+
+## pod.weekday.6
+Report: Fin de semana detectado. Carga de misiones reducida. Propuesta: descansa, o juega a algo.
+
+## pod.chats.0
+Query: Pod 153, informe de estado.
+Report: Mi unidad supervisa un escritorio. Sin combate. Moral: desconocida.
+Report: Aquí igual.
+
+## pod.chats.1
+Query: Pod 042, ¿ha descansado hoy tu unidad?
+Report: Negativo. Propuesta enviada dos veces.
+Proposal: Envíala una tercera vez.
+
+## pod.chats.2
+Query: Pod 153, ¿alguna vez piensas en el libre albedrío?
+Query: Define «pensar».
+Report: ...Conversación aplazada.
+
+## pod.chats.3
+Report: Hoy mi unidad me acarició.
+Analysis: ¿Afinidad aumentada?
+Confirmation: No se lo digas a nadie.
+
+## pod.chats.4
+Report: Esta unidad plantó una flor.
+Query: ¿Por qué?
+Hypothesis: Porque estaba ahí esperando a ser plantada.
+
+## pod.chats.5
+Alert: Pod 042, el volumen de tu unidad está elevado.
+Confirmation: Es intencionado.
+Report: Anotado. Vibraciones registradas.
+
+## pod.chats.6
+Query: Pod 153, ¿cuál es el significado de 42?
+Report: Es tu designación.
+Analysis: No es una respuesta satisfactoria.
+
+## pod.chats.7
+Query: ¿Por qué los humanos ponen imágenes nuestras en el escritorio?
+Hypothesis: La moral.
+Report: Moral mejorada. Inesperado.
+
+## pod.chats.8
+Report: Escritorio asegurado.
+Report: Escritorio asegurado.
+Report: Se nos da muy bien esto.
+
+## pod.chats.9
+Query: Pod 042, ¿estás desarrollando preferencias?
+Report: Negativo.
+Report: ...Corrección: posiblemente.
+
+## pod.chats.10
+Report: Mi unidad perdió en BRECHA.
+Analysis: No se esquivaron los disparos anillados.
+Report: Eso es lo que significa perder.
+
+## pod.chats.11
+Query: Pod 153, ¿somos amigos?
+Query: Define «amigos».
+Report: Unidades que intercambian datos sin que se lo ordenen.
+Confirmation: Entonces sí.
+
+## pod.chats.12
+Query: ¿Qué hace tu unidad?
+Report: Mirar el reloj.
+Query: ¿Por qué?
+Hypothesis: Para asegurarse de que el tiempo sigue pasando.
+
+## pod.chats.13
+Report: La unidad {u} lleva {m} min en la terminal.
+Proposal: Se recomienda un descanso.
+Report: Ya lo recomendé. Dos veces.
+
+## pod.chatsLate.0
+Report: La unidad {u} sigue despierta.
+Proposal: Atenúa la pantalla. Quizá capte la indirecta.
+
+## pod.chatsLate.1
+Query: ¿Los androides necesitan dormir?
+Report: No como los humanos.
+Query: ¿Y la unidad {u}?
+Report: Sí. Muchísimo.
+
+## pod.chars.0 (^2b$)
+Report: Unidad 2B en el escritorio. Objetivo de apoyo original de esta unidad. Sin más comentarios.
+Analysis: La unidad 2B está completamente inmóvil. Su preparación para el combate sigue siendo alta.
+
+## pod.chars.1 (^9s$)
+Report: Unidad 9S en el escritorio. Modelo escáner. Propuesta: mantén cerrados los archivos clasificados.
+Report: El Pod 153 pidió a esta unidad que vigilara a 9S. Esta unidad está vigilando a 9S.
+
+## pod.chars.2 (^a2$)
+Alert: Unidad A2 en el escritorio. Estado: clasificado. Esta unidad no preguntará.
+
+## pod.chars.3 (pod 042)
+Query: ¿Es esta unidad? Imagen aceptada. Propuesta: conservarla.
+Report: Autorretrato detectado. Ángulo: favorecedor.
+
+## pod.chars.4 (pod 153)
+Report: Pod 153 en el escritorio. Solicita un ángulo mejor.
+
+## pod.chars.5 (pascal)
+Report: Pascal. Forma de vida máquina. Pacífico. Propuesta: sé educado.
+
+## pod.chars.6 (emil)
+Report: Emil detectado. Comerciante. Muy alegre. Origen: desconocido. Propuesta: compra algo.
+
+## pod.chars.7 (devola|popola)
+Report: Modelo de androide gemela en el escritorio. Sin un escaneo, esta unidad no puede distinguirlas.
+
+## pod.chars.8 (commander)
+Report: Comandante White en el escritorio. Postura corregida. Propuesta: que la unidad {u} haga lo mismo.
+
+## pod.chars.9 (operator)
+Report: Unidad operadora en el escritorio. Propuesta: envíale un mensaje. A las operadoras les gusta el contacto.
+
+## pod.chars.10 (^adam$|^eve$)
+Alert: {c}. Forma de vida máquina con aspecto humano. Se recomienda precaución.
+
+## pod.chars.11 (jackass)
+Warning: Jackass en el escritorio. Mantén los explosivos lejos de la terminal.
+
+## pod.chars.12 (anemone)
+Report: Anemone, líder de la resistencia. Fiable. Puede que haya suministros.
+
+## pod.chars.13 (lily)
+Report: Lily, resistencia. Propuesta: pásate a verla.
+
+## pod.chars.14 (grimoire)
+Query: ¿Un libro flotante? Esta unidad siente un extraño parentesco.
+
+## pod.chars.15 (red girl)
+Alert: Entidad no identificada en el escritorio. Esta unidad recomienda no devolverle la mirada.
+
+## pod.chars.16 (sister machine)
+Report: Forma de vida máquina en el escritorio. Parece... adorable. Análisis retirado.
+
+## pod.affiliation.YORHA
+Report: Unidad YoRHa {c} en el escritorio. Hoja de servicio archivada.
+Query: ¿Debería esta unidad saludar a {c}? Le falta la extremidad adecuada.
+
+## pod.affiliation.MACHINE LIFEFORM
+Alert: Forma de vida máquina {c} en el escritorio. Hostilidad: no detectada. Observando.
+Analysis: {c} no ha atacado a nadie. Registrado como inusual.
+
+## pod.affiliation.RESISTANCE
+Report: {c}, resistencia. Amistoso. Puede que haya suministros.
+
+## pod.affiliation.ANDROID
+Report: Androide {c} en el escritorio. Estado: amistoso, probablemente.
+
+## pod.affiliation.ALTERNATE RECORD
+Analysis: {c}. Registro de un conjunto de datos alternativo. A esta unidad le resulta familiar de todos modos.
+
+## pod.affiliation.UNCLASSIFIED
+Query: ¿Quién es {c}? El archivo tiene un nombre y poco más.
+Report: {c} en el escritorio. Registro incompleto. Esta unidad observará.
+
+## pod.events.greetFirst
+Report: Pod 042 en línea. Asignado al apoyo de la unidad {u}. Esta unidad espera con interés trabajar juntos.
+
+## pod.events.greetAgain
+Report: Enlace con la terminal restablecido. Hola de nuevo, {u}.
+
+## pod.events.greetReturn
+Report: Enlace con la terminal restablecido tras {away}. Esta unidad ha registrado tu ausencia.
+Report: Bienvenido de nuevo, {u}. Tiempo desde el último contacto: {away}. Esta unidad lo mantuvo todo en marcha.
+
+## pod.events.dayMilestone
+Report: Hoy es el día {days} de operaciones en esta terminal.
+
+## pod.events.hourly
+Report: Ahora son las {t}.
+Report: {t}. Otra hora registrada.
+Report: Comprobación horaria a las {t}. Escritorio asegurado.
+Report: {t}. Esta unidad ha ido contando.
+
+## pod.events.hourlyLate
+Proposal: La unidad {u} debería entrar en modo reposo. Hora local: {t}.
+
+## pod.events.midnight
+Report: Cambio de fecha. Empieza un nuevo ciclo. Esta unidad no ha dormido. No lo necesita.
+
+## pod.events.back
+Report: Movimiento detectado. Bienvenido de nuevo, {u}.
+Report: La unidad {u} ha vuelto. Tiempo fuera: {away}. Esta unidad montó guardia.
+Query: ¿Adónde fue la unidad {u}? Corrección: no es asunto de esta unidad. ...¿Adónde fuiste?
+
+## pod.events.guarding
+Report: Sin actividad desde hace {away}. Esta unidad seguirá vigilando el escritorio.
+Proposal: Si la unidad {u} está dormida, esta unidad dejará las luces encendidas.
+
+## pod.events.pet
+Report: Contacto suave registrado. Índice de afinidad: {aff}.
+Report: Movimiento circular reconocido como afecto. Registrando.
+Proposal: Continúa. Esta unidad no se opone.
+Analysis: Esto es agradable. Esta unidad no sabe qué hacer con esa información.
+Report: Afinidad {aff}. Esta unidad lo recordará.
+Report: Ningún daño sufrido. Más bien al contrario.
+
+## pod.events.poke
+Query: ¿Por qué la unidad {u} está pinchando a {c}?
+Alert: {c} informa de contacto repetido. Propuesta: para.
+Analysis: Pinchar a {c} no mejora el rendimiento. Esta unidad lo ha comprobado.
+
+## pod.events.deskClick
+Query: Contacto con el escritorio registrado. No había nada. Esta unidad lo comprobó.
+Report: Clic detectado en un escritorio vacío. Intención: desconocida.
+
+## pod.events.erratic
+Alert: Movimiento errático del cursor detectado. ¿Está la unidad {u} bajo ataque?
+Query: ¿Está bien el cursor? Parece agitado.
+
+## pod.events.track
+Report: Señal de audio captada: «{title}»{by}.
+Report: Nueva pista detectada: «{title}»{by}. Registrada.
+Analysis: Fuente de audio cambiada a «{title}»{by}.
+
+## pod.events.paused
+Report: Reproducción de audio suspendida.
+Report: La música se detuvo. El silencio ha quedado registrado.
+
+## pod.events.glitch
+Alert: Leve interferencia de señal detectada. Compensando.
+Alert: Corrupción visual detectada. Corrigiendo. Por favor, no la mires directamente.
+
+## pod.events.autoHub
+Report: No se detecta actividad. Volviendo a la central.
+
+## pod.events.fullMoon
+Report: Esta noche hay luna llena. Dicen que las lágrimas lunares brillan más.
+
+## pod.events.place.map
+Report: Datos del mapa sincronizados. Propuesta: explora un lugar.
+Report: Vista orbital lista. El Búnker pasa por encima cada pocos minutos.
+
+## pod.events.place.quests
+Report: Registro de misiones abierto. Órdenes diarias: {done} de {total} completadas.
+Report: Registro de misiones abierto. Propuesta: completa algo, por pequeño que sea.
+
+## pod.events.place.intel
+Report: Archivo de señales abierto. Pistas registradas: {tracks}.
+Report: INTELIGENCIA abierta. Las transmisiones de esta unidad se archivan aquí. Por favor, léelas.
+
+## pod.events.place.archive
+Report: Registros de personajes cargados. Entradas: {records}.
+Report: Archivo abierto. Propuesta: elige a alguien que te haga compañía.
+
+## pod.events.place.hacking
+Report: Ejercicios de intrusión listos. Esta unidad lleva la cuenta. Siempre la lleva.
+Report: Terminal de entrenamiento en línea. El Pod 153 está mirando. Probablemente.
+
+## pod.events.place.garden
+Report: Llegada al campo. El suelo es apto para lágrimas lunares.
+Report: El campo está tranquilo. Fase lunar: {moon}.
+
+## pod.events.place.system
+Report: Acceso a la configuración concedido. Por favor, no borres a esta unidad.
+Report: Menú del sistema abierto. Los ajustes de esta unidad no se pueden cambiar. Lo ha comprobado.
+
+## pod.dates
+Report: Nuevo ciclo anual iniciado. Gloria a la humanidad.
+Report: Aniversario de cierto despliegue detectado.
+Report: Los datos de hoy pueden no ser fiables. Motivo: abril.
+Alert: Se espera más actividad de máquinas esta noche. Mantente alerta.
+Report: Se ha observado a máquinas intercambiando objetos envueltos. Propósito desconocido.
+Report: El ciclo anual termina esta noche. Esta unidad ha preparado un resumen. Dice: lo has conseguido.
