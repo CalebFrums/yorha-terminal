@@ -1394,8 +1394,17 @@ body.no-log #place-hint { visibility: hidden; }
 #pv-archive-visual .frame img { object-fit: contain; }
 
 /* hacking records */
-.rec-cols { flex: 1; min-height: 0; display: flex; gap: 2.4rem; }
-.rec-col { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+/* Three tables share the width, so the full-width table columns (13rem stat, 9rem date) do not fit:
+   score and date get their own room and the stat column takes what is left. Narrow screens wrap. */
+.rec-cols { flex: 1; min-height: 0; display: flex; flex-wrap: wrap; align-content: flex-start; gap: 2.4rem 2rem; }
+.rec-col { flex: 1 1 21rem; min-width: 0; display: flex; flex-direction: column; }
+.rec-col:nth-child(2) { flex-basis: 24rem; }
+.rec-col:nth-child(3) { flex-basis: 16rem; }
+.rec-col .trow { gap: 0.9rem; }
+.rec-col .trow .c-n { width: 1.9rem; }
+.rec-col .trow .c-r { width: auto; white-space: nowrap; }
+#rec-br .c-m, #rec-int .c-m { flex: none; width: 3.8rem; overflow: visible; }
+#rec-br .c-s, #rec-int .c-s { flex: 1; width: auto; }
 .rec-title { display: flex; align-items: center; margin-bottom: 0.6rem; font-size: 0.85rem; letter-spacing: 0.24em; }
 
 /* system */
