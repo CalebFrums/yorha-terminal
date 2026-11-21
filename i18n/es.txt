@@ -416,7 +416,7 @@ Restaura la integridad por completo.
 Completar todas las órdenes diarias.
 LÁGRIMA LUNAR
 Un regalo. Sube mucho la moral y el vínculo.
-Una por cada 3 flores plantadas en el JARDÍN.
+Una por cada 3 flores plantadas en el JARDÍN, hasta 3 al día.
 CABALLA
 Un pez. Letal para los androides.
 Aparece rara vez en el suministro de agua.
@@ -437,6 +437,7 @@ REGALA {n} LÁGRIMAS LUNARES ({have}/{n})
 TERMINA {n} EJERCICIOS ({have}/{n})
 {c} salió del modo reposo. Energía {n} %.
 Suministro diario del Búnker: recuperación pequeña x2.
+El JARDÍN ya dio todas las lágrimas lunares que podía hoy. Mañana habrá más.
 Se apartó una lágrima lunar del JARDÍN para {c}.
 Se recuperó una caballa del suministro de agua. No preguntes cómo.
 {c} notó que te cuidas. Recibes recuperación pequeña x1.
@@ -453,7 +454,7 @@ Se aplicó {item}. Integridad {n} %.
 {c} ya tuvo suficiente atención por ahora.
 {c} se mueve sin despertarse.
 A {c} parece gustarle. Moral {n} %.
-No hay lágrimas lunares. Se aparta una por cada 3 flores plantadas en el JARDÍN.
+No hay lágrimas lunares. Se aparta una por cada 3 flores plantadas en el JARDÍN, hasta 3 al día.
 {c} aceptó la lágrima lunar. Lágrimas lunares regaladas: {n}.
 {c} sostiene la flor con cuidado. Moral {n} %.
 La caballa es letal para los androides. Regalo rechazado. Esta unidad la mantendrá lejos de {c}.

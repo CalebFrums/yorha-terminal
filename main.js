@@ -188,9 +188,39 @@
     }
   }
 
+  // 12-hour times use the language's own AM/PM words and order (Japanese, Chinese and Korean put the
+  // period first) from the browser's Intl data; plain English AM/PM if Intl is missing.
+  let h12Fmt = null, h12For = null;
+  function h12() {
+    if (h12For !== I18N.html) {
+      h12For = I18N.html;
+      try {
+        h12Fmt = new Intl.DateTimeFormat(I18N.html, { hour: 'numeric', minute: '2-digit', hour12: true });
+      } catch (e) {
+        h12Fmt = null;
+      }
+    }
+    return h12Fmt;
+  }
+  const ODD_SPACES = new RegExp('[' + String.fromCharCode(0xa0, 0x202f) + ']', 'g'); // no-break spaces some locales use
+  const plainSpaces = (s) => s.replace(ODD_SPACES, ' ');
+
   function timeHM(d) {
     if (cfg.clock24) return pad(d.getHours()) + ':' + pad(d.getMinutes());
+    const f = h12();
+    if (f) return plainSpaces(f.format(d));
     return (d.getHours() % 12 || 12) + ':' + pad(d.getMinutes()) + (d.getHours() < 12 ? ' AM' : ' PM');
+  }
+
+  // The AM/PM word alone, for the big clock, and whether the language puts it before the hour.
+  function dayPeriod(d) {
+    const f = h12();
+    if (f && f.formatToParts) {
+      const parts = f.formatToParts(d);
+      const i = parts.findIndex((x) => x.type === 'dayPeriod');
+      if (i >= 0) return { text: plainSpaces(parts[i].value).trim(), lead: i < parts.findIndex((x) => x.type === 'hour') };
+    }
+    return { text: d.getHours() < 12 ? 'AM' : 'PM', lead: false };
   }
 
   function fmtDuration(ms) {
@@ -571,10 +601,16 @@
 
   function updateClock(d) {
     let h = d.getHours();
-    let ampm = '';
+    let ampm = '', lead = false;
     if (!cfg.clock24) {
-      ampm = h < 12 ? 'AM' : 'PM';
+      const p = dayPeriod(d);
+      ampm = p.text;
+      lead = p.lead;
       h = h % 12 || 12;
+    }
+    if (lead !== els.ampm.classList.contains('lead')) {
+      els.ampm.classList.toggle('lead', lead);
+      els.ampm.parentNode.insertBefore(els.ampm, lead ? els.hm : null);
     }
     setText(els.hm, (cfg.clock24 ? pad(h) : String(h)) + ':' + pad(d.getMinutes()));
     setText(els.sec, pad(d.getSeconds()));
@@ -1205,6 +1241,7 @@
     lastErratic: 0,
     lastChar: 0,
     charsShown: 0,
+    greeted: false,
     placesSeen: {}
   };
   // Remembered across sessions: first contact, days in service, times petted.
@@ -1506,13 +1543,15 @@
 
   function podTick(now) {
     podState(now);
+    const d = new Date(now);
     if (now - pod.lastMemSave > 60000) {
       pod.lastMemSave = now;
       podMem.last = now;
       savePodMem();
     }
+    // After the greeting has counted today, a wallpaper left running counts each new day as it comes.
+    if (pod.greeted && countDay(d)) dayMilestone();
     if (!cfg.showLog) return;
-    const d = new Date(now);
     const h = d.getHours();
     if (pod.lastHour === -1) {
       pod.lastHour = h;
@@ -1539,17 +1578,31 @@
     }
   }
 
+  // Days in service go up on each new calendar day, whether the wallpaper restarts or keeps running.
+  function countDay(d) {
+    const today = dayKey(d);
+    if (podMem.lastDay === today) return false;
+    podMem.days++;
+    podMem.lastDay = today;
+    savePodMem();
+    return true;
+  }
+
+  function dayMilestone() {
+    if (![2, 3, 7, 14, 30, 50, 100, 200, 365, 500, 1000].includes(podMem.days) || podMem.milestone === podMem.days) return;
+    podMem.milestone = podMem.days;
+    savePodMem();
+    podSay(PE.dayMilestone);
+  }
+
   // First contact, a quick restart, or a return after a long absence each get their own greeting.
   function greet() {
     const now = Date.now(), d = new Date(now), h = d.getHours();
     const gap = podLastSeen ? now - podLastSeen : 0;
     const first = !podMem.first;
     if (first) podMem.first = now;
-    const today = dayKey(d);
-    if (podMem.lastDay !== today) {
-      podMem.days++;
-      podMem.lastDay = today;
-    }
+    countDay(d);
+    pod.greeted = true;
     podMem.last = now;
     savePodMem();
     if (first) {
@@ -1565,11 +1618,7 @@
       else if (h < 18) hello = K('Terminal link established. Good afternoon, {u}.');
       say('Report', T(hello));
     }
-    if (!first && [2, 3, 7, 14, 30, 50, 100, 200, 365, 500, 1000].includes(podMem.days) && podMem.milestone !== podMem.days) {
-      podMem.milestone = podMem.days;
-      savePodMem();
-      podSay(PE.dayMilestone);
-    }
+    if (!first) dayMilestone();
     const egg = (P.dates || {})[(d.getMonth() + 1) + '-' + d.getDate()];
     if (egg) sayLine(egg, podVars());
     if (h < 5) say('Proposal', T('Current hour is outside the recommended operating window. Rest is advised.'));
@@ -1728,7 +1777,7 @@
         swapArt('show', url);
         actor.nw = probe.naturalWidth;
         actor.nh = probe.naturalHeight;
-        const fig = analyzeFigure(probe);
+        const fig = figureOf(file, probe);
         actor.frame = !!(fig && fig.frame);
         actor.head = fig && !fig.frame ? fig : CORNER_HEAD;
         if (actor.frame) actor.facing = 1;
@@ -1981,6 +2030,74 @@
     while (r < sw - 1 && solid(r + 1, row)) r++;
     const hw = clamp((r - l + 1) / 2, sw * 0.04, sw * 0.22);
     return { frame: false, hx: hx / sw, hy: hy / sh, hw: hw / sw };
+  }
+
+  // Reading a big render's pixels costs tens of milliseconds on the main thread (about 80 ms for a
+  // 2400 x 4600 PNG), so each file is analysed once per session, not on every rotation.
+  const figures = {};
+  const figureOf = (file, img) => (file in figures ? figures[file] : (figures[file] = analyzeFigure(img)));
+
+  // Grids (ARCHIVE, WARDROBE) show small copies: each file is decoded once, scaled down and kept for the
+  // session, one at a time, so a page of records does not hold a dozen full-size renders in memory.
+  const THUMB_H = 400;
+  const thumbs = { done: {}, waiting: {}, queue: [], busy: false };
+
+  function thumbFor(file, cb) {
+    if (file in thumbs.done) return cb(thumbs.done[file]);
+    if (thumbs.waiting[file]) return thumbs.waiting[file].push(cb);
+    thumbs.waiting[file] = [cb];
+    thumbs.queue.push(file);
+    pumpThumbs();
+  }
+
+  function pumpThumbs() {
+    if (thumbs.busy || !thumbs.queue.length) return;
+    thumbs.busy = true;
+    const file = thumbs.queue.shift();
+    const finish = (bmp) => {
+      thumbs.done[file] = bmp || null; // null: show the full image instead
+      const cbs = thumbs.waiting[file] || [];
+      delete thumbs.waiting[file];
+      thumbs.busy = false;
+      for (const f of cbs) f(thumbs.done[file]);
+      setTimeout(pumpThumbs, 0); // let a frame through between files
+    };
+    if (typeof window.createImageBitmap !== 'function') return finish(null);
+    const img = new Image();
+    img.onload = () => {
+      const h = Math.min(THUMB_H, img.naturalHeight || 1);
+      const w = Math.max(1, Math.round((img.naturalWidth || 1) * h / (img.naturalHeight || 1)));
+      window.createImageBitmap(img, { resizeWidth: w, resizeHeight: h, resizeQuality: 'high' }).then(finish, () => finish(null));
+    };
+    img.onerror = () => finish(null);
+    img.src = fileUrl(file);
+  }
+
+  function fullImg(file, cls) {
+    const img = document.createElement('img');
+    img.className = cls || '';
+    img.alt = '';
+    img.decoding = 'async';
+    img.src = fileUrl(file);
+    return img;
+  }
+
+  // A canvas that receives the small copy when it is ready (a canvas can show any image, readable or not).
+  function thumbEl(file, cls) {
+    if (thumbs.done[file] === null) return fullImg(file, cls);
+    const c = document.createElement('canvas');
+    c.className = cls || '';
+    c.width = c.height = 1;
+    thumbFor(file, (bmp) => {
+      if (!bmp) {
+        if (c.parentNode) c.parentNode.replaceChild(fullImg(file, cls), c);
+        return;
+      }
+      c.width = bmp.width;
+      c.height = bmp.height;
+      c.getContext('2d').drawImage(bmp, 0, 0);
+    });
+    return c;
   }
 
   // Head position after the current body transform (pivot at the feet), in actor-box px.
@@ -3044,7 +3161,8 @@
   // ----- QUESTS > WELLNESS: proposals to rest the eyes, drink, stretch, sit well and eat -----
   // Interval proposals count from the start of the session (or from the last time one was done); meal
   // proposals come at the times in mealTimes. One card at a time, spaced out, never during a drill.
-  // Wallpaper Engine only shows the desktop when nothing covers it, so a card waits there until it is seen.
+  // Wallpaper Engine only shows the desktop when nothing covers it, so a card waits there until it is seen:
+  // its timeout only counts time after the cursor has been on the desktop, and never time spent paused.
 
   const WELL = [
     { id: 'eyes', field: 'eyesEvery', name: K('EYE REST'), hold: 20, act: 'nod', emote: 'dots',
@@ -3073,14 +3191,14 @@
   const WELL_STEPS = [0, 10, 15, 20, 30, 45, 60, 90, 120];
   const MEAL_WINDOW = 90 * 60000; // a meal proposal can still appear up to 90 min after its time
   const WELL_GAP = 90000; // at least 90 s between two cards
-  const WELL_TIMEOUT = 10 * 60000; // an unanswered card closes itself and the countdown starts again
+  const WELL_TIMEOUT = 10 * 60000; // an unanswered card closes itself after this much seen time; the countdown starts again
   const WELL_SNOOZE = 10 * 60000;
   const wellById = (id) => WELL.find((w) => w.id === id);
   const well = {
     st: Object.assign({ day: '', done: {}, meals: {} }, store.get('well', {})),
     last: {}, // id -> when its countdown last restarted
     snooze: {}, // id -> not before this time
-    card: null, // { id, at, holdEnd, meal }
+    card: null, // { id, at, holdEnd, meal, tick, seen }
     lastCard: 0,
     lastCheck: 0,
     on: false,
@@ -3166,8 +3284,12 @@
         const left = c.holdEnd - now;
         setText($('wc-count'), left > 0 ? String(Math.ceil(left / 1000)) : '');
         if (left <= 0) wellDone(c.id);
-      } else if (now - c.at > WELL_TIMEOUT) {
-        wellMissed(c.id);
+      } else {
+        // A long gap between checks means the wallpaper was paused: that time does not count.
+        const step = Math.min(2000, Math.max(0, now - c.tick));
+        c.tick = now;
+        if (nav.lastInput > c.at) c.seen += step;
+        if (c.seen > WELL_TIMEOUT) wellMissed(c.id);
       }
       return;
     }
@@ -3195,7 +3317,7 @@
 
   function showWellCard(w, now) {
     const slot = w.id === 'meal' ? mealSlot(now) : null;
-    well.card = { id: w.id, at: now, holdEnd: 0, meal: slot ? slot.key : '' };
+    well.card = { id: w.id, at: now, holdEnd: 0, meal: slot ? slot.key : '', tick: now, seen: 0 };
     well.lastCard = now;
     const p = podPick(PE['well' + w.id.charAt(0).toUpperCase() + w.id.slice(1)]);
     if (p && cfg.showLog) sayLine(p.line, p.vars);
@@ -3385,10 +3507,7 @@
       const card = document.createElement('div');
       card.className = 'arc-card';
       card.dataset.i = String(i);
-      const img = document.createElement('img');
-      img.alt = '';
-      img.decoding = 'async';
-      img.src = fileUrl(gallery.files[i]);
+      const img = thumbEl(gallery.files[i]);
       const no = document.createElement('span');
       no.className = 'no';
       no.textContent = pad3(i + 1);
@@ -3527,7 +3646,7 @@
     { id: 'small', name: K('SMALL RECOVERY'), heal: 25, desc: K('Restores 25% integrity.'), src: K('Daily supply drop. Wellness proposals.') },
     { id: 'medium', name: K('MEDIUM RECOVERY'), heal: 50, desc: K('Restores 50% integrity.'), src: K('Finished focus operations.') },
     { id: 'large', name: K('LARGE RECOVERY'), heal: 100, desc: K('Restores integrity completely.'), src: K('Completing every daily order.') },
-    { id: 'tear', name: K('LUNAR TEAR'), desc: K('A gift. Raises morale and bond a great deal.'), src: K('One for every 3 flowers planted in the GARDEN.') },
+    { id: 'tear', name: K('LUNAR TEAR'), desc: K('A gift. Raises morale and bond a great deal.'), src: K('One for every 3 flowers planted in the GARDEN, up to 3 a day.') },
     { id: 'mackerel', name: K('MACKEREL'), desc: K('A fish. Lethal to androids.'), src: K('Rarely found in the water supply.') }
   ];
   const itemById = (id) => ITEMS.find((i) => i.id === id);
@@ -3622,8 +3741,10 @@
   const unitDefault = () => ({
     name: '', outfit: '', acc: 'none', integrity: 85, energy: 85, morale: 75, xp: 0, xpFrac: 0,
     items: { small: 3, medium: 1, large: 0, tear: 0, mackerel: 0 }, tears: 0, drills: 0,
-    born: Date.now(), last: Date.now(), supply: dayKey(new Date()), rest: 0, garden: -1, seen: null
+    born: Date.now(), last: Date.now(), supply: dayKey(new Date()), rest: 0, garden: -1, seen: null,
+    tearDay: '', tearsToday: 0, tearCapDay: ''
   });
+  const TEARS_PER_DAY = 3; // Lunar Tears the GARDEN can give per day
   const U = Object.assign(unitDefault(), store.get('unit', {}));
   U.items = Object.assign(unitDefault().items, U.items || {});
   let unitSavedAt = 0;
@@ -3687,7 +3808,7 @@
       if (!f.file) return;
       let info = figCache[f.file];
       if (!info) {
-        const fig = analyzeFigure(img);
+        const fig = figureOf(f.file, img);
         info = figCache[f.file] = { head: fig && !fig.frame ? fig : null, nw: img.naturalWidth, nh: img.naturalHeight };
       }
       f.info = info;
@@ -3795,6 +3916,7 @@
   const lastAt = (g) => (g && g.stats().last ? g.stats().last.at || 0 : 0);
 
   function unitTick(now) {
+    if (U.last > now) U.last = now; // the PC clock was set back: start counting again from here
     if (now - U.last < 5000) return;
     const dt = now - U.last;
     const away = dt > 180000; // the wallpaper was closed or paused
@@ -3837,8 +3959,21 @@
         U.items.tear += Math.min(2, Math.floor(total / 3));
       }
       if (total < U.garden) U.garden = total;
+      if (U.tearDay !== today) {
+        U.tearDay = today;
+        U.tearsToday = 0;
+      }
+      // A daily cap, so planting flowers as fast as possible cannot buy every bond level in an afternoon.
       while (total - U.garden >= 3) {
         U.garden += 3;
+        if (U.tearsToday >= TEARS_PER_DAY) {
+          if (U.tearCapDay !== today) {
+            U.tearCapDay = today;
+            say('Report', T('The GARDEN has given all the Lunar Tears it can spare today. More tomorrow.'));
+          }
+          continue;
+        }
+        U.tearsToday++;
         U.items.tear++;
         say('Report', T('A Lunar Tear from the GARDEN was set aside for {c}.', { c: unitName() }));
       }
@@ -3999,7 +4134,7 @@
   function unitGift() {
     const c = unitName();
     if (!U.items.tear) {
-      unitNote(T('No Lunar Tears in supply. One is set aside for every 3 flowers planted in the GARDEN.'));
+      unitNote(T('No Lunar Tears in supply. One is set aside for every 3 flowers planted in the GARDEN, up to 3 a day.'));
       bayReact('shake', 'question');
       return;
     }
@@ -4168,12 +4303,7 @@
       card.className = 'wd-card' + (file === cur ? ' on' : '');
       const pic = document.createElement('div');
       pic.className = 'wd-pic';
-      const img = document.createElement('img');
-      img.className = 'char-img on';
-      img.alt = '';
-      img.decoding = 'async';
-      img.src = fileUrl(file);
-      pic.appendChild(img);
+      pic.appendChild(thumbEl(file, 'char-img on'));
       const nm = document.createElement('span');
       nm.className = 'nm';
       nm.textContent = (parseCharName(file).sub || T('STANDARD')).toUpperCase();

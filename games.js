@@ -588,7 +588,8 @@
       solved: api.store.get('logic.solved', 0),
       best: api.store.get('logic.best', {}),
       n: 5, shownLevel: 1, cells: [], rot: [], anim: null, powered: null, src: 0,
-      started: 0, moves: 0, won: false, wonAt: 0, time: 0, newBest: false,
+      // elapsed: seconds of play, counted only while the board is on screen and the wallpaper runs
+      started: 0, elapsed: 0, moves: 0, won: false, wonAt: 0, time: 0, newBest: false,
       hover: -1, buttons: [], hot: '', board: { x: 0, y: 0, cs: 1 }
     };
     const sizeFor = (lv) => Math.min(8, 4 + Math.ceil(lv / 2));
@@ -657,6 +658,7 @@
       } while (computePower());
       L.anim = new Float32Array(total);
       L.started = 0;
+      L.elapsed = 0;
       L.moves = 0;
       L.won = false;
       L.time = 0;
@@ -666,7 +668,7 @@
     function win() {
       L.won = true;
       L.wonAt = performance.now();
-      L.time = (L.wonAt - L.started) / 1000;
+      L.time = Math.max(0.1, L.elapsed);
       const n = L.n;
       L.newBest = !L.best[n] || L.time < L.best[n];
       if (L.newBest) L.best[n] = Math.round(L.time * 10) / 10;
@@ -776,6 +778,7 @@
         const n = L.n, cs = B / n;
         const ox = (W - B) / 2, oy = top + (H - top - bottom - B) / 2;
         L.board = { x: ox, y: oy, cs: cs };
+        if (L.started && !L.won) L.elapsed += dt; // time away (hub, other places, paused wallpaper) does not count
         const decay = Math.pow(1e-5, dt);
         for (let i = 0; i < L.anim.length; i++) {
           if (!L.anim[i]) continue;
@@ -799,7 +802,7 @@
           drawTile(i, x, y, cs, col, k, t);
         }
 
-        const secs = L.won ? L.time : L.started ? (performance.now() - L.started) / 1000 : 0;
+        const secs = L.won ? L.time : L.elapsed;
         text(ctx, api, T('LOGIC LOCK // LEVEL {n}', { n: pad(L.shownLevel) }), m, m + 14 * k, 16);
         text(ctx, api, T('{size} X {size} BOARD  //  POWERED {lit} / {total}', { size: n, lit: lit, total: n * n }), m, m + 36 * k, 11, { color: ink2 });
         text(ctx, api, T('TIME {t}', { t: fmtTime(secs) }), W - m, m + 14 * k, 16, { align: 'right' });

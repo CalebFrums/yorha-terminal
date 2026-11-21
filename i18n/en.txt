@@ -421,7 +421,7 @@ Restores integrity completely.
 Completing every daily order.
 LUNAR TEAR
 A gift. Raises morale and bond a great deal.
-One for every 3 flowers planted in the GARDEN.
+One for every 3 flowers planted in the GARDEN, up to 3 a day.
 MACKEREL
 A fish. Lethal to androids.
 Rarely found in the water supply.
@@ -442,6 +442,7 @@ GIVE {n} LUNAR TEARS ({have}/{n})
 FINISH {n} DRILLS ({have}/{n})
 {c} has left sleep mode. Energy {n}%.
 Daily supply drop from the Bunker: Small Recovery x2.
+The GARDEN has given all the Lunar Tears it can spare today. More tomorrow.
 A Lunar Tear from the GARDEN was set aside for {c}.
 A mackerel was recovered from the water supply. Do not ask how.
 {c} noticed you looking after yourself. Small Recovery x1 received.
@@ -458,7 +459,7 @@ No recovery items. A supply drop arrives every day; wellness proposals and focus
 {c} has had enough attention for now.
 {c} stirs, still asleep.
 {c} seems pleased. Morale {n}%.
-No Lunar Tears in supply. One is set aside for every 3 flowers planted in the GARDEN.
+No Lunar Tears in supply. One is set aside for every 3 flowers planted in the GARDEN, up to 3 a day.
 {c} accepted the Lunar Tear. Lunar Tears given: {n}.
 {c} holds the flower carefully. Morale {n}%.
 Mackerel is lethal to androids. Gift refused. This unit is keeping it away from {c}.

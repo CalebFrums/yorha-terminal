@@ -416,7 +416,7 @@ Stellt die Integrität vollständig wieder her.
 Alle Tagesbefehle erledigen.
 MONDTRÄNE
 Ein Geschenk. Hebt Moral und Bindung stark an.
-Eine für je 3 im GARTEN gepflanzte Blumen.
+Eine für je 3 im GARTEN gepflanzte Blumen, höchstens 3 pro Tag.
 MAKRELE
 Ein Fisch. Tödlich für Androiden.
 Selten in der Wasserversorgung zu finden.
@@ -437,6 +437,7 @@ BINDUNG ST. {n}
 {n} ÜBUNGEN ABSCHLIESSEN ({have}/{n})
 {c} hat den Schlafmodus verlassen. Energie {n} %.
 Tägliche Lieferung vom Bunker: Kleine Heilung x2.
+Der GARTEN hat heute alle Mondtränen gegeben, die er entbehren kann. Morgen gibt es mehr.
 Eine Mondträne aus dem GARTEN wurde für {c} zurückgelegt.
 Aus der Wasserversorgung wurde eine Makrele geborgen. Frag nicht, wie.
 {c} hat bemerkt, dass du auf dich achtest. Kleine Heilung x1 erhalten.
@@ -453,7 +454,7 @@ Keine Heilgegenstände. Jeden Tag kommt eine Lieferung; Wohlbefinden-Vorschläge
 {c} hat fürs Erste genug Aufmerksamkeit.
 {c} regt sich, schläft aber weiter.
 {c} scheint zufrieden. Moral {n} %.
-Keine Mondtränen vorrätig. Für je 3 im GARTEN gepflanzte Blumen wird eine zurückgelegt.
+Keine Mondtränen vorrätig. Für je 3 im GARTEN gepflanzte Blumen wird eine zurückgelegt, höchstens 3 pro Tag.
 {c} hat die Mondträne angenommen. Geschenkte Mondtränen: {n}.
 {c} hält die Blume vorsichtig. Moral {n} %.
 Makrele ist tödlich für Androiden. Geschenk abgelehnt. Diese Einheit hält sie von {c} fern.

@@ -416,7 +416,7 @@ Restaure entièrement l'intégrité.
 Accomplir tous les ordres du jour.
 LARME DE LUNE
 Un cadeau. Augmente beaucoup le moral et le lien.
-Une pour 3 fleurs plantées au JARDIN.
+Une pour 3 fleurs plantées au JARDIN, 3 par jour au maximum.
 MAQUEREAU
 Un poisson. Mortel pour les androïdes.
 Se trouve rarement dans l'eau courante.
@@ -437,6 +437,7 @@ OFFRIR {n} LARMES DE LUNE ({have}/{n})
 TERMINER {n} EXERCICES ({have}/{n})
 {c} a quitté le mode veille. Énergie {n} %.
 Ravitaillement quotidien du Bunker : petit soin x2.
+Le JARDIN a donné toutes les Larmes de lune qu'il pouvait aujourd'hui. D'autres demain.
 Une Larme de lune du JARDIN a été mise de côté pour {c}.
 Un maquereau a été récupéré dans l'eau courante. Ne demandez pas comment.
 {c} a remarqué que vous prenez soin de vous. Petit soin x1 reçu.
@@ -453,7 +454,7 @@ Aucun objet de soin. Un ravitaillement arrive chaque jour ; les propositions bie
 {c} a eu assez d'attention pour l'instant.
 {c} remue sans se réveiller.
 Cela plaît à {c}. Moral {n} %.
-Aucune Larme de lune en stock. Une est mise de côté pour 3 fleurs plantées au JARDIN.
+Aucune Larme de lune en stock. Une est mise de côté pour 3 fleurs plantées au JARDIN, 3 par jour au maximum.
 {c} accepte la Larme de lune. Larmes de lune offertes : {n}.
 {c} tient la fleur avec soin. Moral {n} %.
 Le maquereau est mortel pour les androïdes. Cadeau refusé. Cette unité le garde loin de {c}.

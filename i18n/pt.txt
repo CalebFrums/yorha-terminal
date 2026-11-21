@@ -416,7 +416,7 @@ Restaura a integridade por completo.
 Concluir todas as ordens diárias.
 LÁGRIMA LUNAR
 Um presente. Aumenta muito a moral e o vínculo.
-Uma a cada 3 flores plantadas no JARDIM.
+Uma a cada 3 flores plantadas no JARDIM, até 3 por dia.
 CAVALINHA
 Um peixe. Letal para androides.
 Aparece raramente no abastecimento de água.
@@ -437,6 +437,7 @@ DÊ {n} LÁGRIMAS LUNARES ({have}/{n})
 CONCLUA {n} EXERCÍCIOS ({have}/{n})
 {c} saiu do modo de repouso. Energia {n}%.
 Suprimento diário do Bunker: recuperação pequena x2.
+O JARDIM já deu todas as lágrimas lunares que podia hoje. Amanhã tem mais.
 Uma lágrima lunar do JARDIM foi guardada para {c}.
 Uma cavalinha foi recuperada do abastecimento de água. Não pergunte como.
 {c} percebeu que você está se cuidando. Recuperação pequena x1 recebida.
@@ -453,7 +454,7 @@ Item usado: {item}. Integridade {n}%.
 {c} já recebeu atenção suficiente por agora.
 {c} se mexe, mas continua dormindo.
 {c} parece gostar. Moral {n}%.
-Nenhuma lágrima lunar no estoque. Uma é guardada a cada 3 flores plantadas no JARDIM.
+Nenhuma lágrima lunar no estoque. Uma é guardada a cada 3 flores plantadas no JARDIM, até 3 por dia.
 {c} aceitou a lágrima lunar. Lágrimas lunares dadas: {n}.
 {c} segura a flor com cuidado. Moral {n}%.
 Cavalinha é letal para androides. Presente recusado. Esta unidade vai mantê-la longe de {c}.

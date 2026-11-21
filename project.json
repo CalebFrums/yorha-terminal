@@ -588,8 +588,8 @@
 	"ratingviolence" : "none",
 	"tags" : [ "Game" ],
 	"title" : "YoRHa Terminal - NieR:Automata UI",
-	"type" : "web",
-	"version" : 12,
+	"type" : "Web",
+	"version" : 13,
 	"visibility" : "public",
 	"workshopid" : "3830732662",
 	"workshopurl" : "steam://url/CommunityFilePage/3830732662"
