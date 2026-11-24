@@ -4,7 +4,7 @@ A fan-made NieR:Automata style desktop terminal for [Wallpaper Engine](https://s
 
 ![YoRHa Terminal preview](preview.gif)
 
-**[Try the live demo](https://calebfrums.github.io/yorha-terminal/)** · **[Subscribe on the Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3830732662)**
+**[Try the live demo](https://calebfrums.github.io/yorha-terminal/)** · **[Subscribe on the Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3830732662)** · **[Download YoRHaHelper.zip](https://github.com/CalebFrums/yorha-terminal/raw/main/YoRHaHelper.zip)** (optional, [what it is](#yorha-helper-optional))
 
 > Not affiliated with Square Enix. NieR:Automata and its characters belong to their owners.
 
@@ -47,7 +47,13 @@ Wallpaper Engine lets a wallpaper see what is playing but not control it, and it
 - **Music buttons**: INTEL's previous, play/pause and next press the Windows media keys, so Spotify, browsers and most players respond
 - **Real keyboard typing**: TYPE ON PC KEYBOARD in the calendar and schedule editors opens a small text box. You type there with your own keyboard, and input methods for Chinese, Japanese and Korean work too. It never reads keys typed anywhere else
 
-To use it, download the `helper` folder (or the whole repo as a ZIP) and double-click `Install-YoRHaHelper.cmd`. It starts now and with Windows. `Uninstall-YoRHaHelper.cmd` removes it, and `Start-YoRHaHelper.cmd` runs it once without installing. It is one readable PowerShell script with no install, no admin rights and no extra downloads. Windows may ask you to confirm because the file came from the internet.
+**Setup** (the same steps are inside the wallpaper under SYSTEM > YORHA HELPER):
+
+1. **[Download YoRHaHelper.zip](https://github.com/CalebFrums/yorha-terminal/raw/main/YoRHaHelper.zip)** and unzip it into a folder you will keep, such as Documents.
+2. Double-click `Install-YoRHaHelper.cmd`. If Windows asks, choose **Run** (or **More info**, then **Run anyway**): the file came from the internet. It starts now and with Windows.
+3. In the wallpaper, open **SYSTEM > YORHA HELPER** and press **SWITCH ON**. The switch is off by default and shows a disclaimer first. The status changes to ONLINE.
+
+`Uninstall-YoRHaHelper.cmd` stops it and removes it from startup; then delete the folder. `Start-YoRHaHelper.cmd` runs it once without adding it to startup. It is one readable PowerShell script (open it in Notepad) with no install, no admin rights and no extra downloads.
 
 **Privacy.** The helper listens on `127.0.0.1:47823`, which only programs on your PC can reach. It never connects to the internet, writes no files and keeps no log. It accepts commands only from the wallpaper itself, pages on your PC and this project's demo page; other websites are refused. The wallpaper keeps your calendar and schedule on your PC (Wallpaper Engine's local storage) and sends nothing to any server.
 

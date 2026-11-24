@@ -125,6 +125,16 @@ ABFANGEN // BESTE LÄUFE
 LOGIKSCHLOSS // SCHNELLSTE
 CHARAKTERE
 AUF DIESEM PC GESPEICHERT // DIESELBE EIGENSCHAFT IN WALLPAPER ENGINE ZU ÄNDERN ERSETZT ES
+YORHA HELPER // EINRICHTUNG
+ERNEUT PRÜFEN
+EINSCHALTEN
+Optional. Er macht die Musiktasten in INFOS funktionsfähig und ergänzt MIT PC-TASTATUR TIPPEN in den Editoren für Kalender und Wochenplan. Alles andere funktioniert auch ohne ihn.
+Öffne auf diesem PC github.com/CalebFrums/yorha-terminal im Webbrowser.
+Klicke oben auf der Seite auf „Download YoRHaHelper.zip" und entpacke die Datei in einen Ordner, den du behältst, z. B. Dokumente.
+Doppelklicke in diesem Ordner auf Install-YoRHaHelper.cmd. Falls Windows fragt, wähle Ausführen (oder Weitere Informationen, dann Trotzdem ausführen). Er startet sofort und mit Windows.
+Komm hierher zurück und drücke EINSCHALTEN. Vorher erklärt ein Hinweis, was er tut.
+Der Status oben wechselt auf ONLINE, und die Musiktasten in INFOS funktionieren.
+ENTFERNEN: UNINSTALL-YORHAHELPER.CMD DOPPELKLICKEN, DANN DEN ORDNER LÖSCHEN // ER SPRICHT NUR MIT DIESEM PC, FÜHRT KEIN PROTOKOLL UND GEHT NIE INS INTERNET
 YoRHa TAKTISCHES TERMINAL
 Fan-Desktopterminal im Stil von NieR:Automata. Nicht mit Square Enix verbunden. Die Oberfläche ist komplett in Code gezeichnet. Charaktere stammen aus dem mitgelieferten Set oder aus deinem eigenen Ordner, sobald du einen wählst.
 Die Zentrale ist dein Zuhause. Jeder Menüpunkt ist ein Ort mit eigenem Untermenü. Mit ZENTRALE oben links kommst du zurück, oder lass die Maus in Ruhe und das Terminal kehrt von selbst zurück.
@@ -135,7 +145,7 @@ YoRHa Helper ist ein kleines, optionales Programm von der GitHub-Seite dieses Hi
 Ist dieser Schalter an, spricht der Hintergrund nur auf diesem PC (127.0.0.1) mit ihm, und zwar für zwei Dinge: Er drückt die Windows-Medientasten, wenn du in INFOS auf Zurück, Wiedergabe/Pause oder Weiter klickst, und er öffnet ein Textfeld, wenn du MIT PC-TASTATUR TIPPEN wählst.
 Datenschutz: Nichts wird ins Internet oder an den Autor gesendet. Der Helper führt kein Protokoll, schreibt keine Dateien und liest nur, was du in sein eigenes Textfeld tippst. Kalender und Wochenplan bleiben auf diesem PC.
 Ist der Schalter aus, nimmt der Hintergrund nie Kontakt mit dem Helper auf. Du kannst ihn hier jederzeit wieder ausschalten.
-EINSCHALTEN
+Die Einrichtungsschritte stehen unter SYSTEM > YORHA HELPER.
 ABBRECHEN
 TITEL EINGEBEN ODER AUSWÄHLEN
 MIT PC-TASTATUR TIPPEN
@@ -220,13 +230,17 @@ Audiowiedergabe angehalten.
 SIGNAL GESENDET // NÄCHSTER TITEL
 SIGNAL GESENDET // VORHERIGER TITEL
 SIGNAL GESENDET // WIEDERGABE / PAUSE
-YORHA HELPER IST AUS // IN SYSTEM > SCHNELLEINSTELLUNGEN EINSCHALTEN
+YORHA HELPER IST AUS // EINRICHTUNG UND SCHALTER UNTER SYSTEM > YORHA HELPER
 YORHA HELPER GETRENNT // LÄUFT YORHA HELPER NOCH?
-YORHA HELPER OFFLINE // YORHA HELPER GIBT ES AUF GITHUB.COM/CALEBFRUMS/YORHA-TERMINAL
+YORHA HELPER LÄUFT NICHT // EINRICHTUNG UNTER SYSTEM > YORHA HELPER
 HELPER AUS
 HELPER ONLINE
 HELPER OFFLINE
 YoRHa Helper eingeschaltet. Er spricht nur mit diesem PC.
+ONLINE
+LÄUFT NICHT
+STATUS // {s}
+AUSSCHALTEN
 {n} FPS
 LIMIT {n}
 SIMULIERT
@@ -235,7 +249,6 @@ STILL
 VERSTÄRKUNG X{g}
 NICHT VERFÜGBAR
 OFFLINE
-ONLINE
 KEIN ORDNER
 {n} GELADEN
 MITGELIEFERTES SET
@@ -330,6 +343,8 @@ DIAGNOSE
 Einheitenstatus, Anzeige und Signalverlauf.
 SCHNELLEINSTELLUNGEN
 Aussehen und Sprache direkt am Desktop ändern. Auf diesem PC gespeichert.
+YORHA HELPER
+Optionale Musiktasten und Tippen mit der echten Tastatur: Einrichtung, Status und Ein/Aus-Schalter.
 INFO
 Terminalinformationen.
 CURSOR
@@ -558,7 +573,6 @@ AUSGEBLENDET
 KALENDER-ALARME
 ALARMTON
 WOCHE BEGINNT AM
-YORHA HELPER
 BILDSCHIRMTASTATUR
 WENN YORHA HELPER AUS IST
 BEHALTEN
@@ -763,7 +777,7 @@ TÄGLICH
 TAGE
 BEGINN
 ENDE
-Die Bildschirmtastatur ist ausgeblendet. In SYSTEM > SCHNELLEINSTELLUNGEN einschalten oder YoRHa Helper starten.
+Die Bildschirmtastatur ist ausgeblendet. In SYSTEM > SCHNELLEINSTELLUNGEN einschalten oder YoRHa Helper einrichten (SYSTEM > YORHA HELPER).
 Für chinesischen oder koreanischen Text MIT PC-TASTATUR TIPPEN nutzen (braucht YoRHa Helper) oder die Hintergrund-Eigenschaften.
 Titel eingeben oder einen der Vorschläge wählen.
 Mindestens einen Tag wählen.
@@ -772,8 +786,8 @@ Kalendereintrag gespeichert: {title}.
 Aktivität gespeichert: {title}.
 Eintrag gelöscht: {title}.
 Im geöffneten Fenster tippen, dann Enter drücken.
-YoRHa Helper ist ausgeschaltet. In SYSTEM > SCHNELLEINSTELLUNGEN einschalten.
-Tippen mit der PC-Tastatur braucht YoRHa Helper von github.com/CalebFrums/yorha-terminal.
+YoRHa Helper ist aus. Einrichtung und Schalter: SYSTEM > YORHA HELPER.
+YoRHa Helper läuft nicht. Einrichtung: SYSTEM > YORHA HELPER.
 
 ## pod.idle.routine
 Report: Keine feindlichen Signaturen in diesem Sektor.

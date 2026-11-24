@@ -125,6 +125,16 @@ INTERCEPCIÓN // MEJORES PARTIDAS
 CERROJO LÓGICO // MÁS RÁPIDOS
 REGISTROS DE PERSONAJES
 GUARDADO EN ESTE PC // CAMBIAR LA MISMA PROPIEDAD EN WALLPAPER ENGINE LO SUSTITUYE
+YORHA HELPER // INSTALACIÓN
+COMPROBAR DE NUEVO
+ACTIVAR
+Opcional. Hace funcionar los botones de música de INTELIGENCIA y añade ESCRIBIR CON EL TECLADO a los editores del calendario y del horario. Todo lo demás funciona sin él.
+En este PC, abre github.com/CalebFrums/yorha-terminal en tu navegador.
+Haz clic en «Download YoRHaHelper.zip» arriba de la página y descomprímelo en una carpeta que vayas a conservar, como Documentos.
+En esa carpeta, haz doble clic en Install-YoRHaHelper.cmd. Si Windows pregunta, elige Ejecutar (o Más información y luego Ejecutar de todas formas). Se inicia ya y con Windows.
+Vuelve aquí y pulsa ACTIVAR. Antes, un aviso explica lo que hace.
+El estado de arriba cambia a CONECTADO y los botones de música de INTELIGENCIA funcionan.
+PARA QUITARLO: DOBLE CLIC EN UNINSTALL-YORHAHELPER.CMD Y BORRA LA CARPETA // SOLO HABLA CON ESTE PC, NO GUARDA REGISTROS Y NUNCA SE CONECTA A INTERNET
 YoRHa TERMINAL TÁCTICA
 Terminal de escritorio hecha por fans al estilo de NieR:Automata. Sin relación con Square Enix. La interfaz está dibujada en código. Los personajes vienen del conjunto incluido o de tu propia carpeta cuando elijas una.
 La central es tu base. Cada entrada del menú es un lugar con su propio submenú. Usa CENTRAL arriba a la izquierda para volver, o deja el ratón quieto y la terminal volverá sola.
@@ -135,7 +145,7 @@ YoRHa Helper es un programa pequeño y opcional de la página de GitHub de este 
 Con este interruptor encendido, el fondo habla con él solo en este PC (127.0.0.1) para dos cosas: pulsar las teclas multimedia de Windows cuando haces clic en anterior, reproducir/pausa o siguiente en INTELIGENCIA, y abrir un cuadro de texto cuando eliges ESCRIBIR CON EL TECLADO.
 Privacidad: no se envía nada a internet ni al autor. El helper no guarda registros ni escribe archivos, y solo lee lo que escribes en su propio cuadro de texto. Tu calendario y tu horario se quedan en este PC.
 Con el interruptor apagado, el fondo nunca contacta con el helper. Puedes volver a apagarlo aquí cuando quieras.
-ACTIVAR
+Los pasos de instalación están en SISTEMA > YORHA HELPER.
 CANCELAR
 ESCRIBE UN TÍTULO O ELIGE UNO
 ESCRIBIR CON EL TECLADO
@@ -220,13 +230,17 @@ Reproducción de audio suspendida.
 SEÑAL ENVIADA // PISTA SIGUIENTE
 SEÑAL ENVIADA // PISTA ANTERIOR
 SEÑAL ENVIADA // REPRODUCIR / PAUSA
-YORHA HELPER ESTÁ APAGADO // ACTÍVALO EN SISTEMA > AJUSTES RÁPIDOS
+YORHA HELPER ESTÁ APAGADO // INSTALACIÓN E INTERRUPTOR EN SISTEMA > YORHA HELPER
 YORHA HELPER PERDIDO // ¿SIGUE EN MARCHA YORHA HELPER?
-YORHA HELPER DESCONECTADO // CONSIGUE YORHA HELPER EN GITHUB.COM/CALEBFRUMS/YORHA-TERMINAL
+YORHA HELPER NO ESTÁ EN MARCHA // PASOS EN SISTEMA > YORHA HELPER
 HELPER APAGADO
 HELPER CONECTADO
 HELPER DESCONECTADO
 YoRHa Helper activado. Solo habla con este PC.
+CONECTADO
+NO ESTÁ EN MARCHA
+ESTADO // {s}
+APAGAR
 {n} FPS
 LÍMITE {n}
 SIMULADO
@@ -235,7 +249,6 @@ SILENCIO
 GANANCIA X{g}
 NO DISPONIBLE
 DESCONECTADO
-CONECTADO
 SIN CARPETA
 {n} CARGADOS
 CONJUNTO INCLUIDO
@@ -330,6 +343,8 @@ DIAGNÓSTICO
 Estado de la unidad, pantalla e historial de señal.
 AJUSTES RÁPIDOS
 Cambia el aspecto y el idioma desde el escritorio. Se guarda en este PC.
+YORHA HELPER
+Botones de música y escritura con el teclado real, opcionales: pasos de instalación, estado e interruptor.
 ACERCA DE
 Información de la terminal.
 CURSOR
@@ -558,7 +573,6 @@ OCULTA
 ALERTAS DEL CALENDARIO
 SONIDO DE ALERTA
 LA SEMANA EMPIEZA EL
-YORHA HELPER
 TECLADO EN PANTALLA
 SI YORHA HELPER ESTÁ APAGADO
 GUARDAR
@@ -763,7 +777,7 @@ TODOS LOS DÍAS
 DÍAS
 INICIO
 FIN
-El teclado en pantalla está oculto. Actívalo en SISTEMA > AJUSTES RÁPIDOS o inicia YoRHa Helper.
+El teclado en pantalla está oculto. Actívalo en SISTEMA > AJUSTES RÁPIDOS o instala YoRHa Helper (SISTEMA > YORHA HELPER).
 Para texto en chino o coreano, usa ESCRIBIR CON EL TECLADO (requiere YoRHa Helper) o las propiedades del fondo.
 Escribe un título o elige una de las sugerencias.
 Elige al menos un día.
@@ -772,8 +786,8 @@ Entrada del calendario guardada: {title}.
 Actividad guardada: {title}.
 Entrada borrada: {title}.
 Escribe en la ventana que se abrió y pulsa Intro.
-YoRHa Helper está apagado. Actívalo en SISTEMA > AJUSTES RÁPIDOS.
-Escribir con el teclado requiere YoRHa Helper, de github.com/CalebFrums/yorha-terminal.
+YoRHa Helper está apagado. Instalación e interruptor: SISTEMA > YORHA HELPER.
+YoRHa Helper no está en marcha. Pasos: SISTEMA > YORHA HELPER.
 
 ## pod.idle.routine
 Report: No se detectan firmas hostiles en este sector.

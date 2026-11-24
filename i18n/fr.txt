@@ -125,6 +125,16 @@ INTERCEPTION // MEILLEURES PARTIES
 VERROU LOGIQUE // LES PLUS RAPIDES
 FICHES DE PERSONNAGES
 ENREGISTRÉ SUR CE PC // MODIFIER LA MÊME PROPRIÉTÉ DANS WALLPAPER ENGINE LE REMPLACE
+YORHA HELPER // INSTALLATION
+VÉRIFIER À NOUVEAU
+ACTIVER
+Facultatif. Il fait fonctionner les boutons de musique de RENSEIGNEMENTS et ajoute TAPER AU CLAVIER DU PC aux éditeurs du calendrier et du planning. Tout le reste fonctionne sans lui.
+Sur ce PC, ouvrez github.com/CalebFrums/yorha-terminal dans votre navigateur.
+Cliquez sur « Download YoRHaHelper.zip » en haut de la page, puis décompressez-le dans un dossier que vous garderez, par exemple Documents.
+Dans ce dossier, double-cliquez sur Install-YoRHaHelper.cmd. Si Windows le demande, choisissez Exécuter (ou Informations complémentaires, puis Exécuter quand même). Il démarre aussitôt et avec Windows.
+Revenez ici et appuyez sur ACTIVER. Un avertissement explique d'abord ce qu'il fait.
+Le statut ci-dessus passe à EN LIGNE et les boutons de musique de RENSEIGNEMENTS fonctionnent.
+POUR LE RETIRER : DOUBLE-CLIQUEZ SUR UNINSTALL-YORHAHELPER.CMD, PUIS SUPPRIMEZ LE DOSSIER // IL NE PARLE QU'À CE PC, NE TIENT AUCUN JOURNAL ET NE VA JAMAIS SUR INTERNET
 YoRHa TERMINAL TACTIQUE
 Terminal de bureau créé par un fan dans le style de NieR:Automata. Sans lien avec Square Enix. L'interface est entièrement dessinée en code. Les personnages viennent de l'ensemble fourni, ou de votre propre dossier dès que vous en choisissez un.
 Le centre est votre base. Chaque entrée du menu est un lieu avec son propre sous-menu. Utilisez CENTRE en haut à gauche pour revenir, ou laissez la souris tranquille et le terminal reviendra de lui-même.
@@ -135,7 +145,7 @@ YoRHa Helper est un petit programme facultatif proposé sur la page GitHub de ce
 Quand ce bouton est activé, le fond d'écran lui parle sur ce PC uniquement (127.0.0.1), pour deux choses : appuyer sur les touches multimédia de Windows quand vous cliquez sur précédent, lecture/pause ou suivant dans RENSEIGNEMENTS, et ouvrir une zone de texte quand vous choisissez TAPER AU CLAVIER DU PC.
 Confidentialité : rien n'est envoyé sur Internet ni à l'auteur. Le helper ne tient aucun journal, n'écrit aucun fichier et ne lit que ce que vous tapez dans sa propre zone de texte. Votre calendrier et votre planning restent sur ce PC.
 Quand le bouton est désactivé, le fond d'écran ne contacte jamais le helper. Vous pouvez le désactiver ici à tout moment.
-ACTIVER
+Les étapes d'installation sont dans SYSTÈME > YORHA HELPER.
 ANNULER
 SAISISSEZ UN TITRE OU CHOISISSEZ-EN UN
 TAPER AU CLAVIER DU PC
@@ -220,13 +230,17 @@ Lecture audio suspendue.
 SIGNAL ENVOYÉ // PISTE SUIVANTE
 SIGNAL ENVOYÉ // PISTE PRÉCÉDENTE
 SIGNAL ENVOYÉ // LECTURE / PAUSE
-YORHA HELPER EST DÉSACTIVÉ // ACTIVEZ-LE DANS SYSTÈME > RÉGLAGES RAPIDES
+YORHA HELPER EST DÉSACTIVÉ // INSTALLATION ET BOUTON DANS SYSTÈME > YORHA HELPER
 YORHA HELPER PERDU // YORHA HELPER TOURNE-T-IL ENCORE ?
-YORHA HELPER HORS LIGNE // YORHA HELPER EST SUR GITHUB.COM/CALEBFRUMS/YORHA-TERMINAL
+YORHA HELPER NE TOURNE PAS // ÉTAPES DANS SYSTÈME > YORHA HELPER
 HELPER ARRÊTÉ
 HELPER EN LIGNE
 HELPER HORS LIGNE
 YoRHa Helper activé. Il ne communique qu'avec ce PC.
+EN LIGNE
+NE TOURNE PAS
+STATUT // {s}
+DÉSACTIVER
 {n} IPS
 LIMITE {n}
 SIMULÉ
@@ -235,7 +249,6 @@ SILENCIEUX
 GAIN X{g}
 INDISPONIBLE
 HORS LIGNE
-EN LIGNE
 AUCUN DOSSIER
 {n} CHARGÉS
 ENSEMBLE FOURNI
@@ -330,6 +343,8 @@ DIAGNOSTIC
 État de l'unité, affichage et historique du signal.
 RÉGLAGES RAPIDES
 Changez l'apparence et la langue depuis le bureau. Enregistré sur ce PC.
+YORHA HELPER
+Boutons de musique et saisie au vrai clavier, en option : étapes d'installation, statut et bouton marche/arrêt.
 À PROPOS
 Informations sur le terminal.
 CURSEUR
@@ -558,7 +573,6 @@ MASQUÉ
 ALERTES DU CALENDRIER
 CARILLON D'ALERTE
 LA SEMAINE COMMENCE LE
-YORHA HELPER
 CLAVIER À L'ÉCRAN
 SI YORHA HELPER EST ARRÊTÉ
 CONSERVER
@@ -763,7 +777,7 @@ TOUS LES JOURS
 JOURS
 DÉBUT
 FIN
-Le clavier à l'écran est masqué. Activez-le dans SYSTÈME > RÉGLAGES RAPIDES, ou lancez YoRHa Helper.
+Le clavier à l'écran est masqué. Activez-le dans SYSTÈME > RÉGLAGES RAPIDES, ou installez YoRHa Helper (SYSTÈME > YORHA HELPER).
 Pour du texte en chinois ou en coréen, utilisez TAPER AU CLAVIER DU PC (nécessite YoRHa Helper) ou les propriétés du fond d'écran.
 Saisissez un titre ou choisissez l'une des suggestions.
 Choisissez au moins un jour.
@@ -772,8 +786,8 @@ Entrée du calendrier enregistrée : {title}.
 Activité enregistrée : {title}.
 Entrée supprimée : {title}.
 Tapez dans la fenêtre qui s'est ouverte, puis appuyez sur Entrée.
-YoRHa Helper est désactivé. Activez-le dans SYSTÈME > RÉGLAGES RAPIDES.
-Taper au clavier du PC nécessite YoRHa Helper, sur github.com/CalebFrums/yorha-terminal.
+YoRHa Helper est désactivé. Installation et bouton : SYSTÈME > YORHA HELPER.
+YoRHa Helper ne tourne pas. Étapes : SYSTÈME > YORHA HELPER.
 
 ## pod.idle.routine
 Report: Aucune signature hostile détectée dans ce secteur.

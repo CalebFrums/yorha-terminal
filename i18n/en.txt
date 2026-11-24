@@ -130,6 +130,16 @@ INTERCEPT // TOP RUNS
 LOGIC LOCK // FASTEST LOCKS
 CHARACTER RECORDS
 SAVED ON THIS PC // CHANGING THE SAME PROPERTY IN WALLPAPER ENGINE REPLACES IT
+YORHA HELPER // SETUP
+CHECK AGAIN
+SWITCH ON
+Optional. It adds working music buttons in INTEL and TYPE ON PC KEYBOARD in the calendar and schedule editors. Everything else works without it.
+On this PC, open github.com/CalebFrums/yorha-terminal in your web browser.
+Click Download YoRHaHelper.zip near the top of the page, then unzip it into a folder you will keep, such as Documents.
+In that folder, double-click Install-YoRHaHelper.cmd. If Windows asks, choose Run (or More info, then Run anyway). It starts now and with Windows.
+Come back here and press SWITCH ON. A disclaimer explains what it does first.
+The status above changes to ONLINE, and the music buttons in INTEL work.
+TO REMOVE IT: DOUBLE-CLICK UNINSTALL-YORHAHELPER.CMD, THEN DELETE THE FOLDER // IT ONLY TALKS TO THIS PC, KEEPS NO LOG AND NEVER GOES ONLINE
 YoRHa TACTICAL TERMINAL
 Fan-made desktop terminal in the style of NieR:Automata. Not affiliated with Square Enix. The interface is drawn in code. Characters come from the included set, or from your own folder once you choose one.
 The hub is home. Each menu entry is a place with its own sub-menu. Use HUB in the top left to come back, or leave the mouse alone and the terminal returns on its own.
@@ -140,7 +150,7 @@ YoRHa Helper is a small, optional program from this wallpaper's GitHub page (git
 With this switch on, the wallpaper talks to it on this PC only (127.0.0.1) for two things: pressing the Windows media keys when you click previous, play/pause or next in INTEL, and opening a text box when you choose TYPE ON PC KEYBOARD.
 Privacy: nothing is sent to the internet or to the author. The helper keeps no log and writes no files, and it reads only what you type into its own text box. Your calendar and schedule stay on this PC.
 With the switch off, the wallpaper never contacts the helper. You can switch it off again here at any time.
-SWITCH ON
+Setup steps are in SYSTEM > YORHA HELPER.
 CANCEL
 TYPE A TITLE OR PICK ONE
 TYPE ON PC KEYBOARD
@@ -225,13 +235,17 @@ Audio playback suspended.
 SIGNAL SENT // NEXT TRACK
 SIGNAL SENT // PREVIOUS TRACK
 SIGNAL SENT // PLAY / PAUSE
-YORHA HELPER IS SWITCHED OFF // SWITCH IT ON IN SYSTEM > QUICK SETTINGS
+YORHA HELPER IS OFF // SETUP AND SWITCH IN SYSTEM > YORHA HELPER
 YORHA HELPER LOST // IS YORHA HELPER STILL RUNNING?
-YORHA HELPER OFFLINE // GET YORHA HELPER FROM GITHUB.COM/CALEBFRUMS/YORHA-TERMINAL
+YORHA HELPER NOT RUNNING // SETUP STEPS IN SYSTEM > YORHA HELPER
 HELPER OFF
 HELPER ONLINE
 HELPER OFFLINE
 YoRHa Helper switched on. It only talks to this PC.
+ONLINE
+NOT RUNNING
+STATUS // {s}
+SWITCH OFF
 {n} FPS
 CAP {n}
 SIMULATED
@@ -240,7 +254,6 @@ SILENT
 GAIN X{g}
 UNAVAILABLE
 OFFLINE
-ONLINE
 NO FOLDER
 {n} LOADED
 BUNDLED SET
@@ -335,6 +348,8 @@ DIAGNOSTICS
 Unit status, display and signal history.
 QUICK SETTINGS
 Change the look and language from the desktop. Saved on this PC.
+YORHA HELPER
+Optional music buttons and real-keyboard typing: setup steps, status and the on/off switch.
 ABOUT
 Terminal information.
 CURSOR
@@ -563,7 +578,6 @@ HIDDEN
 CALENDAR ALERTS
 ALERT CHIME
 WEEK STARTS ON
-YORHA HELPER
 ON-SCREEN KEYBOARD
 WHEN YORHA HELPER IS OFF
 KEEP
@@ -768,7 +782,7 @@ EVERY DAY
 DAYS
 START TIME
 END TIME
-The on-screen keyboard is hidden. Turn it on in SYSTEM > QUICK SETTINGS, or run YoRHa Helper.
+The on-screen keyboard is hidden. Turn it on in SYSTEM > QUICK SETTINGS, or set up YoRHa Helper (SYSTEM > YORHA HELPER).
 For Chinese or Korean text, use TYPE ON PC KEYBOARD (needs YoRHa Helper) or the wallpaper properties.
 Type a title, or pick one of the suggestions.
 Choose at least one day.
@@ -777,8 +791,8 @@ Calendar entry saved: {title}.
 Activity saved: {title}.
 Entry deleted: {title}.
 Type in the window that opened, then press Enter.
-YoRHa Helper is switched off. Switch it on in SYSTEM > QUICK SETTINGS.
-Typing on your PC keyboard needs YoRHa Helper from github.com/CalebFrums/yorha-terminal.
+YoRHa Helper is off. Setup steps and the switch: SYSTEM > YORHA HELPER.
+YoRHa Helper is not running. Setup steps: SYSTEM > YORHA HELPER.
 
 ## pod.idle.routine
 Report: No hostile signatures detected in this sector.

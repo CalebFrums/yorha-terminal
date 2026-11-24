@@ -125,6 +125,16 @@ INTERCEPTAÇÃO // MELHORES PARTIDAS
 TRAVA LÓGICA // MAIS RÁPIDAS
 REGISTROS DE PERSONAGENS
 SALVO NESTE PC // ALTERAR A MESMA PROPRIEDADE NO WALLPAPER ENGINE SUBSTITUI ISTO
+YORHA HELPER // INSTALAÇÃO
+VERIFICAR DE NOVO
+LIGAR
+Opcional. Ele faz funcionar os botões de música em INTELIGÊNCIA e adiciona DIGITAR NO TECLADO DO PC aos editores do calendário e da agenda. Todo o resto funciona sem ele.
+Neste PC, abra github.com/CalebFrums/yorha-terminal no navegador.
+Clique em "Download YoRHaHelper.zip" no topo da página e extraia o arquivo em uma pasta que você vai manter, como Documentos.
+Nessa pasta, clique duas vezes em Install-YoRHaHelper.cmd. Se o Windows perguntar, escolha Executar (ou Mais informações e depois Executar assim mesmo). Ele inicia agora e junto com o Windows.
+Volte aqui e pressione LIGAR. Antes, um aviso explica o que ele faz.
+O status acima muda para ONLINE e os botões de música em INTELIGÊNCIA funcionam.
+PARA REMOVER: CLIQUE DUAS VEZES EM UNINSTALL-YORHAHELPER.CMD E APAGUE A PASTA // ELE SÓ FALA COM ESTE PC, NÃO GUARDA REGISTROS E NUNCA ACESSA A INTERNET
 YoRHa TERMINAL TÁTICO
 Terminal de área de trabalho feito por fã no estilo de NieR:Automata. Sem ligação com a Square Enix. A interface é toda desenhada em código. Os personagens vêm do conjunto incluído ou da sua própria pasta, quando você escolher uma.
 A central é a sua base. Cada item do menu é um lugar com seu próprio submenu. Use CENTRAL no canto superior esquerdo para voltar, ou deixe o mouse parado e o terminal volta sozinho.
@@ -135,7 +145,7 @@ O YoRHa Helper é um programa pequeno e opcional da página do GitHub deste pape
 Com este botão ligado, o papel de parede fala com ele só neste PC (127.0.0.1), para duas coisas: pressionar as teclas de mídia do Windows quando você clica em anterior, tocar/pausar ou próxima em INTELIGÊNCIA, e abrir uma caixa de texto quando você escolhe DIGITAR NO TECLADO DO PC.
 Privacidade: nada é enviado para a internet nem para o autor. O helper não guarda registros, não grava arquivos e só lê o que você digita na própria caixa de texto dele. Seu calendário e sua agenda ficam neste PC.
 Com o botão desligado, o papel de parede nunca entra em contato com o helper. Você pode desligá-lo aqui a qualquer momento.
-LIGAR
+Os passos de instalação estão em SISTEMA > YORHA HELPER.
 CANCELAR
 DIGITE UM TÍTULO OU ESCOLHA UM
 DIGITAR NO TECLADO DO PC
@@ -220,13 +230,17 @@ Reprodução de áudio suspensa.
 SINAL ENVIADO // PRÓXIMA FAIXA
 SINAL ENVIADO // FAIXA ANTERIOR
 SINAL ENVIADO // TOCAR / PAUSAR
-O YORHA HELPER ESTÁ DESLIGADO // LIGUE-O EM SISTEMA > AJUSTES RÁPIDOS
+O YORHA HELPER ESTÁ DESLIGADO // INSTALAÇÃO E BOTÃO EM SISTEMA > YORHA HELPER
 YORHA HELPER PERDIDO // O YORHA HELPER AINDA ESTÁ RODANDO?
-YORHA HELPER OFFLINE // BAIXE O YORHA HELPER EM GITHUB.COM/CALEBFRUMS/YORHA-TERMINAL
+O YORHA HELPER NÃO ESTÁ RODANDO // PASSOS EM SISTEMA > YORHA HELPER
 HELPER DESLIGADO
 HELPER ONLINE
 HELPER OFFLINE
 YoRHa Helper ligado. Ele só fala com este PC.
+ONLINE
+NÃO ESTÁ RODANDO
+STATUS // {s}
+DESLIGAR
 {n} FPS
 LIMITE {n}
 SIMULADO
@@ -235,7 +249,6 @@ SILÊNCIO
 GANHO X{g}
 INDISPONÍVEL
 OFFLINE
-ONLINE
 SEM PASTA
 {n} CARREGADOS
 CONJUNTO INCLUÍDO
@@ -330,6 +343,8 @@ DIAGNÓSTICO
 Estado da unidade, tela e histórico do sinal.
 AJUSTES RÁPIDOS
 Mude a aparência e o idioma pela área de trabalho. Salvo neste PC.
+YORHA HELPER
+Botões de música e digitação no teclado real, opcionais: passos de instalação, status e botão liga/desliga.
 SOBRE
 Informações do terminal.
 CURSOR
@@ -558,7 +573,6 @@ OCULTA
 ALERTAS DO CALENDÁRIO
 SOM DE ALERTA
 A SEMANA COMEÇA NO
-YORHA HELPER
 TECLADO NA TELA
 QUANDO O YORHA HELPER ESTIVER DESLIGADO
 GUARDAR
@@ -763,7 +777,7 @@ TODO DIA
 DIAS
 INÍCIO
 FIM
-O teclado na tela está oculto. Ative-o em SISTEMA > AJUSTES RÁPIDOS ou inicie o YoRHa Helper.
+O teclado na tela está oculto. Ative-o em SISTEMA > AJUSTES RÁPIDOS ou instale o YoRHa Helper (SISTEMA > YORHA HELPER).
 Para texto em chinês ou coreano, use DIGITAR NO TECLADO DO PC (requer o YoRHa Helper) ou as propriedades do papel de parede.
 Digite um título ou escolha uma das sugestões.
 Escolha pelo menos um dia.
@@ -772,8 +786,8 @@ Entrada do calendário salva: {title}.
 Atividade salva: {title}.
 Entrada excluída: {title}.
 Digite na janela que abriu e pressione Enter.
-O YoRHa Helper está desligado. Ligue-o em SISTEMA > AJUSTES RÁPIDOS.
-Digitar no teclado do PC requer o YoRHa Helper, em github.com/CalebFrums/yorha-terminal.
+O YoRHa Helper está desligado. Instalação e botão: SISTEMA > YORHA HELPER.
+O YoRHa Helper não está rodando. Passos: SISTEMA > YORHA HELPER.
 
 ## pod.idle.routine
 Report: Nenhuma assinatura hostil detectada neste setor.

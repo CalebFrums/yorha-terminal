@@ -125,6 +125,16 @@ POD 042 // 日志
 逻辑锁 // 最快纪录
 角色档案
 保存在本机 // 在 Wallpaper Engine 中修改同一属性会覆盖此设置
+YORHA HELPER // 安装
+重新检查
+打开
+可选。它让情报中的音乐按钮真正可用，并在日历和日程编辑器中加入“用电脑键盘输入”。其他功能不需要它。
+在这台电脑上用浏览器打开 github.com/CalebFrums/yorha-terminal。
+点击页面顶部的“Download YoRHaHelper.zip”，并解压到一个会长期保留的文件夹，例如“文档”。
+在该文件夹中双击 Install-YoRHaHelper.cmd。如果 Windows 询问，请选择“运行”（或“更多信息”，再选“仍要运行”）。它会立即启动，并随 Windows 启动。
+回到这里并按下“打开”。在此之前会有说明告诉你它的作用。
+上方状态会变为“在线”，情报中的音乐按钮即可使用。
+卸载方法：双击 UNINSTALL-YORHAHELPER.CMD，然后删除该文件夹 // 它只与本机通信，不保留日志，也绝不联网
 YoRHa 战术终端
 以《尼尔：自动人形》为风格的同人桌面终端，与 Square Enix 无关。界面全部由代码绘制。角色来自附带的角色集，选择自己的文件夹后则来自该文件夹。
 中枢就是起点。每个菜单项都是一个拥有子菜单的地点。点击左上角的"中枢"返回，或者放着鼠标不动，终端会自动返回。
@@ -135,7 +145,7 @@ YoRHa Helper 是一个小巧的可选程序，来自本壁纸的 GitHub 页面�
 打开此开关后，壁纸只会在本机（127.0.0.1）与它通信，且只做两件事：当你在情报中点击上一首、播放/暂停或下一首时按下 Windows 媒体键；当你选择“用电脑键盘输入”时打开一个文本框。
 隐私：不会向互联网或作者发送任何内容。Helper 不保留日志、不写入文件，只读取你在它自己的文本框中输入的内容。你的日历和日程只保存在本机。
 关闭开关时，壁纸绝不会联系 Helper。你可以随时在这里再次关闭它。
-打开
+安装步骤见 系统 > YORHA HELPER。
 取消
 输入标题或选择一个
 用电脑键盘输入
@@ -220,13 +230,17 @@ POD
 信号已发送 // 下一首
 信号已发送 // 上一首
 信号已发送 // 播放 / 暂停
-YORHA HELPER 已关闭 // 请在 系统 > 快速设置 中打开
+YORHA HELPER 已关闭 // 安装与开关见 系统 > YORHA HELPER
 YORHA HELPER 连接中断 // YORHA HELPER 还在运行吗？
-YORHA HELPER 离线 // 请从 GITHUB.COM/CALEBFRUMS/YORHA-TERMINAL 获取 YORHA HELPER
+YORHA HELPER 未运行 // 安装步骤见 系统 > YORHA HELPER
 HELPER 已关闭
 HELPER 在线
 HELPER 离线
 YoRHa Helper 已打开。它只与本机通信。
+在线
+未运行
+状态 // {s}
+关闭
 {n} FPS
 上限 {n}
 模拟
@@ -235,7 +249,6 @@ YoRHa Helper 已打开。它只与本机通信。
 增益 X{g}
 不可用
 离线
-在线
 无文件夹
 已载入 {n}
 附带角色集
@@ -330,6 +343,8 @@ POD 档案
 单位状态、显示和信号历史。
 快速设置
 在桌面上更改外观和语言。保存在本机。
+YORHA HELPER
+可选的音乐按钮与真实键盘输入：安装步骤、状态和开关。
 关于
 终端信息。
 光标
@@ -558,7 +573,6 @@ POD 日志
 日历提醒
 提醒提示音
 每周起始日
-YORHA HELPER
 屏幕键盘
 YORHA HELPER 未运行时
 保留
@@ -763,7 +777,7 @@ SHIFT
 日期
 开始时间
 结束时间
-屏幕键盘已隐藏。请在“系统 > 快速设置”中开启，或运行 YoRHa Helper。
+屏幕键盘已隐藏。请在“系统 > 快速设置”中开启，或安装 YoRHa Helper（系统 > YORHA HELPER）。
 如需输入中文或韩文，请使用“用电脑键盘输入”（需要 YoRHa Helper），或在壁纸属性中输入。
 请输入标题，或选择一个建议。
 请至少选择一天。
@@ -772,8 +786,8 @@ SHIFT
 活动已保存：{title}。
 条目已删除：{title}。
 请在弹出的窗口中输入，然后按回车。
-YoRHa Helper 已关闭。请在“系统 > 快速设置”中打开。
-用电脑键盘输入需要 YoRHa Helper，可从 github.com/CalebFrums/yorha-terminal 获取。
+YoRHa Helper 已关闭。安装与开关：系统 > YORHA HELPER。
+YoRHa Helper 未运行。安装步骤：系统 > YORHA HELPER。
 
 ## pod.idle.routine
 Report: 本区域未检测到敌对信号。

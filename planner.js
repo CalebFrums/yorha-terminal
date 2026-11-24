@@ -1167,7 +1167,7 @@
       $('pl-edit').classList.toggle('no-kb', !show);
       $('pl-edit').classList.toggle('helper', api.helperOnline());
       let hint = '';
-      if (!show && !api.helperOnline()) hint = T('The on-screen keyboard is hidden. Turn it on in SYSTEM > QUICK SETTINGS, or run YoRHa Helper.');
+      if (!show && !api.helperOnline()) hint = T('The on-screen keyboard is hidden. Turn it on in SYSTEM > QUICK SETTINGS, or set up YoRHa Helper (SYSTEM > YORHA HELPER).');
       else if (lang === 'zh' || lang === 'ko') hint = T('For Chinese or Korean text, use TYPE ON PC KEYBOARD (needs YoRHa Helper) or the wallpaper properties.');
       setText($('ed-ime'), hint);
     }
@@ -1264,8 +1264,8 @@
         ed.waiting = false;
         $('ed-pc').classList.remove('off');
         if (!ed.open) return;
-        ed.tip = res.off ? T('YoRHa Helper is switched off. Switch it on in SYSTEM > QUICK SETTINGS.')
-          : res.offline ? T('Typing on your PC keyboard needs YoRHa Helper from github.com/CalebFrums/yorha-terminal.') : '';
+        ed.tip = res.off ? T('YoRHa Helper is off. Setup steps and the switch: SYSTEM > YORHA HELPER.')
+          : res.offline ? T('YoRHa Helper is not running. Setup steps: SYSTEM > YORHA HELPER.') : '';
         if (typeof res.text === 'string') ed.title = cleanTitle(res.text);
         renderTitle();
         relabelKeys();

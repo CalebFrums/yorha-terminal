@@ -3,8 +3,9 @@
 // The repo gets the runtime files, translations and dev tools, but never the NieRCharacters renders:
 // its bundled.js is written with an empty list, so the live demo asks for no images it does not have.
 // project.json comes from the installed Wallpaper Engine project when it exists (that copy is the source
-// of truth). README.md, .nojekyll and .git in the repo folder are left alone.
+// of truth). README.md, .nojekyll and .git in the repo folder are left alone. Also builds YoRHaHelper.zip.
 import fs from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -33,3 +34,11 @@ fs.writeFileSync(path.join(DEST, 'bundled.js'),
   'window.YoRHaBundled = ' + JSON.stringify({ folder: 'NieRCharacters', files: [] }, null, 1) + ';\n');
 
 console.log('[OK] ' + (list.length + 2) + ' files -> ' + DEST);
+
+// YoRHaHelper.zip: the helper folder as one download (the README and the wallpaper's SYSTEM > YORHA HELPER
+// page link to it). Built with Windows' own tar, which writes .zip files.
+const zip = path.join(DEST, 'YoRHaHelper.zip');
+if (fs.existsSync(zip)) fs.unlinkSync(zip);
+const helperFiles = fs.readdirSync(path.join(ROOT, 'helper')).filter((f) => fs.statSync(path.join(ROOT, 'helper', f)).isFile());
+execFileSync(path.join(process.env.SystemRoot || 'C:\Windows', 'System32', 'tar.exe'), ['-a', '-c', '-f', zip, '-C', path.join(ROOT, 'helper')].concat(helperFiles));
+console.log('[OK] YoRHaHelper.zip: ' + helperFiles.join(', '));

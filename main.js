@@ -823,9 +823,11 @@
   // (every 20 s, or every minute while it is missing).
   function linkTick(now) {
     if (!cfg.helper || link.asking || now < link.next) return;
-    const shown = nav.place ? nav.place === 'intel' && nav.sel === 'now' : state.panel === 'intel';
+    const setup = nav.place === 'system' && nav.sel === 'helper';
+    const shown = nav.place ? (nav.place === 'intel' && nav.sel === 'now') || setup : state.panel === 'intel';
     if (!shown && link.next) return;
-    link.next = now + (link.online ? 20000 : 60000);
+    // On the setup page it notices a freshly started helper within seconds.
+    link.next = now + (link.online ? 20000 : setup ? 4000 : 60000);
     linkPing();
   }
 
@@ -839,7 +841,7 @@
 
   function linkSend(cmd) {
     if (!cfg.helper) {
-      linkNote(K('YORHA HELPER IS SWITCHED OFF // SWITCH IT ON IN SYSTEM > QUICK SETTINGS'), 9000);
+      linkNote(K('YORHA HELPER IS OFF // SETUP AND SWITCH IN SYSTEM > YORHA HELPER'), 9000);
       return;
     }
     const send = () => {
@@ -855,7 +857,7 @@
     }
     linkPing().then((ok) => {
       if (ok) send();
-      else linkNote(K('YORHA HELPER OFFLINE // GET YORHA HELPER FROM GITHUB.COM/CALEBFRUMS/YORHA-TERMINAL'), 12000);
+      else linkNote(K('YORHA HELPER NOT RUNNING // SETUP STEPS IN SYSTEM > YORHA HELPER'), 12000);
     });
   }
 
@@ -893,6 +895,7 @@
     }
     if (nav.place === 'intel') updateIntel('pm-');
     else if (state.panel === 'intel') updateIntel();
+    if (nav.place === 'system' && nav.sel === 'helper') renderHelperPage();
   }
 
   for (const b of document.querySelectorAll('.mbtn')) b.addEventListener('click', () => linkSend(b.dataset.cmd));
@@ -925,6 +928,24 @@
     say('Report', T('YoRHa Helper switched on. It only talks to this PC.'));
   });
   $('hn-cancel').addEventListener('click', closeHelperNote);
+
+  // SYSTEM > YORHA HELPER: the setup steps inside the wallpaper, for subscribers who never read the Workshop page.
+  function renderHelperPage() {
+    const st = !cfg.helper ? K('OFF') : link.online ? K('ONLINE') : K('NOT RUNNING');
+    setText($('hp-state'), T('STATUS // {s}', { s: T(st) }));
+    $('hp-state').classList.toggle('ok', !!(cfg.helper && link.online));
+    setText($('hp-switch'), cfg.helper ? T('SWITCH OFF') : T('SWITCH ON'));
+    $('hp-switch').classList.toggle('ghost', !!cfg.helper);
+    $('hp-check').classList.toggle('off', !cfg.helper);
+  }
+  $('hp-switch').addEventListener('click', () => {
+    if (cfg.helper) setOverride('helper', false);
+    else helperDisclaimer();
+  });
+  $('hp-check').addEventListener('click', () => {
+    link.next = 0;
+    linkPing();
+  });
 
   // ---------- system ----------
 
@@ -2677,6 +2698,7 @@
         return [
           { id: 'diag', label: K('DIAGNOSTICS'), desc: K('Unit status, display and signal history.') },
           { id: 'settings', label: K('QUICK SETTINGS'), desc: K('Change the look and language from the desktop. Saved on this PC.') },
+          { id: 'helper', label: K('YORHA HELPER'), desc: K('Optional music buttons and real-keyboard typing: setup steps, status and the on/off switch.') },
           { id: 'about', label: K('ABOUT'), desc: K('Terminal information.') }
         ];
     }
@@ -4759,6 +4781,7 @@
     refresh(now, force) {
       if (nav.sel === 'diag') updateSystem(now, 'ps-');
       else if (nav.sel === 'settings' && force) renderSettings();
+      else if (nav.sel === 'helper' && force) renderHelperPage();
     },
     frame() {
       if (nav.sel === 'diag') drawSpark($('ps-spark'));

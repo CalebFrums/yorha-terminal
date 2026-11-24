@@ -2003,6 +2003,19 @@ body.cal-alert #hubslot #agenda { display: none; }
 .dlg-body p { margin: 0 0 1.1rem; font-size: 0.95rem; line-height: 1.7; letter-spacing: 0.05em; }
 .dlg-body p:nth-child(3) { padding-left: 0.9rem; border-left: 0.3rem solid var(--ink); }
 
+/* ---------- SYSTEM > YORHA HELPER (setup steps) ---------- */
+
+.hp-top { align-items: center; gap: 1.2rem; }
+.hp-top .btn { height: 2rem; padding: 0 1rem; font-size: 0.7rem; }
+.hp-state { padding: 0.15rem 0.6rem; border: 1px solid var(--ink-2); font-size: 0.72rem; letter-spacing: 0.2em; }
+.hp-state.ok { background: var(--ink); color: var(--hl-text); border-color: var(--ink); }
+.hp-intro { flex: none; max-width: 58rem; margin: 1.1rem 0 0.6rem; font-size: 0.92rem; line-height: 1.6; letter-spacing: 0.05em; }
+.hp-steps { flex: 1; min-height: 0; list-style: none; margin: 0; padding: 0; max-width: 62rem; }
+.hp-steps li { display: flex; align-items: baseline; gap: 1.2rem; padding: 0.85rem 0.6rem; border-bottom: 1px solid var(--ink-3); }
+.hp-n { flex: none; width: 2.6rem; padding: 0.1rem 0; text-align: center; background: var(--ink); color: var(--hl-text); font-size: 0.78rem; letter-spacing: 0.12em; }
+.hp-t { flex: 1; min-width: 0; font-size: 0.95rem; line-height: 1.55; letter-spacing: 0.04em; }
+.hp-note { flex: none; margin-top: 0.8rem; }
+
 /* ---------- entry editor + on-screen keyboard ---------- */
 
 #pl-edit {
