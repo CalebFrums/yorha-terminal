@@ -15,6 +15,7 @@ UNIDADE
 HACKING
 JARDIM
 SISTEMA
+AGENDA
 ENTRAR
 ALVO
 SINAIS
@@ -25,6 +26,7 @@ OPERAÇÃO SEMANAL
 OPERAÇÃO MENSAL
 OPERAÇÃO ANUAL
 ORDENS DIÁRIAS
+PRÓXIMA ENTRADA
 BEM-ESTAR
 SEM SINAL
 TÍTULO
@@ -92,6 +94,14 @@ TEMPO DE FOCO HOJE
 O TIMER CONTINUA NA CENTRAL // VEJA A BARRA SUPERIOR
 PROPOSTAS: DESLIGADAS
 AS PROPOSTAS APARECEM QUANDO A ÁREA DE TRABALHO ESTÁ VISÍVEL // HORÁRIOS DAS REFEIÇÕES NAS PROPRIEDADES DO PAPEL DE PAREDE
+HOJE
+ALERTAS: LIGADOS
+AGENDA NA ÁREA DE TRABALHO
+NOVA ENTRADA
+EM BREVE
+CLIQUE EM UM DIA PARA ABRI-LO // CLIQUE DUAS VEZES PARA ADICIONAR UMA ENTRADA // MAIS PODEM SER DIGITADAS NAS PROPRIEDADES DO PAPEL DE PAREDE
+NOVA ATIVIDADE
+CLIQUE EM UM HORÁRIO LIVRE PARA ADICIONAR UMA ATIVIDADE // CLIQUE EM UMA ATIVIDADE PARA EDITÁ-LA
 ÁREA DE TRABALHO
 COLOCAR NA ÁREA DE TRABALHO
 RETOMAR ROTAÇÃO
@@ -120,6 +130,17 @@ Terminal de área de trabalho feito por fã no estilo de NieR:Automata. Sem liga
 A central é a sua base. Cada item do menu é um lugar com seu próprio submenu. Use CENTRAL no canto superior esquerdo para voltar, ou deixe o mouse parado e o terminal volta sozinho.
 O Wallpaper Engine precisa permitir a entrada do mouse para que a central e os lugares respondam. A integração de mídia alimenta INTELIGÊNCIA.
 GLÓRIA À HUMANIDADE
+YORHA HELPER // AVISO
+O YoRHa Helper é um programa pequeno e opcional da página do GitHub deste papel de parede (github.com/CalebFrums/yorha-terminal, pasta helper). Você mesmo baixa e inicia; o papel de parede não consegue instalar nada.
+Com este botão ligado, o papel de parede fala com ele só neste PC (127.0.0.1), para duas coisas: pressionar as teclas de mídia do Windows quando você clica em anterior, tocar/pausar ou próxima em INTELIGÊNCIA, e abrir uma caixa de texto quando você escolhe DIGITAR NO TECLADO DO PC.
+Privacidade: nada é enviado para a internet nem para o autor. O helper não guarda registros, não grava arquivos e só lê o que você digita na própria caixa de texto dele. Seu calendário e sua agenda ficam neste PC.
+Com o botão desligado, o papel de parede nunca entra em contato com o helper. Você pode desligá-lo aqui a qualquer momento.
+LIGAR
+CANCELAR
+DIGITE UM TÍTULO OU ESCOLHA UM
+DIGITAR NO TECLADO DO PC
+SALVAR
+EXCLUIR
 POD
 Glória à humanidade
 
@@ -196,6 +217,16 @@ AGUARDANDO SINAL DE ÁUDIO // TOQUE ALGO NO SPOTIFY, EM UM NAVEGADOR ETC.
 Registro de áudio apagado. Não resta nenhum registro de sinais anteriores.
 Sinal de áudio captado: "{title}"{by}.
 Reprodução de áudio suspensa.
+SINAL ENVIADO // PRÓXIMA FAIXA
+SINAL ENVIADO // FAIXA ANTERIOR
+SINAL ENVIADO // TOCAR / PAUSAR
+O YORHA HELPER ESTÁ DESLIGADO // LIGUE-O EM SISTEMA > AJUSTES RÁPIDOS
+YORHA HELPER PERDIDO // O YORHA HELPER AINDA ESTÁ RODANDO?
+YORHA HELPER OFFLINE // BAIXE O YORHA HELPER EM GITHUB.COM/CALEBFRUMS/YORHA-TERMINAL
+HELPER DESLIGADO
+HELPER ONLINE
+HELPER OFFLINE
+YoRHa Helper ligado. Ele só fala com este PC.
 {n} FPS
 LIMITE {n}
 SIMULADO
@@ -258,6 +289,10 @@ CONFIGURAÇÃO DA UNIDADE
 OPERAÇÕES
 Progresso da hora, do dia, da semana, do mês e do ano atuais.
 Sua própria lista. Clique em uma ordem para marcá-la como concluída. Reinicia todo dia.
+CALENDÁRIO
+Eventos e lembretes. Clique em um dia para abri-lo; NOVA ENTRADA adiciona um. Os alertas aparecem acima do painel da central, com um aviso sonoro.
+AGENDA SEMANAL
+Sua semana num relance. Clique em um horário livre para adicionar uma atividade, ou em uma atividade para alterá-la.
 TIMER DE FOCO
 Uma operação cronometrada para trabalho focado. O Pod avisa quando termina, mesmo da central.
 Propostas para descansar os olhos, beber água, se alongar, conferir a postura e comer. Clique num intervalo para mudá-lo.
@@ -362,6 +397,7 @@ Timer de operação iniciado. Restam {time}.
 Timer de operação concluído. Recomenda-se uma pausa curta.
 OPERAÇÃO {time}
 OPERAÇÃO CONCLUÍDA
+ALERTA // {name}
 PROPOSTA // {name}
 PAUSAR
 RETOMAR
@@ -516,6 +552,15 @@ MENU À DIREITA
 PERSONAGEM NA ÁREA DE TRABALHO
 LIGADO
 REGISTRO DO POD
+QUANDO HÁ ALGO PLANEJADO
+SEMPRE
+OCULTA
+ALERTAS DO CALENDÁRIO
+SOM DE ALERTA
+A SEMANA COMEÇA NO
+YORHA HELPER
+TECLADO NA TELA
+QUANDO O YORHA HELPER ESTIVER DESLIGADO
 GUARDAR
 SÓ MÚSICA
 SÓ ESTA SESSÃO
@@ -638,6 +683,97 @@ BRECHA {n} SUPERADA  //  ESCOLHA UMA MELHORIA PARA ESTA PARTIDA
 PONTOS {score}   //   {stages}
 {n} BRECHA SUPERADA|{n} BRECHAS SUPERADAS
 PRECISÃO {acc}%
+
+## ui.planner
+DOM
+SEG
+TER
+QUA
+QUI
+SEX
+SÁB
+{wd} {day} {mon}
+{month} DE {year}
+UMA VEZ
+SEMANAL
+MENSAL
+ANUAL
+NA HORA
+10 MIN ANTES
+1 HORA ANTES
+1 DIA ANTES
+NO INÍCIO
+5 MIN ANTES
+15 MIN ANTES
+Aniversário
+Consulta
+Reunião
+Prazo
+Pagamento
+Ligação
+Prova
+Viagem
+Evento
+Trabalho
+Estudo
+Aula
+Academia
+Refeição
+Dormir
+Jogos
+Tempo livre
+Tarefas de casa
+Trajeto
+hoje
+Calendário: {title}, {when}.
+Agenda: {title} às {when}.
+O DIA TODO
+AGORA
+DESDE {time}
+ALERTA DO CALENDÁRIO
+AGENDA SEMANAL
++{n} MAIS
+ENTENDIDO
+ADIAR {n} MIN
+ATÉ {time}
+EM SEGUIDA
+{wd} {day}
+SEM ENTRADAS // MISSÕES > CALENDÁRIO
+ALERTAS: DESLIGADOS
+AGENDA NA ÁREA DE TRABALHO // {mode}
+SEM ENTRADAS
+NADA NOS PRÓXIMOS 120 DIAS
+PROPRIEDADES
+Essa entrada vem das propriedades do papel de parede. Edite-a lá.
+AGORA // {what} ATÉ {time}
+AGORA // LIVRE
+DEPOIS // {what} {when}
+SHIFT
+ESPAÇO
+APAGAR
+LIMPAR TUDO
+EDITAR ENTRADA
+EDITAR ATIVIDADE
+MÊS
+REPETIR
+ALERTA
+DIAS ÚTEIS
+FIM DE SEMANA
+TODO DIA
+DIAS
+INÍCIO
+FIM
+O teclado na tela está oculto. Ative-o em SISTEMA > AJUSTES RÁPIDOS ou inicie o YoRHa Helper.
+Para texto em chinês ou coreano, use DIGITAR NO TECLADO DO PC (requer o YoRHa Helper) ou as propriedades do papel de parede.
+Digite um título ou escolha uma das sugestões.
+Escolha pelo menos um dia.
+O horário de fim deve ser diferente do início.
+Entrada do calendário salva: {title}.
+Atividade salva: {title}.
+Entrada excluída: {title}.
+Digite na janela que abriu e pressione Enter.
+O YoRHa Helper está desligado. Ligue-o em SISTEMA > AJUSTES RÁPIDOS.
+Digitar no teclado do PC requer o YoRHa Helper, em github.com/CalebFrums/yorha-terminal.
 
 ## pod.idle.routine
 Report: Nenhuma assinatura hostil detectada neste setor.

@@ -15,8 +15,8 @@ The desktop is the hub. Hover a menu entry to preview it and click to go there. 
 | Place | What's there |
 | --- | --- |
 | **MAP** | Drag the globe and click locations to survey them |
-| **QUESTS** | Time progress, your own daily orders checklist, a focus timer, and optional wellness reminders |
-| **INTEL** | Now playing, an audio log and the Pod archive |
+| **QUESTS** | Time progress, your own daily orders checklist, a calendar with alerts, a weekly schedule, a focus timer, and optional wellness reminders |
+| **INTEL** | Now playing with music buttons, an audio log and the Pod archive |
 | **ARCHIVE** | A character grid. Click a record to put it on the desktop, or set it as your unit |
 | **UNIT** | Look after your character, Tamagotchi style. Bond unlocks accessories; outfits switch freely |
 | **HACKING** | BREACH, a 3D intrusion drill built on three.js. Also INTERCEPT, LOGIC LOCK and your records |
@@ -34,7 +34,22 @@ The desktop is the hub. Hover a menu entry to preview it and click to go there. 
 - Characters from a folder of your PNGs. They stand beside the panel, breathe, emote, say your custom lines and react to clicks
 - UNIT: care for one character. Integrity, energy and morale drift down in real time; repairs, sleep mode, pats and Lunar Tears from the GARDEN bring them back. Bond unlocks accessories from the game (Pink and Blue Ribbon, Lunar Tear, Fox Mask, Machine Head, Emil's Head), drawn here as simple originals. WARDROBE also switches between outfits: any images that share the unit's name
 - WELLNESS: optional Pod proposals to rest your eyes (20-20-20), drink water, stretch, check your posture and eat at your meal times
+- CALENDAR: a month view for birthdays, appointments and reminders, with repeats (weekly, monthly, yearly) and alerts (at the time, 10 min, 1 hour or 1 day before). Alerts show above the hub panel with a soft chime and wait until you acknowledge or snooze them
+- WEEKLY SCHEDULE: a timetable of your week. Click an empty slot to add an activity; a line marks the current time
+- A desktop agenda above the hub panel (never over the character): this week, what is on now, what is next and coming entries. It shows when something is planned, always, or never
+- Titles are typed on an on-screen keyboard (Latin, accents, Cyrillic, kana, symbols), because Wallpaper Engine sends no key presses to wallpapers. With YoRHa Helper you can use your real keyboard
 - 9 languages: English, 简体中文, 日本語, 한국어, Русский, Deutsch, Français, Español, Português (Brasil)
+
+## YoRHa Helper (optional)
+
+Wallpaper Engine lets a wallpaper see what is playing but not control it, and it sends wallpapers no key presses. [`helper/`](helper) fills both gaps on your own PC:
+
+- **Music buttons**: INTEL's previous, play/pause and next press the Windows media keys, so Spotify, browsers and most players respond
+- **Real keyboard typing**: TYPE ON PC KEYBOARD in the calendar and schedule editors opens a small text box. You type there with your own keyboard, and input methods for Chinese, Japanese and Korean work too. It never reads keys typed anywhere else
+
+To use it, download the `helper` folder (or the whole repo as a ZIP) and double-click `Install-YoRHaHelper.cmd`. It starts now and with Windows. `Uninstall-YoRHaHelper.cmd` removes it, and `Start-YoRHaHelper.cmd` runs it once without installing. It is one readable PowerShell script with no install, no admin rights and no extra downloads. Windows may ask you to confirm because the file came from the internet.
+
+**Privacy.** The helper listens on `127.0.0.1:47823`, which only programs on your PC can reach. It never connects to the internet, writes no files and keeps no log. It accepts commands only from the wallpaper itself, pages on your PC and this project's demo page; other websites are refused. The wallpaper keeps your calendar and schedule on your PC (Wallpaper Engine's local storage) and sends nothing to any server.
 
 ## Demo notes
 
@@ -48,6 +63,7 @@ The demo runs the same files Wallpaper Engine does, but in a browser. Some parts
 #language=ja                 auto | en | zh | ja | ko | ru | de | fr | es | pt
 #place=hacking               map | quests | intel | archive | unit | hacking | garden | system
 #place=quests&sub=wellness&wellness=true
+#place=quests&sub=calendar   (also sub=schedule)
 #audiogain=300&audioauto=false
 #layout=right&uiscale=110
 #charfiles=https://example.com/a.png|https://example.com/b.png
@@ -71,6 +87,8 @@ To use it in Wallpaper Engine, subscribe on the Workshop. Or open the editor, cr
 | --- | --- |
 | `index.html`, `style.css`, `main.js` | The terminal, its panels, places and settings |
 | `games.js`, `breach3d.js` | HACKING drills (BREACH uses `vendor/three.min.js`, MIT) |
+| `planner.js` | CALENDAR, WEEKLY SCHEDULE, alerts, the desktop agenda and the on-screen keyboard |
+| `helper/` | YoRHa Helper: music buttons and real-keyboard typing (optional, runs on your PC only) |
 | `podlines.js` | The Pod's dialogue banks |
 | `i18n.js`, `i18n/*.txt`, `lang/*.js` | Translations. Edit `i18n/<code>.txt`, then run `node tools/build_i18n.mjs` |
 | `project.json` | Wallpaper Engine project and its properties |

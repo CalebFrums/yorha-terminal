@@ -15,6 +15,7 @@ EINHEIT
 HACKING
 GARTEN
 SYSTEM
+TERMINE
 BETRETEN
 ZIEL
 SIGNALE
@@ -25,6 +26,7 @@ WOCHENOPERATION
 MONATSOPERATION
 JAHRESOPERATION
 TAGESBEFEHLE
+NÄCHSTER TERMIN
 WOHLBEFINDEN
 KEIN SIGNAL
 TITEL
@@ -92,6 +94,14 @@ FOKUSZEIT HEUTE
 DER TIMER LÄUFT IN DER ZENTRALE WEITER // SIEHE OBERE LEISTE
 VORSCHLÄGE: AUS
 VORSCHLÄGE ERSCHEINEN, WENN DER DESKTOP SICHTBAR IST // ESSENSZEITEN IN DEN HINTERGRUND-EIGENSCHAFTEN
+HEUTE
+ALARME AN
+DESKTOP-TERMINE
+NEUER EINTRAG
+DEMNÄCHST
+TAG ANKLICKEN ZUM ÖFFNEN // DOPPELKLICK FÜR NEUEN EINTRAG // WEITERE IN DEN HINTERGRUND-EIGENSCHAFTEN EINTRAGEN
+NEUE AKTIVITÄT
+FREIEN PLATZ ANKLICKEN FÜR NEUE AKTIVITÄT // AKTIVITÄT ANKLICKEN ZUM BEARBEITEN
 DESKTOP
 AUF DEN DESKTOP
 ROTATION FORTSETZEN
@@ -120,6 +130,17 @@ Fan-Desktopterminal im Stil von NieR:Automata. Nicht mit Square Enix verbunden. 
 Die Zentrale ist dein Zuhause. Jeder Menüpunkt ist ein Ort mit eigenem Untermenü. Mit ZENTRALE oben links kommst du zurück, oder lass die Maus in Ruhe und das Terminal kehrt von selbst zurück.
 In Wallpaper Engine muss Mauseingabe erlaubt sein, damit Zentrale und Orte reagieren. Die Medienintegration versorgt INFOS.
 RUHM DER MENSCHHEIT
+YORHA HELPER // HINWEIS
+YoRHa Helper ist ein kleines, optionales Programm von der GitHub-Seite dieses Hintergrunds (github.com/CalebFrums/yorha-terminal, Ordner helper). Du lädst es selbst herunter und startest es selbst; der Hintergrund kann nichts installieren.
+Ist dieser Schalter an, spricht der Hintergrund nur auf diesem PC (127.0.0.1) mit ihm, und zwar für zwei Dinge: Er drückt die Windows-Medientasten, wenn du in INFOS auf Zurück, Wiedergabe/Pause oder Weiter klickst, und er öffnet ein Textfeld, wenn du MIT PC-TASTATUR TIPPEN wählst.
+Datenschutz: Nichts wird ins Internet oder an den Autor gesendet. Der Helper führt kein Protokoll, schreibt keine Dateien und liest nur, was du in sein eigenes Textfeld tippst. Kalender und Wochenplan bleiben auf diesem PC.
+Ist der Schalter aus, nimmt der Hintergrund nie Kontakt mit dem Helper auf. Du kannst ihn hier jederzeit wieder ausschalten.
+EINSCHALTEN
+ABBRECHEN
+TITEL EINGEBEN ODER AUSWÄHLEN
+MIT PC-TASTATUR TIPPEN
+SPEICHERN
+LÖSCHEN
 POD
 Ruhm der Menschheit
 
@@ -196,6 +217,16 @@ WARTE AUF AUDIOSIGNAL // SPIELE ETWAS IN SPOTIFY, EINEM BROWSER USW. AB
 Audioprotokoll gelöscht. Keine Aufzeichnung früherer Signale bleibt erhalten.
 Audiosignal erfasst: „{title}“{by}.
 Audiowiedergabe angehalten.
+SIGNAL GESENDET // NÄCHSTER TITEL
+SIGNAL GESENDET // VORHERIGER TITEL
+SIGNAL GESENDET // WIEDERGABE / PAUSE
+YORHA HELPER IST AUS // IN SYSTEM > SCHNELLEINSTELLUNGEN EINSCHALTEN
+YORHA HELPER GETRENNT // LÄUFT YORHA HELPER NOCH?
+YORHA HELPER OFFLINE // YORHA HELPER GIBT ES AUF GITHUB.COM/CALEBFRUMS/YORHA-TERMINAL
+HELPER AUS
+HELPER ONLINE
+HELPER OFFLINE
+YoRHa Helper eingeschaltet. Er spricht nur mit diesem PC.
 {n} FPS
 LIMIT {n}
 SIMULIERT
@@ -258,6 +289,10 @@ EINHEITENKONFIGURATION
 OPERATIONEN
 Fortschritt der aktuellen Stunde, des Tages, der Woche, des Monats und des Jahres.
 Deine eigene Checkliste. Klicke einen Befehl an, um ihn abzuhaken. Wird täglich zurückgesetzt.
+KALENDER
+Termine und Erinnerungen. Einen Tag anklicken, um ihn zu öffnen; NEUER EINTRAG fügt einen hinzu. Alarme erscheinen mit Signalton über dem Panel der Zentrale.
+WOCHENPLAN
+Deine Woche auf einen Blick. Einen freien Platz anklicken, um eine Aktivität hinzuzufügen, oder eine Aktivität, um sie zu ändern.
 FOKUS-TIMER
 Eine zeitlich begrenzte Operation für konzentriertes Arbeiten. Der Pod meldet das Ende, auch in der Zentrale.
 Vorschläge: Augen ausruhen, Wasser trinken, dehnen, Haltung prüfen und essen. Klicke auf ein Intervall, um es zu ändern.
@@ -362,6 +397,7 @@ Operations-Timer gestartet. Noch {time}.
 Operations-Timer abgelaufen. Eine kurze Pause wird empfohlen.
 OPERATION {time}
 OPERATION ABGESCHLOSSEN
+ALARM // {name}
 VORSCHLAG // {name}
 PAUSE
 WEITER
@@ -516,6 +552,15 @@ MENÜ RECHTS
 DESKTOP-CHARAKTER
 AN
 POD-PROTOKOLL
+WENN ETWAS GEPLANT IST
+IMMER
+AUSGEBLENDET
+KALENDER-ALARME
+ALARMTON
+WOCHE BEGINNT AM
+YORHA HELPER
+BILDSCHIRMTASTATUR
+WENN YORHA HELPER AUS IST
 BEHALTEN
 NUR MUSIK
 NUR DIESE SITZUNG
@@ -638,6 +683,97 @@ DURCHBRUCH {n} GESCHAFFT  //  WÄHLE EIN UPGRADE FÜR DIESEN LAUF
 PUNKTE {score}   //   {stages}
 {n} DURCHBRUCH GESCHAFFT|{n} DURCHBRÜCHE GESCHAFFT
 TREFFERQUOTE {acc} %
+
+## ui.planner
+SO
+MO
+DI
+MI
+DO
+FR
+SA
+{wd} {day}. {mon}
+{month} {year}
+EINMALIG
+WÖCHENTLICH
+MONATLICH
+JÄHRLICH
+ZUR UHRZEIT
+10 MIN VORHER
+1 STUNDE VORHER
+1 TAG VORHER
+ZUM BEGINN
+5 MIN VORHER
+15 MIN VORHER
+Geburtstag
+Termin
+Besprechung
+Frist
+Zahlung
+Anruf
+Prüfung
+Reise
+Veranstaltung
+Arbeit
+Lernen
+Unterricht
+Fitness
+Essen
+Schlafen
+Zocken
+Freizeit
+Haushalt
+Pendeln
+heute
+Kalender: {title}, {when}.
+Wochenplan: {title} um {when}.
+GANZTÄGIG
+JETZT
+SEIT {time}
+KALENDER-ALARM
+WOCHENPLAN
++{n} WEITERE
+BESTÄTIGEN
+{n} MIN SCHLUMMERN
+BIS {time}
+DANACH
+{wd} {day}.
+KEINE EINTRÄGE // AUFTRÄGE > KALENDER
+ALARME AUS
+DESKTOP-TERMINE // {mode}
+KEINE EINTRÄGE
+NICHTS IN DEN NÄCHSTEN 120 TAGEN
+EIGENSCHAFTEN
+Dieser Eintrag stammt aus den Hintergrund-Eigenschaften. Bitte dort bearbeiten.
+JETZT // {what} BIS {time}
+JETZT // FREI
+DANACH // {what} {when}
+UMSCHALT
+LEER
+LÖSCHEN
+ALLES LEEREN
+EINTRAG BEARBEITEN
+AKTIVITÄT BEARBEITEN
+MONAT
+WIEDERHOLEN
+ALARM
+WERKTAGS
+WOCHENENDE
+TÄGLICH
+TAGE
+BEGINN
+ENDE
+Die Bildschirmtastatur ist ausgeblendet. In SYSTEM > SCHNELLEINSTELLUNGEN einschalten oder YoRHa Helper starten.
+Für chinesischen oder koreanischen Text MIT PC-TASTATUR TIPPEN nutzen (braucht YoRHa Helper) oder die Hintergrund-Eigenschaften.
+Titel eingeben oder einen der Vorschläge wählen.
+Mindestens einen Tag wählen.
+Das Ende muss sich vom Beginn unterscheiden.
+Kalendereintrag gespeichert: {title}.
+Aktivität gespeichert: {title}.
+Eintrag gelöscht: {title}.
+Im geöffneten Fenster tippen, dann Enter drücken.
+YoRHa Helper ist ausgeschaltet. In SYSTEM > SCHNELLEINSTELLUNGEN einschalten.
+Tippen mit der PC-Tastatur braucht YoRHa Helper von github.com/CalebFrums/yorha-terminal.
 
 ## pod.idle.routine
 Report: Keine feindlichen Signaturen in diesem Sektor.

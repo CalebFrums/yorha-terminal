@@ -15,6 +15,7 @@ UNITÉ
 PIRATAGE
 JARDIN
 SYSTÈME
+AGENDA
 ENTRER
 CIBLE
 SIGNAUX
@@ -25,6 +26,7 @@ OPÉRATION DE LA SEMAINE
 OPÉRATION DU MOIS
 OPÉRATION ANNUELLE
 ORDRES DU JOUR
+PROCHAINE ENTRÉE
 BIEN-ÊTRE
 AUCUN SIGNAL
 TITRE
@@ -92,6 +94,14 @@ TEMPS DE CONCENTRATION
 LE MINUTEUR CONTINUE DANS LE CENTRE // VOIR LA BARRE DU HAUT
 PROPOSITIONS : NON
 LES PROPOSITIONS APPARAISSENT QUAND LE BUREAU EST VISIBLE // HEURES DES REPAS DANS LES PROPRIÉTÉS DU FOND D'ÉCRAN
+AUJOURD'HUI
+ALERTES : OUI
+AGENDA SUR LE BUREAU
+NOUVELLE ENTRÉE
+À VENIR
+CLIQUEZ SUR UN JOUR POUR L'OUVRIR // DOUBLE-CLIC POUR AJOUTER UNE ENTRÉE // D'AUTRES SE SAISISSENT DANS LES PROPRIÉTÉS DU FOND D'ÉCRAN
+NOUVELLE ACTIVITÉ
+CLIQUEZ SUR UN CRÉNEAU LIBRE POUR AJOUTER UNE ACTIVITÉ // CLIQUEZ SUR UNE ACTIVITÉ POUR LA MODIFIER
 BUREAU
 DÉPLOYER SUR LE BUREAU
 REPRENDRE LA ROTATION
@@ -120,6 +130,17 @@ Terminal de bureau créé par un fan dans le style de NieR:Automata. Sans lien a
 Le centre est votre base. Chaque entrée du menu est un lieu avec son propre sous-menu. Utilisez CENTRE en haut à gauche pour revenir, ou laissez la souris tranquille et le terminal reviendra de lui-même.
 La souris doit être autorisée dans Wallpaper Engine pour que le centre et les lieux réagissent. L'intégration média alimente RENSEIGNEMENTS.
 GLOIRE À L'HUMANITÉ
+YORHA HELPER // AVERTISSEMENT
+YoRHa Helper est un petit programme facultatif proposé sur la page GitHub de ce fond d'écran (github.com/CalebFrums/yorha-terminal, dossier helper). Vous le téléchargez et le lancez vous-même ; le fond d'écran ne peut rien installer.
+Quand ce bouton est activé, le fond d'écran lui parle sur ce PC uniquement (127.0.0.1), pour deux choses : appuyer sur les touches multimédia de Windows quand vous cliquez sur précédent, lecture/pause ou suivant dans RENSEIGNEMENTS, et ouvrir une zone de texte quand vous choisissez TAPER AU CLAVIER DU PC.
+Confidentialité : rien n'est envoyé sur Internet ni à l'auteur. Le helper ne tient aucun journal, n'écrit aucun fichier et ne lit que ce que vous tapez dans sa propre zone de texte. Votre calendrier et votre planning restent sur ce PC.
+Quand le bouton est désactivé, le fond d'écran ne contacte jamais le helper. Vous pouvez le désactiver ici à tout moment.
+ACTIVER
+ANNULER
+SAISISSEZ UN TITRE OU CHOISISSEZ-EN UN
+TAPER AU CLAVIER DU PC
+ENREGISTRER
+SUPPRIMER
 POD
 Gloire à l'humanité
 
@@ -196,6 +217,16 @@ EN ATTENTE DE SIGNAL AUDIO // LANCEZ QUELQUE CHOSE DANS SPOTIFY, UN NAVIGATEUR, 
 Journal audio effacé. Aucune trace des signaux passés ne subsiste.
 Signal audio capté : « {title} »{by}.
 Lecture audio suspendue.
+SIGNAL ENVOYÉ // PISTE SUIVANTE
+SIGNAL ENVOYÉ // PISTE PRÉCÉDENTE
+SIGNAL ENVOYÉ // LECTURE / PAUSE
+YORHA HELPER EST DÉSACTIVÉ // ACTIVEZ-LE DANS SYSTÈME > RÉGLAGES RAPIDES
+YORHA HELPER PERDU // YORHA HELPER TOURNE-T-IL ENCORE ?
+YORHA HELPER HORS LIGNE // YORHA HELPER EST SUR GITHUB.COM/CALEBFRUMS/YORHA-TERMINAL
+HELPER ARRÊTÉ
+HELPER EN LIGNE
+HELPER HORS LIGNE
+YoRHa Helper activé. Il ne communique qu'avec ce PC.
 {n} IPS
 LIMITE {n}
 SIMULÉ
@@ -258,6 +289,10 @@ CONFIGURATION DE L'UNITÉ
 OPÉRATIONS
 Progression de l'heure, du jour, de la semaine, du mois et de l'année en cours.
 Votre propre liste. Cliquez sur un ordre pour le marquer comme terminé. Remise à zéro chaque jour.
+CALENDRIER
+Événements et rappels. Cliquez sur un jour pour l'ouvrir ; NOUVELLE ENTRÉE en ajoute une. Les alertes s'affichent au-dessus du panneau du centre, avec un carillon.
+PLANNING DE LA SEMAINE
+Votre semaine d'un coup d'œil. Cliquez sur un créneau libre pour ajouter une activité, ou sur une activité pour la modifier.
 MINUTEUR
 Une opération chronométrée pour travailler concentré. Le Pod annonce la fin, même depuis le centre.
 Propositions pour reposer vos yeux, boire de l'eau, vous étirer, vérifier votre posture et manger. Cliquez sur un intervalle pour le changer.
@@ -362,6 +397,7 @@ Minuteur d'opération lancé. {time} restantes.
 Minuteur d'opération terminé. Une courte pause est recommandée.
 OPÉRATION {time}
 OPÉRATION TERMINÉE
+ALERTE // {name}
 PROPOSITION // {name}
 PAUSE
 REPRENDRE
@@ -516,6 +552,15 @@ MENU À DROITE
 PERSONNAGE SUR LE BUREAU
 OUI
 JOURNAL DU POD
+QUAND QUELQUE CHOSE EST PRÉVU
+TOUJOURS
+MASQUÉ
+ALERTES DU CALENDRIER
+CARILLON D'ALERTE
+LA SEMAINE COMMENCE LE
+YORHA HELPER
+CLAVIER À L'ÉCRAN
+SI YORHA HELPER EST ARRÊTÉ
 CONSERVER
 MUSIQUE SEULEMENT
 CETTE SESSION SEULEMENT
@@ -638,6 +683,97 @@ BRÈCHE {n} FRANCHIE  //  CHOISISSEZ UNE AMÉLIORATION POUR CETTE PARTIE
 SCORE {score}   //   {stages}
 {n} BRÈCHE FRANCHIE|{n} BRÈCHES FRANCHIES
 PRÉCISION {acc} %
+
+## ui.planner
+DIM
+LUN
+MAR
+MER
+JEU
+VEN
+SAM
+{wd} {day} {mon}
+{month} {year}
+UNE FOIS
+CHAQUE SEMAINE
+CHAQUE MOIS
+CHAQUE ANNÉE
+À L'HEURE
+10 MIN AVANT
+1 HEURE AVANT
+1 JOUR AVANT
+AU DÉBUT
+5 MIN AVANT
+15 MIN AVANT
+Anniversaire
+Rendez-vous
+Réunion
+Échéance
+Paiement
+Appel
+Examen
+Voyage
+Événement
+Travail
+Études
+Cours
+Sport
+Repas
+Sommeil
+Jeu vidéo
+Temps libre
+Ménage
+Trajet
+aujourd'hui
+Calendrier : {title}, {when}.
+Planning : {title} à {when}.
+JOURNÉE
+MAINTENANT
+DEPUIS {time}
+ALERTE CALENDRIER
+PLANNING
++{n} DE PLUS
+BIEN REÇU
+RAPPEL DANS {n} MIN
+JUSQU'À {time}
+ENSUITE
+{wd} {day}
+AUCUNE ENTRÉE // QUÊTES > CALENDRIER
+ALERTES : NON
+AGENDA SUR LE BUREAU // {mode}
+AUCUNE ENTRÉE
+RIEN DANS LES 120 PROCHAINS JOURS
+PROPRIÉTÉS
+Cette entrée vient des propriétés du fond d'écran. Modifiez-la là-bas.
+MAINTENANT // {what} JUSQU'À {time}
+MAINTENANT // LIBRE
+ENSUITE // {what} {when}
+MAJ
+ESPACE
+EFFACER
+TOUT EFFACER
+MODIFIER L'ENTRÉE
+MODIFIER L'ACTIVITÉ
+MOIS
+RÉPÉTITION
+ALERTE
+EN SEMAINE
+WEEK-END
+TOUS LES JOURS
+JOURS
+DÉBUT
+FIN
+Le clavier à l'écran est masqué. Activez-le dans SYSTÈME > RÉGLAGES RAPIDES, ou lancez YoRHa Helper.
+Pour du texte en chinois ou en coréen, utilisez TAPER AU CLAVIER DU PC (nécessite YoRHa Helper) ou les propriétés du fond d'écran.
+Saisissez un titre ou choisissez l'une des suggestions.
+Choisissez au moins un jour.
+L'heure de fin doit différer de celle du début.
+Entrée du calendrier enregistrée : {title}.
+Activité enregistrée : {title}.
+Entrée supprimée : {title}.
+Tapez dans la fenêtre qui s'est ouverte, puis appuyez sur Entrée.
+YoRHa Helper est désactivé. Activez-le dans SYSTÈME > RÉGLAGES RAPIDES.
+Taper au clavier du PC nécessite YoRHa Helper, sur github.com/CalebFrums/yorha-terminal.
 
 ## pod.idle.routine
 Report: Aucune signature hostile détectée dans ce secteur.

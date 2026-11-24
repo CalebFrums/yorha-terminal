@@ -12,8 +12,8 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DEST = path.resolve(process.argv[2] || path.join(ROOT, '..', 'YoRHaTerminal-GitHub'));
 const INSTALLED = 'C:\\Program Files (x86)\\Steam\\steamapps\\common\\wallpaper_engine\\projects\\myprojects\\yorha_terminal';
 
-const list = ['index.html', 'style.css', 'i18n.js', 'main.js', 'games.js', 'breach3d.js', 'podlines.js', 'preview.gif'];
-for (const dir of ['lang', 'i18n', 'vendor', 'tools']) {
+const list = ['index.html', 'style.css', 'i18n.js', 'main.js', 'games.js', 'breach3d.js', 'planner.js', 'podlines.js', 'preview.gif'];
+for (const dir of ['lang', 'i18n', 'vendor', 'tools', 'helper']) {
   for (const f of fs.readdirSync(path.join(ROOT, dir))) {
     if (fs.statSync(path.join(ROOT, dir, f)).isFile()) list.push(dir + '/' + f);
   }

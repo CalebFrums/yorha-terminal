@@ -20,6 +20,7 @@ UNIT
 HACKING
 GARDEN
 SYSTEM
+AGENDA
 ENTER
 TARGET
 SIGNALS
@@ -30,6 +31,7 @@ WEEKLY OPERATION
 MONTHLY OPERATION
 ANNUAL OPERATION
 DAILY ORDERS
+NEXT ENTRY
 WELLNESS
 NO SIGNAL
 TITLE
@@ -97,6 +99,14 @@ FOCUS TIME TODAY
 THE TIMER KEEPS RUNNING IN THE HUB // SEE THE TOP BAR
 PROPOSALS OFF
 PROPOSALS APPEAR WHILE THE DESKTOP IS IN VIEW // SET MEAL TIMES IN THE WALLPAPER PROPERTIES
+TODAY
+ALERTS ON
+DESKTOP AGENDA
+NEW ENTRY
+UPCOMING
+CLICK A DAY TO OPEN IT // DOUBLE-CLICK TO ADD AN ENTRY // MORE CAN BE TYPED IN THE WALLPAPER PROPERTIES
+NEW ACTIVITY
+CLICK AN EMPTY SLOT TO ADD AN ACTIVITY // CLICK AN ACTIVITY TO EDIT IT
 DESKTOP
 DEPLOY TO DESKTOP
 RESUME ROTATION
@@ -125,6 +135,17 @@ Fan-made desktop terminal in the style of NieR:Automata. Not affiliated with Squ
 The hub is home. Each menu entry is a place with its own sub-menu. Use HUB in the top left to come back, or leave the mouse alone and the terminal returns on its own.
 Mouse input must be allowed in Wallpaper Engine for the hub and the places to respond. Media integration feeds INTEL.
 GLORY TO MANKIND
+YORHA HELPER // DISCLAIMER
+YoRHa Helper is a small, optional program from this wallpaper's GitHub page (github.com/CalebFrums/yorha-terminal, folder helper). You download and start it yourself; the wallpaper cannot install anything.
+With this switch on, the wallpaper talks to it on this PC only (127.0.0.1) for two things: pressing the Windows media keys when you click previous, play/pause or next in INTEL, and opening a text box when you choose TYPE ON PC KEYBOARD.
+Privacy: nothing is sent to the internet or to the author. The helper keeps no log and writes no files, and it reads only what you type into its own text box. Your calendar and schedule stay on this PC.
+With the switch off, the wallpaper never contacts the helper. You can switch it off again here at any time.
+SWITCH ON
+CANCEL
+TYPE A TITLE OR PICK ONE
+TYPE ON PC KEYBOARD
+SAVE
+DELETE
 POD
 Glory to Mankind
 
@@ -201,6 +222,16 @@ AWAITING AUDIO SIGNAL // PLAY SOMETHING IN SPOTIFY, A BROWSER, ETC.
 Audio log cleared. No record of past signals remains.
 Audio signal acquired: "{title}"{by}.
 Audio playback suspended.
+SIGNAL SENT // NEXT TRACK
+SIGNAL SENT // PREVIOUS TRACK
+SIGNAL SENT // PLAY / PAUSE
+YORHA HELPER IS SWITCHED OFF // SWITCH IT ON IN SYSTEM > QUICK SETTINGS
+YORHA HELPER LOST // IS YORHA HELPER STILL RUNNING?
+YORHA HELPER OFFLINE // GET YORHA HELPER FROM GITHUB.COM/CALEBFRUMS/YORHA-TERMINAL
+HELPER OFF
+HELPER ONLINE
+HELPER OFFLINE
+YoRHa Helper switched on. It only talks to this PC.
 {n} FPS
 CAP {n}
 SIMULATED
@@ -263,6 +294,10 @@ UNIT CONFIGURATION
 OPERATIONS
 Progress of the current hour, day, week, month and year.
 Your own checklist. Click an order to mark it complete. Resets every day.
+CALENDAR
+Events and reminders. Click a day to open it; NEW ENTRY adds one. Alerts show above the hub panel with a chime.
+WEEKLY SCHEDULE
+Your week at a glance. Click an empty slot to add an activity, or an activity to change it.
 FOCUS TIMER
 A timed operation for focused work. The Pod reports when it ends, even from the hub.
 Proposals to rest your eyes, drink water, stretch, check your posture and eat. Click an interval to change it.
@@ -367,6 +402,7 @@ Operation timer started. {time} remaining.
 Operation timer complete. Recommend a short rest.
 OPERATION {time}
 OPERATION COMPLETE
+ALERT // {name}
 PROPOSAL // {name}
 PAUSE
 RESUME
@@ -521,6 +557,15 @@ MENU RIGHT
 DESKTOP CHARACTER
 ON
 POD LOG
+WHEN SOMETHING IS PLANNED
+ALWAYS
+HIDDEN
+CALENDAR ALERTS
+ALERT CHIME
+WEEK STARTS ON
+YORHA HELPER
+ON-SCREEN KEYBOARD
+WHEN YORHA HELPER IS OFF
 KEEP
 MUSIC ONLY
 THIS SESSION ONLY
@@ -643,6 +688,97 @@ BREACH {n} CLEARED  //  CHOOSE ONE UPGRADE FOR THIS RUN
 SCORE {score}   //   {stages}
 {n} BREACH CLEARED|{n} BREACHES CLEARED
 ACCURACY {acc}%
+
+## ui.planner
+SUN
+MON
+TUE
+WED
+THU
+FRI
+SAT
+{wd} {day} {mon}
+{month} {year}
+ONCE
+WEEKLY
+MONTHLY
+YEARLY
+AT THE TIME
+10 MIN BEFORE
+1 HOUR BEFORE
+1 DAY BEFORE
+AT THE START
+5 MIN BEFORE
+15 MIN BEFORE
+Birthday
+Appointment
+Meeting
+Deadline
+Payment
+Call
+Exam
+Trip
+Event
+Work
+Study
+Class
+Gym
+Meal
+Sleep
+Gaming
+Free time
+Chores
+Commute
+today
+Calendar: {title}, {when}.
+Schedule: {title} at {when}.
+ALL DAY
+NOW
+STARTED {time}
+CALENDAR ALERT
+SCHEDULE
++{n} MORE
+ACKNOWLEDGE
+SNOOZE {n} MIN
+UNTIL {time}
+UP NEXT
+{wd} {day}
+NO ENTRIES // QUESTS > CALENDAR
+ALERTS OFF
+DESKTOP AGENDA // {mode}
+NOTHING IN THE NEXT 120 DAYS
+NO ENTRIES
+PROPERTIES
+That entry comes from the wallpaper properties. Edit it there.
+NOW // {what} UNTIL {time}
+NOW // FREE
+NEXT // {what} {when}
+SHIFT
+SPACE
+ERASE
+CLEAR ALL
+EDIT ENTRY
+EDIT ACTIVITY
+MONTH
+REPEAT
+ALERT
+WEEKDAYS
+WEEKEND
+EVERY DAY
+DAYS
+START TIME
+END TIME
+The on-screen keyboard is hidden. Turn it on in SYSTEM > QUICK SETTINGS, or run YoRHa Helper.
+For Chinese or Korean text, use TYPE ON PC KEYBOARD (needs YoRHa Helper) or the wallpaper properties.
+Type a title, or pick one of the suggestions.
+Choose at least one day.
+The end time must differ from the start.
+Calendar entry saved: {title}.
+Activity saved: {title}.
+Entry deleted: {title}.
+Type in the window that opened, then press Enter.
+YoRHa Helper is switched off. Switch it on in SYSTEM > QUICK SETTINGS.
+Typing on your PC keyboard needs YoRHa Helper from github.com/CalebFrums/yorha-terminal.
 
 ## pod.idle.routine
 Report: No hostile signatures detected in this sector.

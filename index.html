@@ -82,6 +82,21 @@
       </div>
 
       <main id="panel">
+        <!-- Above the panel, clear of the desktop character: the agenda, or a calendar alert in its place -->
+        <div id="hubslot">
+          <aside id="agenda">
+            <div class="ag-head" id="ag-head"><span class="sq"></span><span class="ag-title">AGENDA</span><span class="ag-date" id="ag-date"></span><span class="chev"></span></div>
+            <div class="ag-body">
+              <div class="ag-week" id="ag-week"></div>
+              <div class="ag-side"><div id="ag-now"></div><ul class="ag-list" id="ag-list"></ul></div>
+            </div>
+          </aside>
+          <aside id="cal-card">
+            <div class="cc-head"><span class="cc-icon"><svg viewBox="0 0 24 24"><path d="M12 2.5a6 6 0 0 0-6 6v4.2L4 16.5h16l-2-3.8V8.5a6 6 0 0 0-6-6zM9.5 18.5a2.5 2.5 0 0 0 5 0z" fill="currentColor"/></svg></span><span class="cc-kind" id="cc-kind"></span><span class="cc-more" id="cc-more"></span></div>
+            <div class="cc-main"><span class="cc-title" id="cc-title"></span><span class="cc-rel" id="cc-rel"></span></div>
+            <div class="cc-foot"><span class="cc-when" id="cc-when"></span><span class="btn" id="cc-ok"></span><span class="btn ghost" id="cc-snooze"></span></div>
+          </aside>
+        </div>
         <div class="panel-head"><span class="sq"></span><span id="panel-title">MAP</span><span class="panel-sub" id="panel-sub"></span><span class="enter-btn" id="enter-btn">ENTER<span class="chev"></span></span></div>
         <div class="panel-body" id="panel-body">
 
@@ -116,6 +131,7 @@
               <div class="q-meta"><span class="q-state">IN PROGRESS</span><span class="q-rem">--</span></div>
             </div>
             <div class="kv"><span class="k">DAILY ORDERS</span><span class="v" id="hq-orders">--</span></div>
+            <div class="kv"><span class="k">NEXT ENTRY</span><span class="v" id="hq-cal">--</span></div>
             <div class="kv"><span class="k">WELLNESS</span><span class="v" id="hq-well">--</span></div>
           </div>
 
@@ -136,6 +152,7 @@
                   <div class="bar"><div class="fill" id="m-fill"></div></div>
                   <div class="times"><span id="m-pos">0:00</span><span id="m-dur">0:00</span></div>
                 </div>
+                <div class="mctl" id="m-ctl"><span class="mbtn" data-cmd="prev"><svg viewBox="0 0 24 24"><path d="M3 5h2.4v14H3zM13.2 5v14L5.8 12zM21 5v14l-7.4-7z" fill="currentColor"/></svg></span><span class="mbtn play" data-cmd="playpause"><svg class="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15L19.5 12z" fill="currentColor"/></svg><svg class="i-pause" viewBox="0 0 24 24"><path d="M6.5 5h4v14h-4zM13.5 5h4v14h-4z" fill="currentColor"/></svg></span><span class="mbtn" data-cmd="next"><svg viewBox="0 0 24 24"><path d="M18.6 5H21v14h-2.4zM10.8 5v14l7.4-7zM3 5v14l7.4-7z" fill="currentColor"/></svg></span><span class="mlink" id="m-link"></span></div>
               </div>
             </div>
             <canvas id="intel-viz"></canvas>
@@ -321,6 +338,41 @@
             <div class="note">PROPOSALS APPEAR WHILE THE DESKTOP IS IN VIEW // SET MEAL TIMES IN THE WALLPAPER PROPERTIES</div>
           </div>
 
+          <div class="pview" id="pv-quests-calendar">
+            <div class="orders-head cal-top">
+              <span class="btn ghost nav-b" id="cal-prev"><span class="chev"></span></span>
+              <span class="cal-month" id="cal-month">--</span>
+              <span class="btn ghost nav-b" id="cal-next"><span class="chev"></span></span>
+              <span class="btn ghost" id="cal-today">TODAY</span>
+              <span class="cal-gap"></span>
+              <span class="btn" id="cal-alerts">ALERTS ON</span>
+              <span class="btn" id="cal-widget">DESKTOP AGENDA</span>
+            </div>
+            <div class="cal-body">
+              <div class="cal-mon">
+                <div class="cal-dow" id="cal-dow"></div>
+                <div class="cal-grid" id="cal-grid"></div>
+              </div>
+              <div class="cal-side">
+                <div class="band"><span class="sq"></span><span id="cal-day">--</span></div>
+                <div class="cal-entries" id="cal-entries"></div>
+                <div class="btn-row"><span class="btn" id="cal-add">NEW ENTRY</span></div>
+                <div class="band"><span class="sq"></span>UPCOMING</div>
+                <div class="cal-up" id="cal-up"></div>
+              </div>
+            </div>
+            <div class="note">CLICK A DAY TO OPEN IT // DOUBLE-CLICK TO ADD AN ENTRY // MORE CAN BE TYPED IN THE WALLPAPER PROPERTIES</div>
+          </div>
+
+          <div class="pview" id="pv-quests-schedule">
+            <div class="orders-head sch-top"><span class="btn" id="sch-add">NEW ACTIVITY</span><span id="sch-now">--</span><span id="sch-next"></span></div>
+            <div class="sch-wrap">
+              <div class="sch-axis" id="sch-axis"></div>
+              <div class="sch-cols" id="sch-cols"></div>
+            </div>
+            <div class="note">CLICK AN EMPTY SLOT TO ADD AN ACTIVITY // CLICK AN ACTIVITY TO EDIT IT</div>
+          </div>
+
           <div class="pview" id="pv-intel-now">
             <div class="intel-wrap big">
               <div class="frame thumb big filter-nier" id="pm-thumb-frame">
@@ -338,6 +390,7 @@
                   <div class="bar"><div class="fill" id="pm-fill"></div></div>
                   <div class="times"><span id="pm-pos">0:00</span><span id="pm-dur">0:00</span></div>
                 </div>
+                <div class="mctl" id="pm-ctl"><span class="mbtn" data-cmd="prev"><svg viewBox="0 0 24 24"><path d="M3 5h2.4v14H3zM13.2 5v14L5.8 12zM21 5v14l-7.4-7z" fill="currentColor"/></svg></span><span class="mbtn play" data-cmd="playpause"><svg class="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15L19.5 12z" fill="currentColor"/></svg><svg class="i-pause" viewBox="0 0 24 24"><path d="M6.5 5h4v14h-4zM13.5 5h4v14h-4z" fill="currentColor"/></svg></span><span class="mbtn" data-cmd="next"><svg viewBox="0 0 24 24"><path d="M18.6 5H21v14h-2.4zM10.8 5v14l7.4-7zM3 5v14l7.4-7z" fill="currentColor"/></svg></span><span class="mlink" id="pm-link"></span></div>
               </div>
             </div>
             <canvas id="pm-viz"></canvas>
@@ -469,9 +522,38 @@
             </div>
           </div>
 
+          <!-- Shown before YoRHa Helper is switched on in the quick settings -->
+          <div id="helper-note" class="dlg">
+            <div class="band"><span class="sq"></span>YORHA HELPER // DISCLAIMER</div>
+            <div class="dlg-body">
+              <p>YoRHa Helper is a small, optional program from this wallpaper's GitHub page (github.com/CalebFrums/yorha-terminal, folder helper). You download and start it yourself; the wallpaper cannot install anything.</p>
+              <p>With this switch on, the wallpaper talks to it on this PC only (127.0.0.1) for two things: pressing the Windows media keys when you click previous, play/pause or next in INTEL, and opening a text box when you choose TYPE ON PC KEYBOARD.</p>
+              <p>Privacy: nothing is sent to the internet or to the author. The helper keeps no log and writes no files, and it reads only what you type into its own text box. Your calendar and schedule stay on this PC.</p>
+              <p>With the switch off, the wallpaper never contacts the helper. You can switch it off again here at any time.</p>
+            </div>
+            <div class="ed-foot"><span class="btn" id="hn-on">SWITCH ON</span><span class="btn ghost" id="hn-cancel">CANCEL</span></div>
+          </div>
+
+          <!-- Entry editor for the calendar and the weekly schedule, with an on-screen keyboard -->
+          <div id="pl-edit">
+            <div class="band ed-band"><span class="sq"></span><span id="ed-head">NEW ENTRY</span><span class="ed-kind" id="ed-kind"></span></div>
+            <div class="ed-field">
+              <div class="ed-line">
+                <div class="ed-input empty" id="ed-input"><span id="ed-text"></span><span class="ed-caret"></span><span class="ed-ph">TYPE A TITLE OR PICK ONE</span><span class="ed-count" id="ed-count"></span></div>
+                <span class="btn ghost ed-pc" id="ed-pc"><svg viewBox="0 0 24 24"><path d="M2 6h20v12H2zM4 8v2h2V8zm3 0v2h2V8zm3 0v2h2V8zm3 0v2h2V8zm3 0v2h4V8zM4 11v2h3v-2zm4 0v2h2v-2zm3 0v2h2v-2zm3 0v2h2v-2zm3 0v2h3v-2zM6 14v2h12v-2z" fill="currentColor" fill-rule="evenodd"/></svg>TYPE ON PC KEYBOARD</span>
+              </div>
+              <div class="ed-chips ed-presets" id="ed-presets"></div>
+              <div class="ed-tip"><span id="ed-tip"></span><span id="ed-ime"></span></div>
+            </div>
+            <div class="kb" id="kb"></div>
+            <div class="ed-rows" id="ed-rows"></div>
+            <div class="ed-foot"><span class="btn" id="ed-save">SAVE</span><span class="btn ghost" id="ed-cancel">CANCEL</span><span class="ed-gap"></span><span class="btn ghost" id="ed-del">DELETE</span></div>
+          </div>
+
         </main>
       </div>
 
+      <div id="place-cards"></div>
       <div id="place-hint"><span class="hint-tag">POD</span><span id="hint-pod"></span></div>
     </section>
 
@@ -493,6 +575,7 @@
   <script src="podlines.js"></script>
   <script src="games.js"></script>
   <script src="breach3d.js"></script>
+  <script src="planner.js"></script>
   <script src="main.js"></script>
 </body>
 </html>

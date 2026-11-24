@@ -53,7 +53,15 @@
     waterEvery: 60,
     stretchEvery: 45,
     postureEvery: 0,
-    mealTimes: '08:00|12:30|18:30'
+    mealTimes: '08:00|12:30|18:30',
+    calAlerts: true,
+    calSound: true,
+    calWidget: 'auto',
+    weekStart: 'auto',
+    calEntries: '',
+    schedEntries: '',
+    helper: false, // YoRHa Helper: off until the user reads the disclaimer and switches it on
+    oskb: 'auto'
   };
   // Shipped defaults. Default text (footer, lines, orders) is shown translated until the user edits it.
   const DEFAULTS = Object.assign({}, cfg);
@@ -105,7 +113,15 @@
     waterevery: 'waterEvery',
     stretchevery: 'stretchEvery',
     postureevery: 'postureEvery',
-    mealtimes: 'mealTimes'
+    mealtimes: 'mealTimes',
+    calalerts: 'calAlerts',
+    calsound: 'calSound',
+    calwidget: 'calWidget',
+    weekstart: 'weekStart',
+    calendarentries: 'calEntries',
+    scheduleentries: 'schedEntries',
+    yorhahelper: 'helper',
+    onscreenkeyboard: 'oskb'
   };
 
   const PANELS = ['map', 'quests', 'intel', 'archive', 'unit', 'hacking', 'garden', 'system'];
@@ -430,6 +446,8 @@
     applyTheme(false);
     syncAudioLog();
     syncWellness();
+    planner.apply();
+    syncHelper();
     b.classList.toggle('layout-right', cfg.layout === 'right');
     b.classList.toggle('no-seconds', !cfg.showSeconds);
     b.classList.toggle('no-menu', !cfg.showMenu);
@@ -651,6 +669,7 @@
     const list = orderList();
     const st = ordersState();
     setText($('hq-orders'), list.length ? T('{done} / {total} COMPLETE', { done: list.filter((t) => st.items[t]).length, total: list.length }) : T('NONE ASSIGNED'));
+    setText($('hq-cal'), planner.hubLine(now));
     const soon = cfg.wellness ? wellSoonest(now) : null;
     setText($('hq-well'), !cfg.wellness ? T('OFF') : soon ? T('{name} {when}', { name: T(soon.w.name), when: fmtIn(soon.at - now) }) : T('DONE TODAY'));
   }
@@ -679,10 +698,12 @@
     $(p + 'fill').style.width = media.dur > 0 ? (pos / media.dur * 100).toFixed(2) + '%' : '0%';
 
     let note = '';
-    if (!hasMediaApi) note = K('MEDIA LINK UNAVAILABLE OUTSIDE WALLPAPER ENGINE');
+    if (Date.now() < link.noteUntil) note = link.note;
+    else if (!hasMediaApi) note = K('MEDIA LINK UNAVAILABLE OUTSIDE WALLPAPER ENGINE');
     else if (media.enabled === false) note = K('MEDIA LINK OFFLINE // ENABLE MEDIA INTEGRATION IN WALLPAPER ENGINE SETTINGS');
     else if (!has) note = K('AWAITING AUDIO SIGNAL // PLAY SOMETHING IN SPOTIFY, A BROWSER, ETC.');
     setText($(p + 'note'), note ? T(note) : '');
+    $(p + 'ctl').classList.toggle('playing', isPlaying());
   }
 
   // Tracks heard by the terminal, newest first. Property audiolog: keep (saved on this PC), music (saved,
@@ -767,6 +788,143 @@
     media.dur = (e && e.duration) || 0;
     media.at = performance.now();
   }
+
+  // ---------- music controls and keyboard typing (YoRHa Helper) ----------
+  // Wallpaper Engine lets a wallpaper read what is playing but never control it, and sends it no key presses.
+  // The optional YoRHa Helper (helper/ in the GitHub repository) listens on this PC only (127.0.0.1): it presses
+  // the Windows media keys when a button here asks, and opens a text box for typing with the real keyboard.
+  // Nothing goes anywhere else. Without it the buttons say where to get it.
+
+  const LINK = 'http://127.0.0.1:47823/yorha/';
+  const link = { online: false, next: 0, busy: null, asking: false, note: '', noteUntil: 0 };
+
+  // Resolves to true when the helper answers.
+  function linkPing() {
+    if (!cfg.helper) return Promise.resolve(false);
+    if (link.busy) return link.busy;
+    if (typeof fetch !== 'function') return Promise.resolve(false);
+    const ctl = typeof AbortController === 'function' ? new AbortController() : null;
+    const to = setTimeout(() => { if (ctl) ctl.abort(); }, 1500);
+    link.busy = fetch(LINK + 'ping', { cache: 'no-store', signal: ctl ? ctl.signal : undefined })
+      .then((r) => r.json())
+      .then((j) => !!(j && j.ok && j.app === 'YoRHa Helper'))
+      .catch(() => false)
+      .then((ok) => {
+        clearTimeout(to);
+        link.busy = null;
+        link.online = ok && cfg.helper;
+        refreshLinkUi();
+        return ok;
+      });
+    return link.busy;
+  }
+
+  // Looks for the helper once at start, then only while the controls are on screen
+  // (every 20 s, or every minute while it is missing).
+  function linkTick(now) {
+    if (!cfg.helper || link.asking || now < link.next) return;
+    const shown = nav.place ? nav.place === 'intel' && nav.sel === 'now' : state.panel === 'intel';
+    if (!shown && link.next) return;
+    link.next = now + (link.online ? 20000 : 60000);
+    linkPing();
+  }
+
+  function linkNote(text, ms) {
+    link.note = text;
+    link.noteUntil = Date.now() + ms;
+    refreshLinkUi();
+  }
+
+  const LINK_SENT = { next: K('SIGNAL SENT // NEXT TRACK'), prev: K('SIGNAL SENT // PREVIOUS TRACK'), playpause: K('SIGNAL SENT // PLAY / PAUSE') };
+
+  function linkSend(cmd) {
+    if (!cfg.helper) {
+      linkNote(K('YORHA HELPER IS SWITCHED OFF // SWITCH IT ON IN SYSTEM > QUICK SETTINGS'), 9000);
+      return;
+    }
+    const send = () => {
+      fetch(LINK + 'media/' + cmd, { method: 'POST', mode: 'no-cors', cache: 'no-store' }).catch(() => {
+        link.online = false;
+        linkNote(K('YORHA HELPER LOST // IS YORHA HELPER STILL RUNNING?'), 7000);
+      });
+      linkNote(LINK_SENT[cmd], 2500);
+    };
+    if (link.online) {
+      send();
+      return;
+    }
+    linkPing().then((ok) => {
+      if (ok) send();
+      else linkNote(K('YORHA HELPER OFFLINE // GET YORHA HELPER FROM GITHUB.COM/CALEBFRUMS/YORHA-TERMINAL'), 12000);
+    });
+  }
+
+  // Asks the helper for its text box: resolves to { text } when typed, { cancel: true } when closed,
+  // or { offline: true } when the helper is not running.
+  function linkAsk(prompt, text, max) {
+    if (!cfg.helper) return Promise.resolve({ off: true });
+    return (link.online ? Promise.resolve(true) : linkPing()).then((ok) => {
+      if (!ok) return { offline: true };
+      link.asking = true;
+      const q = '?p=' + encodeURIComponent(prompt) + '&t=' + encodeURIComponent(text || '') + '&n=' + max +
+        '&ok=' + encodeURIComponent(T('DONE')) + '&cancel=' + encodeURIComponent(T('CANCEL'));
+      return fetch(LINK + 'input' + q, { method: 'POST', cache: 'no-store' })
+        .then((r) => r.json())
+        .then((j) => (j && j.ok && typeof j.text === 'string' ? { text: j.text } : { cancel: true }))
+        .catch(() => {
+          link.online = false;
+          return { offline: true };
+        })
+        .then((res) => {
+          link.asking = false;
+          if (res.offline) refreshLinkUi(); // brings back the on-screen keyboard it had replaced
+          return res;
+        });
+    });
+  }
+
+  function refreshLinkUi() {
+    planner.helperChanged();
+    for (const p of ['m-', 'pm-']) {
+      const box = $(p + 'ctl');
+      box.classList.toggle('online', link.online);
+      box.classList.toggle('playing', isPlaying());
+      setText($(p + 'link'), !cfg.helper ? T('HELPER OFF') : link.online ? T('HELPER ONLINE') : T('HELPER OFFLINE'));
+    }
+    if (nav.place === 'intel') updateIntel('pm-');
+    else if (state.panel === 'intel') updateIntel();
+  }
+
+  for (const b of document.querySelectorAll('.mbtn')) b.addEventListener('click', () => linkSend(b.dataset.cmd));
+
+  // The switch (property 'yorhahelper', or SYSTEM > QUICK SETTINGS) starts off. While it is off the wallpaper
+  // never contacts 127.0.0.1 at all; switching it off forgets the helper at once.
+  function syncHelper() {
+    if (!cfg.helper) link.online = false;
+    if (cfg.helper && !link.wasOn) link.next = 0; // just switched on: look for it straight away
+    link.wasOn = cfg.helper;
+    refreshLinkUi();
+  }
+
+  // Switching it on from the quick settings first shows what it does and what it never does.
+  function helperDisclaimer() {
+    const d = $('helper-note');
+    d.classList.remove('show');
+    void d.offsetWidth;
+    d.classList.add('show');
+    $('place-main').classList.add('editing');
+  }
+  function closeHelperNote() {
+    if (!$('helper-note').classList.contains('show')) return;
+    $('helper-note').classList.remove('show');
+    $('place-main').classList.remove('editing');
+  }
+  $('hn-on').addEventListener('click', () => {
+    closeHelperNote();
+    setOverride('helper', true);
+    say('Report', T('YoRHa Helper switched on. It only talks to this PC.'));
+  });
+  $('hn-cancel').addEventListener('click', closeHelperNote);
 
   // ---------- system ----------
 
@@ -2181,6 +2339,12 @@
     actor.bh = b.offsetHeight;
     const p = headPoint();
     actor.side = actor.boxLeft + p.x + p.hw * 0.6 + actor.bw > window.innerWidth - 0.8 * actor.rem ? -1 : 1;
+    // Never hang it over the agenda or a calendar alert above the hub panel (they sit on a higher layer).
+    if (actor.side < 0) {
+      const slot = $('hubslot').getBoundingClientRect();
+      if (slot.height > 0 && actor.boxLeft + p.x - p.hw * 0.6 - actor.bw < slot.right &&
+        actor.boxTop + p.y - actor.bh - actor.rem < slot.bottom) actor.side = 1;
+    }
     b.classList.toggle('left', actor.side < 0);
     placeBubble();
     void b.offsetWidth;
@@ -2468,6 +2632,8 @@
         return [
           { id: 'ops', label: K('OPERATIONS'), desc: K('Progress of the current hour, day, week, month and year.') },
           { id: 'orders', label: K('DAILY ORDERS'), desc: K('Your own checklist. Click an order to mark it complete. Resets every day.') },
+          { id: 'calendar', label: K('CALENDAR'), desc: K('Events and reminders. Click a day to open it; NEW ENTRY adds one. Alerts show above the hub panel with a chime.') },
+          { id: 'schedule', label: K('WEEKLY SCHEDULE'), desc: K('Your week at a glance. Click an empty slot to add an activity, or an activity to change it.') },
           { id: 'timer', label: K('FOCUS TIMER'), desc: K('A timed operation for focused work. The Pod reports when it ends, even from the hub.') },
           { id: 'wellness', label: K('WELLNESS'), desc: K('Proposals to rest your eyes, drink water, stretch, check your posture and eat. Click an interval to change it.') }
         ];
@@ -2598,6 +2764,7 @@
     fitShowLabel();
     refreshPanel(Date.now());
     placeWellCard();
+    planner.showHub();
   }
 
   function buildSide(name) {
@@ -3085,6 +3252,7 @@
     let status = T('SYS NOMINAL');
     if (timer.running) status = T('OPERATION {time}', { time: fmtMS(timerLeft(now)) });
     else if (now < timerFlash) status = T('OPERATION COMPLETE');
+    else if (planner.alertTitle()) status = T('ALERT // {name}', { name: planner.alertTitle() });
     else if (well.card) status = T('PROPOSAL // {name}', { name: T(wellById(well.card.id).name) });
     setText($('status-label'), status);
   }
@@ -3151,7 +3319,15 @@
         renderTimer(now);
       } else if (nav.sel === 'wellness') {
         renderWellness(now, force);
+      } else if (nav.sel === 'calendar' || nav.sel === 'schedule') {
+        planner.refresh(nav.sel, now, force);
       }
+    },
+    sub() {
+      planner.leave(); // an open editor belongs to the view it was opened from
+    },
+    leave() {
+      planner.leave();
     },
     frame(dt, t) {
       if (nav.sel === 'timer') drawTimerRing(t);
@@ -3306,12 +3482,16 @@
   }
 
   // The card sits above the Pod log on the hub and in the corner of a place.
+  // A calendar alert sits above the hub panel (clear of the desktop character); in a place it stacks above
+  // the wellness card in the bottom corner.
   function placeWellCard() {
-    const card = $('well-card');
+    const card = $('well-card'), cal = $('cal-card');
     if (nav.place) {
-      if (card.parentNode !== $('place')) $('place').appendChild(card);
-    } else if (card.parentNode !== $('rightcol')) {
-      $('rightcol').insertBefore(card, $('podlog'));
+      if (cal.parentNode !== $('place-cards')) $('place-cards').appendChild(cal);
+      if (card.parentNode !== $('place-cards')) $('place-cards').appendChild(card);
+    } else {
+      if (card.parentNode !== $('rightcol')) $('rightcol').insertBefore(card, $('podlog'));
+      if (cal.parentNode !== $('hubslot')) $('hubslot').appendChild(cal);
     }
   }
 
@@ -3457,6 +3637,28 @@
     setText($('wl-next'), soon ? T('NEXT // {name} {when}', { name: T(soon.w.name), when: fmtIn(soon.at - now) }) : '--');
   }
   $('wl-toggle').addEventListener('click', () => setOverride('wellness', !cfg.wellness));
+
+  // ----- QUESTS > CALENDAR / WEEKLY SCHEDULE, alerts and the desktop agenda (planner.js) -----
+
+  const planner = window.YoRHaPlanner({
+    cfg: cfg,
+    store: store,
+    nav: nav,
+    setText: setText,
+    timeHM: timeHM,
+    fmtIn: fmtIn,
+    DAYS: DAYS,
+    MONTHS: MONTHS,
+    MONTHS_SHORT: MONTHS_SHORT,
+    setOverride: setOverride,
+    say: (kind, text) => say(kind, text),
+    act: act,
+    emote: emote,
+    go: go,
+    ask: (prompt, text, max) => linkAsk(prompt, text, max), // real-keyboard typing through YoRHa Helper
+    helperOnline: () => link.online,
+    pingHelper: () => linkPing()
+  });
 
   // ----- INTEL: now playing, audio log, Pod archive -----
 
@@ -4487,6 +4689,12 @@
     { label: K('LAYOUT'), field: 'layout', opts: [['left', K('MENU LEFT')], ['right', K('MENU RIGHT')]] },
     { label: K('DESKTOP CHARACTER'), field: 'charMode', opts: [['stand', K('ON')], ['off', K('OFF')]] },
     { label: K('POD LOG'), field: 'showLog', opts: [[true, K('ON')], [false, K('OFF')]] },
+    { label: K('DESKTOP AGENDA'), field: 'calWidget', opts: [['auto', K('WHEN SOMETHING IS PLANNED')], ['on', K('ALWAYS')], ['off', K('HIDDEN')]] },
+    { label: K('CALENDAR ALERTS'), field: 'calAlerts', opts: [[true, K('ON')], [false, K('OFF')]] },
+    { label: K('ALERT CHIME'), field: 'calSound', opts: [[true, K('ON')], [false, K('OFF')]] },
+    { label: K('WEEK STARTS ON'), field: 'weekStart', opts: [['auto', K('AUTO')], ['monday', K('MONDAY')], ['sunday', K('SUNDAY')], ['saturday', K('SATURDAY')]] },
+    { label: K('YORHA HELPER'), field: 'helper', opts: [[false, K('OFF')], [true, K('ON')]], confirm: helperDisclaimer },
+    { label: K('ON-SCREEN KEYBOARD'), field: 'oskb', opts: [['auto', K('WHEN YORHA HELPER IS OFF')], ['on', K('ALWAYS')], ['off', K('HIDDEN')]] },
     { label: K('AUDIO LOG'), field: 'audioLog', opts: [['keep', K('KEEP')], ['music', K('MUSIC ONLY')], ['session', K('THIS SESSION ONLY')], ['off', K('OFF')]] },
     { label: K('AUDIO VISUALIZER'), field: 'showViz', opts: [[true, K('ON')], [false, K('OFF')]] },
     { label: K('AUDIO SENSITIVITY'), field: 'audioGain', opts: [[50, '50%', true], [100, '100%', true], [200, '200%', true], [400, '400%', true], [800, '800%', true]], fmt: (v) => Math.round(v) + '%' },
@@ -4525,7 +4733,9 @@
       if (s.field === 'language' && cfg.language === 'auto') shown += ' // ' + langName(I18N.code);
       box.appendChild(settingRow(T(s.label), s.field in overrides ? T('CUSTOM') : '', shown, () => {
         const i = opts.findIndex((o) => o[0] === cfg[s.field]);
-        setOverride(s.field, opts[(i + 1) % opts.length][0]);
+        const next = opts[(i + 1) % opts.length][0];
+        if (s.confirm && next === true) s.confirm(); // switching YoRHa Helper on goes through its disclaimer
+        else setOverride(s.field, next);
       }));
     }
     box.appendChild(settingRow(T('USE WALLPAPER ENGINE SETTINGS'), '', T('RESET'), () => {
@@ -4540,6 +4750,12 @@
   }
 
   hooks.system = {
+    sub() {
+      closeHelperNote();
+    },
+    leave() {
+      closeHelperNote();
+    },
     refresh(now, force) {
       if (nav.sel === 'diag') updateSystem(now, 'ps-');
       else if (nav.sel === 'settings' && force) renderSettings();
@@ -4565,6 +4781,7 @@
       setText($('panel-sub'), T(PANEL_SUB[state.panel]));
     }
     applyImages();
+    planner.relabel();
     updateClock(new Date(now));
     updateDossier();
     updateDossierNext(now);
@@ -4649,6 +4866,8 @@
     podTick(now);
     timerTick(now);
     wellTick(now);
+    planner.tick(now);
+    linkTick(now);
     unitTick(now);
     refreshPanel(now);
     placeTick(now);

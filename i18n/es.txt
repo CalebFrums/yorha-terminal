@@ -15,6 +15,7 @@ UNIDAD
 HACKEO
 JARDÍN
 SISTEMA
+AGENDA
 ENTRAR
 OBJETIVO
 SEÑALES
@@ -25,6 +26,7 @@ OPERACIÓN SEMANAL
 OPERACIÓN MENSUAL
 OPERACIÓN ANUAL
 ÓRDENES DIARIAS
+PRÓXIMA ENTRADA
 BIENESTAR
 SIN SEÑAL
 TÍTULO
@@ -92,6 +94,14 @@ TIEMPO DE CONCENTRACIÓN HOY
 EL TEMPORIZADOR SIGUE EN LA CENTRAL // MIRA LA BARRA SUPERIOR
 PROPUESTAS: NO
 LAS PROPUESTAS APARECEN CUANDO EL ESCRITORIO ESTÁ A LA VISTA // HORAS DE COMIDA EN LAS PROPIEDADES DEL FONDO
+HOY
+ALERTAS: SÍ
+AGENDA EN EL ESCRITORIO
+NUEVA ENTRADA
+PRÓXIMAMENTE
+HAZ CLIC EN UN DÍA PARA ABRIRLO // DOBLE CLIC PARA AÑADIR UNA ENTRADA // PUEDES ESCRIBIR MÁS EN LAS PROPIEDADES DEL FONDO
+NUEVA ACTIVIDAD
+HAZ CLIC EN UN HUECO LIBRE PARA AÑADIR UNA ACTIVIDAD // HAZ CLIC EN UNA ACTIVIDAD PARA EDITARLA
 ESCRITORIO
 DESPLEGAR EN EL ESCRITORIO
 REANUDAR ROTACIÓN
@@ -120,6 +130,17 @@ Terminal de escritorio hecha por fans al estilo de NieR:Automata. Sin relación 
 La central es tu base. Cada entrada del menú es un lugar con su propio submenú. Usa CENTRAL arriba a la izquierda para volver, o deja el ratón quieto y la terminal volverá sola.
 Wallpaper Engine debe permitir la entrada del ratón para que la central y los lugares respondan. La integración multimedia alimenta INTELIGENCIA.
 GLORIA A LA HUMANIDAD
+YORHA HELPER // AVISO
+YoRHa Helper es un programa pequeño y opcional de la página de GitHub de este fondo (github.com/CalebFrums/yorha-terminal, carpeta helper). Lo descargas e inicias tú; el fondo no puede instalar nada.
+Con este interruptor encendido, el fondo habla con él solo en este PC (127.0.0.1) para dos cosas: pulsar las teclas multimedia de Windows cuando haces clic en anterior, reproducir/pausa o siguiente en INTELIGENCIA, y abrir un cuadro de texto cuando eliges ESCRIBIR CON EL TECLADO.
+Privacidad: no se envía nada a internet ni al autor. El helper no guarda registros ni escribe archivos, y solo lee lo que escribes en su propio cuadro de texto. Tu calendario y tu horario se quedan en este PC.
+Con el interruptor apagado, el fondo nunca contacta con el helper. Puedes volver a apagarlo aquí cuando quieras.
+ACTIVAR
+CANCELAR
+ESCRIBE UN TÍTULO O ELIGE UNO
+ESCRIBIR CON EL TECLADO
+GUARDAR
+BORRAR
 POD
 Gloria a la humanidad
 
@@ -196,6 +217,16 @@ ESPERANDO SEÑAL DE AUDIO // REPRODUCE ALGO EN SPOTIFY, UN NAVEGADOR, ETC.
 Registro de audio borrado. No queda constancia de señales anteriores.
 Señal de audio captada: «{title}»{by}.
 Reproducción de audio suspendida.
+SEÑAL ENVIADA // PISTA SIGUIENTE
+SEÑAL ENVIADA // PISTA ANTERIOR
+SEÑAL ENVIADA // REPRODUCIR / PAUSA
+YORHA HELPER ESTÁ APAGADO // ACTÍVALO EN SISTEMA > AJUSTES RÁPIDOS
+YORHA HELPER PERDIDO // ¿SIGUE EN MARCHA YORHA HELPER?
+YORHA HELPER DESCONECTADO // CONSIGUE YORHA HELPER EN GITHUB.COM/CALEBFRUMS/YORHA-TERMINAL
+HELPER APAGADO
+HELPER CONECTADO
+HELPER DESCONECTADO
+YoRHa Helper activado. Solo habla con este PC.
 {n} FPS
 LÍMITE {n}
 SIMULADO
@@ -258,6 +289,10 @@ CONFIGURACIÓN DE LA UNIDAD
 OPERACIONES
 Progreso de la hora, el día, la semana, el mes y el año en curso.
 Tu propia lista. Haz clic en una orden para marcarla como completada. Se reinicia cada día.
+CALENDARIO
+Eventos y recordatorios. Haz clic en un día para abrirlo; NUEVA ENTRADA añade uno. Las alertas aparecen sobre el panel de la central, con un aviso sonoro.
+HORARIO SEMANAL
+Tu semana de un vistazo. Haz clic en un hueco libre para añadir una actividad, o en una actividad para cambiarla.
 TEMPORIZADOR
 Una operación cronometrada para trabajar concentrado. El Pod avisa cuando termina, incluso desde la central.
 Propuestas para descansar la vista, beber agua, estirarte, revisar tu postura y comer. Haz clic en un intervalo para cambiarlo.
@@ -362,6 +397,7 @@ Temporizador de operación iniciado. Quedan {time}.
 Temporizador de operación terminado. Se recomienda un breve descanso.
 OPERACIÓN {time}
 OPERACIÓN COMPLETADA
+ALERTA // {name}
 PROPUESTA // {name}
 PAUSA
 REANUDAR
@@ -516,6 +552,15 @@ MENÚ A LA DERECHA
 PERSONAJE EN EL ESCRITORIO
 SÍ
 REGISTRO DEL POD
+CUANDO HAY ALGO PLANEADO
+SIEMPRE
+OCULTA
+ALERTAS DEL CALENDARIO
+SONIDO DE ALERTA
+LA SEMANA EMPIEZA EL
+YORHA HELPER
+TECLADO EN PANTALLA
+SI YORHA HELPER ESTÁ APAGADO
 GUARDAR
 SOLO MÚSICA
 SOLO ESTA SESIÓN
@@ -638,6 +683,97 @@ BRECHA {n} SUPERADA  //  ELIGE UNA MEJORA PARA ESTA PARTIDA
 PUNTOS {score}   //   {stages}
 {n} BRECHA SUPERADA|{n} BRECHAS SUPERADAS
 PRECISIÓN {acc}%
+
+## ui.planner
+DOM
+LUN
+MAR
+MIÉ
+JUE
+VIE
+SÁB
+{wd} {day} {mon}
+{month} DE {year}
+UNA VEZ
+SEMANAL
+MENSUAL
+ANUAL
+A LA HORA
+10 MIN ANTES
+1 HORA ANTES
+1 DÍA ANTES
+AL EMPEZAR
+5 MIN ANTES
+15 MIN ANTES
+Cumpleaños
+Cita
+Reunión
+Fecha límite
+Pago
+Llamada
+Examen
+Viaje
+Evento
+Trabajo
+Estudio
+Clase
+Gimnasio
+Comida
+Dormir
+Videojuegos
+Tiempo libre
+Tareas de casa
+Trayecto
+hoy
+Calendario: {title}, {when}.
+Horario: {title} a las {when}.
+TODO EL DÍA
+AHORA
+DESDE LAS {time}
+ALERTA DEL CALENDARIO
+HORARIO
++{n} MÁS
+ENTENDIDO
+POSPONER {n} MIN
+HASTA LAS {time}
+A CONTINUACIÓN
+{wd} {day}
+SIN ENTRADAS // MISIONES > CALENDARIO
+ALERTAS: NO
+AGENDA EN EL ESCRITORIO // {mode}
+SIN ENTRADAS
+NADA EN LOS PRÓXIMOS 120 DÍAS
+PROPIEDADES
+Esa entrada viene de las propiedades del fondo. Edítala allí.
+AHORA // {what} HASTA LAS {time}
+AHORA // LIBRE
+DESPUÉS // {what} {when}
+MAYÚS
+ESPACIO
+BORRAR
+BORRAR TODO
+EDITAR ENTRADA
+EDITAR ACTIVIDAD
+MES
+REPETIR
+ALERTA
+ENTRE SEMANA
+FIN DE SEMANA
+TODOS LOS DÍAS
+DÍAS
+INICIO
+FIN
+El teclado en pantalla está oculto. Actívalo en SISTEMA > AJUSTES RÁPIDOS o inicia YoRHa Helper.
+Para texto en chino o coreano, usa ESCRIBIR CON EL TECLADO (requiere YoRHa Helper) o las propiedades del fondo.
+Escribe un título o elige una de las sugerencias.
+Elige al menos un día.
+La hora de fin debe ser distinta de la de inicio.
+Entrada del calendario guardada: {title}.
+Actividad guardada: {title}.
+Entrada borrada: {title}.
+Escribe en la ventana que se abrió y pulsa Intro.
+YoRHa Helper está apagado. Actívalo en SISTEMA > AJUSTES RÁPIDOS.
+Escribir con el teclado requiere YoRHa Helper, de github.com/CalebFrums/yorha-terminal.
 
 ## pod.idle.routine
 Report: No se detectan firmas hostiles en este sector.

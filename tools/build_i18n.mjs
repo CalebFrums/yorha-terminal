@@ -1,6 +1,6 @@
 // YoRHa Terminal -- translation build.
 //   node tools/build_i18n.mjs
-// 1. Extracts every English string (T/K/TN calls in main.js, games.js and breach3d.js, text in index.html, Pod lines
+// 1. Extracts every English string (T/K/TN calls in main.js, games.js, breach3d.js and planner.js, text in index.html, Pod lines
 //    in podlines.js) into i18n/en.txt.
 // 2. Checks each i18n/<code>.txt against it, line by line (same "## " sections, same line counts,
 //    same {placeholders}, same Pod line kinds) and writes lang/<code>.js plus lang/index.js.
@@ -75,7 +75,8 @@ const uiGroups = [
   ['ui.page', htmlKeys(rd('index.html'))],
   ['ui.terminal', jsKeys(rd('main.js'))],
   ['ui.games', jsKeys(rd('games.js'))],
-  ['ui.breach', jsKeys(rd('breach3d.js'))]
+  ['ui.breach', jsKeys(rd('breach3d.js'))],
+  ['ui.planner', jsKeys(rd('planner.js'))]
 ];
 const seen = new Set();
 const ui = [];
