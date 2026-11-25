@@ -858,8 +858,31 @@
     KB.zh = { label: u([0x62fc, 0x97f3]).join(''), rows: [
       '1234567890'.split(''), 'qwertyuiop'.split(''), 'asdfghjkl\''.split(''),
       'zxcvbnm'.split('').concat(u([0xff0c, 0x3002, 0xff1f]))] };
+    // Latin layouts of their own for German (QWERTZ with umlauts and sharp s), French (AZERTY), Spanish and
+    // Portuguese, each with its common accents on the keys. In those languages it takes the ABC tab's
+    // place; the accents tab keeps the rarer letters.
+    const DIGITS = '1234567890'.split('');
+    KB.de = { label: 'ABC', rows: [
+      DIGITS.concat(u([0xdf])),
+      'qwertzuiop'.split('').concat(u([0xfc])),
+      'asdfghjkl'.split('').concat(u([0xf6, 0xe4])),
+      'yxcvbnm,.-\''.split('')] };
+    KB.fr = { label: 'ABC', rows: [
+      DIGITS,
+      u([0xe9, 0xe8, 0xea, 0xeb, 0xe0, 0xe2, 0xe7, 0xee, 0xf4, 0xf9, 0xfb, 0x153]),
+      'azertyuiop'.split(''), 'qsdfghjklm'.split(''), 'wxcvbn\',.-'.split('')] };
+    KB.es = { label: 'ABC', rows: [
+      DIGITS,
+      u([0, 0xe1, 0xe9, 0xed, 0xf3, 0xfa, 0xfc, 0xbf, 0xa1, 0]),
+      'qwertyuiop'.split(''), 'asdfghjkl'.split('').concat(u([0xf1])), 'zxcvbnm,.-'.split('')] };
+    KB.pt = { label: 'ABC', rows: [
+      DIGITS,
+      u([0xe1, 0xe2, 0xe3, 0xe0, 0xe9, 0xea, 0xed, 0xf3, 0xf4, 0xf5, 0xfa]),
+      'qwertyuiop'.split(''), 'asdfghjkl'.split('').concat(u([0xe7])), 'zxcvbnm,.-'.split('')] };
+    const KB_LATIN = { de: 'de', fr: 'fr', es: 'es', pt: 'pt' };
     const KB_ORDER = ['abc', 'acc', 'cyr', 'kana', 'ko', 'zh', 'sym'];
-    const KB_DEFAULT = { ru: 'cyr', ja: 'kana', ko: 'ko', zh: 'zh' };
+    const KB_DEFAULT = { ru: 'cyr', ja: 'kana', ko: 'ko', zh: 'zh', de: 'de', fr: 'fr', es: 'es', pt: 'pt' };
+    const isLatin = (id) => id === 'abc' || Object.values(KB_LATIN).includes(id);
 
     // ---- Hangul. ed.hc marks the last character as still being composed: the next jamo may join it, and
     // ERASE takes it apart one jamo at a time, as a Korean IME does. Any other key ends the syllable.
@@ -1039,7 +1062,8 @@
       if (ed.layout === 'ko') return ed.shift && KO_SHIFT[ch.charCodeAt(0)] ? String.fromCharCode(KO_SHIFT[ch.charCodeAt(0)]) : ch;
       if (ed.layout === 'zh') return ed.shift ? ch.toUpperCase() : ch; // pinyin is typed in lower case
       if (ed.layout === 'sym' || ch === '\u00df') return ch; // no capital form wanted
-      return ed.shift || !ed.title ? ch.toUpperCase() : ch;
+      // Capital for the first letter of a title, also after an opening mark such as the Spanish one.
+      return ed.shift || !/[\p{L}\p{N}]/u.test(ed.title) ? ch.toUpperCase() : ch;
     }
 
     function typeChar(ch) {
@@ -1087,8 +1111,9 @@
       shift.dataset.op = 'shift';
       if (ed.layout === 'sym') shift.classList.add('off');
       r.appendChild(shift);
-      for (const id of KB_ORDER) {
-        const t = el('span', 'key tab' + (id === ed.layout ? ' on' : ''), KB[id].label);
+      for (const tab of KB_ORDER) {
+        const id = tab === 'abc' ? KB_LATIN[I18N.code] || 'abc' : tab;
+        const t = el('span', 'key tab' + (id === ed.layout || (tab === 'abc' && isLatin(ed.layout)) ? ' on' : ''), KB[id].label);
         t.dataset.op = 'layout:' + id;
         r.appendChild(t);
       }
