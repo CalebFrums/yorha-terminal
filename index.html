@@ -265,6 +265,11 @@
           <div class="wc-hint" id="wc-hint"></div>
           <div class="wc-foot"><span class="wc-count" id="wc-count"></span><span class="btn" id="wc-done">DONE</span><span class="btn ghost" id="wc-later">LATER</span></div>
         </aside>
+        <aside id="hub-stats">
+          <div class="pod-head"><span class="sq"></span>HARDWARE // MONITOR<span class="pod-state" id="hs-state">READING</span></div>
+          <div id="hs-body"></div>
+          <div id="hs-foot"></div>
+        </aside>
         <aside id="podlog">
           <div class="pod-head"><span class="sq"></span>POD 042 // LOG<span class="pod-state" id="pod-state">OBSERVING</span></div>
           <div id="pod-lines"></div>
@@ -395,6 +400,21 @@
             </div>
             <canvas id="pm-viz"></canvas>
             <div class="note" id="pm-note"></div>
+          </div>
+
+          <div class="pview" id="pv-intel-hw">
+            <div class="hw-grid">
+              <div class="hw-col" id="hw-left"></div>
+              <div class="hw-col">
+                <div class="kv"><span class="k">SYSTEM TEMP</span><span class="v" id="hw-temp">--</span></div>
+                <div class="kv"><span class="k">NETWORK</span><span class="v" id="hw-net">--</span></div>
+                <div class="kv"><span class="k">SYSTEM UPTIME</span><span class="v" id="hw-up">--</span></div>
+                <div class="hw-drives" id="hw-drives"></div>
+              </div>
+            </div>
+            <div class="spark-title"><span class="sq"></span>LOAD HISTORY // CPU BARS, GPU LINE // 2 MIN</div>
+            <canvas id="hw-spark"></canvas>
+            <div class="note" id="hw-note"></div>
           </div>
 
           <div class="pview" id="pv-intel-audio">
@@ -568,7 +588,7 @@
       </div>
 
       <div id="place-cards"></div>
-      <div id="place-hint"><span class="hint-tag">POD</span><span id="hint-pod"></span></div>
+      <div id="place-hint"><span class="hint-tag">POD</span><span id="hint-pod"></span><span id="place-stats"></span></div>
     </section>
 
     <footer id="footer"><div class="rule"></div><span id="footer-text">Glory to Mankind</span></footer>
