@@ -2145,3 +2145,36 @@ body.cal-alert #hubslot #agenda { display: none; }
   .ag-week { grid-template-columns: repeat(7, 2.4rem); }
   .cal-side { width: 21rem; }
 }
+
+/* INTEL > HARDWARE */
+.hw-grid { flex: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 2rem; }
+.hw-col { min-width: 0; }
+.hw-m .m-val { white-space: nowrap; }
+.hw-m .hw-sub { margin-top: 0.2rem; font-size: 0.68rem; letter-spacing: 0.1em; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hw-m .hw-sub:empty { display: none; }
+.hw-drives { margin-top: 0.4rem; }
+.hw-drive .bar { height: 0.6rem; padding: 0.1rem; }
+#pv-intel-hw .kv .k { width: 9.5rem; }
+#hw-spark { flex: 1; min-height: 2.5rem; width: 100%; margin-top: 0.5rem; }
+#pv-intel-hw.stale .hw-grid { opacity: 0.45; }
+
+/* Hardware strip under every place screen and hub box */
+#hint-pod { flex: 1; min-width: 0; }
+#place-stats { flex: none; display: none; align-items: center; gap: 1.4rem; margin-left: auto; visibility: visible; }
+#place-stats.show { display: flex; }
+.ps-i { display: inline-flex; align-items: center; gap: 0.45rem; letter-spacing: 0.1em; color: var(--ink); }
+.ps-i b { font-weight: normal; font-size: 0.68rem; letter-spacing: 0.22em; color: var(--ink-2); }
+.ps-bar { display: inline-block; width: 3.6rem; height: 0.55rem; padding: 0.08rem; border: 1px solid var(--ink-2); }
+.ps-bar > i { display: block; height: 100%; width: 0; background: var(--ink); transition: width 0.5s; }
+.ps-i.hot, .ps-i.hot b { color: rgb(var(--accent-rgb)); }
+.ps-i.hot .ps-bar > i { background: rgb(var(--accent-rgb)); }
+
+#hub-stats { display: none; margin-bottom: 1rem; background: var(--paper); box-shadow: 0.3rem 0.3rem 0 var(--drop); }
+#hub-stats.show { display: block; }
+#hub-stats.stale #hs-body, #hub-stats.stale #hs-foot { opacity: 0.45; }
+#hs-body { padding: 0.6rem 1.1rem 0.2rem; }
+#hs-body .meter { padding: 0.25rem 0; }
+#hs-foot { padding: 0.2rem 1.1rem 0.8rem; font-size: 0.7rem; letter-spacing: 0.12em; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#hs-foot:empty { display: none; }
+
+.ps-v { display: inline-block; text-align: right; white-space: nowrap; overflow: hidden; font-variant-numeric: tabular-nums; }

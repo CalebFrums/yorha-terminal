@@ -8,6 +8,8 @@
     - Typing: "TYPE ON PC KEYBOARD" in the calendar and schedule editors asks it to open a small text box.
       You type there with your real keyboard (input methods for Chinese, Japanese and Korean work too)
       and the text goes back to the wallpaper. It never reads keys typed anywhere else.
+    - PC stats: INTEL > HARDWARE and the stats strip read processor, memory, graphics, disk, network and
+      temperature from Windows performance counters (and nvidia-smi when present), only while they are shown.
 
   Privacy: it listens on 127.0.0.1:47823, which only programs on this PC can reach. It never connects to
   the internet, writes no files and keeps no log. Only the wallpaper (file://), pages on this PC
@@ -31,7 +33,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $App = 'YoRHa Helper'
-$Version = 2
+$Version = 3
 $Self = $MyInvocation.MyCommand.Path
 $Shortcut = Join-Path ([Environment]::GetFolderPath('Startup')) 'YoRHa Helper.lnk'
 
@@ -227,6 +229,179 @@ Write-Host "[OK] $App is running on this PC only (127.0.0.1:$Port). Nothing is l
 if ($DryRun) { Write-Host '[INFO] Dry run: media keys are not pressed; actions are shown here instead.' }
 Write-Host 'Leave this window open, or close it to stop.'
 
+# ---------- PC stats ----------
+# A background thread reads CPU, memory, GPU, disk, network and temperature from Windows performance
+# counters (and nvidia-smi when present), but only while the wallpaper asked for them in the last 30 s.
+# GET /yorha/stats returns the latest reading. Nothing leaves this PC.
+$StatsShared = [hashtable]::Synchronized(@{ json = '{"ok":false,"warming":true}'; lastAsk = [DateTime]::MinValue; quit = $false })
+$StatsScript = {
+  param($S)
+  $ErrorActionPreference = 'SilentlyContinue'
+  $inv = [Globalization.CultureInfo]::InvariantCulture
+  function Num($v, [int]$d) { if ($null -eq $v -or [double]::IsNaN([double]$v)) { return 'null' }; return ([math]::Round([double]$v, $d)).ToString($inv) }
+  function Str($s) { return '"' + (([string]$s).Trim() -replace '\\', '\\' -replace '"', '\"' -replace '[\x00-\x1f]', ' ') + '"' }
+  function Pct($v) { if ($null -eq $v) { return $null }; return [math]::Max(0, [math]::Min(100, [double]$v)) }
+
+  $cpuName = ''; $memTotal = 0.0; $igpuName = ''
+  try { $cpuName = (Get-CimInstance Win32_Processor | Select-Object -First 1).Name.Trim() } catch {}
+  try { $memTotal = [double](Get-CimInstance Win32_ComputerSystem).TotalPhysicalMemory } catch {}
+  try { $igpuName = (Get-CimInstance Win32_VideoController | Where-Object { $_.Name -notmatch 'NVIDIA' } | Select-Object -First 1).Name } catch {}
+  $cpu = $null
+  try { $cpu = New-Object Diagnostics.PerformanceCounter('Processor Information', '% Processor Utility', '_Total'); [void]$cpu.NextValue() }
+  catch { try { $cpu = New-Object Diagnostics.PerformanceCounter('Processor', '% Processor Time', '_Total'); [void]$cpu.NextValue() } catch { $cpu = $null } }
+  $mem = $null; try { $mem = New-Object Diagnostics.PerformanceCounter('Memory', 'Available Bytes'); [void]$mem.NextValue() } catch {}
+  $dsk = $null; try { $dsk = New-Object Diagnostics.PerformanceCounter('PhysicalDisk', '% Idle Time', '_Total'); [void]$dsk.NextValue() } catch {}
+  $upc = $null; try { $upc = New-Object Diagnostics.PerformanceCounter('System', 'System Up Time'); [void]$upc.NextValue() } catch {}
+  $catNet = $null; try { $catNet = New-Object Diagnostics.PerformanceCounterCategory('Network Interface') } catch {}
+  $catGpu = $null; try { $catGpu = New-Object Diagnostics.PerformanceCounterCategory('GPU Engine') } catch {}
+  $catGmem = $null; try { $catGmem = New-Object Diagnostics.PerformanceCounterCategory('GPU Adapter Memory') } catch {}
+  $catTz = $null; try { $catTz = New-Object Diagnostics.PerformanceCounterCategory('Thermal Zone Information') } catch {}
+  $smi = $null; try { $smi = (Get-Command nvidia-smi -ErrorAction Stop).Source } catch {}
+
+  function Snap($cat, [string[]]$names) {
+    $out = @{}
+    if (-not $cat) { return $out }
+    try {
+      $d = $cat.ReadCategory()
+      foreach ($n in $names) {
+        $h = @{}
+        $col = $d[$n]
+        if ($col) { foreach ($v in $col.Values) { $h[$v.InstanceName] = $v.Sample } }
+        $out[$n] = $h
+      }
+    } catch {}
+    return $out
+  }
+  function Rate($prev, $cur, [string]$n) {
+    $r = @{}
+    if (-not $prev -or -not $prev[$n] -or -not $cur[$n]) { return $r }
+    foreach ($k in $cur[$n].Keys) {
+      if ($prev[$n].ContainsKey($k)) {
+        try { $r[$k] = [Diagnostics.CounterSample]::Calculate($prev[$n][$k], $cur[$n][$k]) } catch {}
+      }
+    }
+    return $r
+  }
+
+  $prevNet = $null; $prevGpu = $null; $drives = '[]'; $tick = 0; $wasIdle = $true
+  while (-not $S.quit) {
+    if (([DateTime]::UtcNow - $S.lastAsk).TotalSeconds -gt 30) {
+      $wasIdle = $true
+      Start-Sleep -Milliseconds 500
+      continue
+    }
+    if ($wasIdle) {
+      # Fresh baselines, so the first reading after a pause is not an average over the pause.
+      $prevNet = Snap $catNet @('Bytes Received/sec', 'Bytes Sent/sec')
+      $prevGpu = Snap $catGpu @('Utilization Percentage')
+      if ($cpu) { [void]$cpu.NextValue() }
+      if ($dsk) { [void]$dsk.NextValue() }
+      $wasIdle = $false
+      $tick = 0
+      Start-Sleep -Milliseconds 1000
+    }
+
+    $parts = New-Object System.Collections.Generic.List[string]
+    $parts.Add('"ok":true')
+
+    $cpuPct = $null; if ($cpu) { try { $cpuPct = Pct $cpu.NextValue() } catch {} }
+    $parts.Add('"cpu":{"name":' + (Str $cpuName) + ',"load":' + (Num $cpuPct 1) + ',"cores":' + [Environment]::ProcessorCount + '}')
+
+    $avail = $null; if ($mem) { try { $avail = [double]$mem.NextValue() } catch {} }
+    $used = if ($memTotal -gt 0 -and $null -ne $avail) { $memTotal - $avail } else { $null }
+    $parts.Add('"mem":{"used":' + (Num $used 0) + ',"total":' + (Num $memTotal 0) + '}')
+
+    $busy = $null; if ($dsk) { try { $busy = Pct (100 - $dsk.NextValue()) } catch {} }
+    if ($tick % 15 -eq 0) {
+      $dl = @()
+      foreach ($dr in [IO.DriveInfo]::GetDrives()) {
+        try {
+          if ($dr.IsReady -and $dr.DriveType -eq 'Fixed') {
+            $dl += '{"name":' + (Str $dr.Name.TrimEnd('\')) + ',"label":' + (Str $dr.VolumeLabel) + ',"used":' + (Num ($dr.TotalSize - $dr.AvailableFreeSpace) 0) + ',"total":' + (Num $dr.TotalSize 0) + '}'
+          }
+        } catch {}
+      }
+      $drives = '[' + ($dl -join ',') + ']'
+    }
+    $parts.Add('"disk":{"busy":' + (Num $busy 1) + ',"drives":' + $drives + '}')
+
+    $curNet = Snap $catNet @('Bytes Received/sec', 'Bytes Sent/sec')
+    $rx = 0.0; $tx = 0.0
+    foreach ($v in (Rate $prevNet $curNet 'Bytes Received/sec').Values) { $rx += $v }
+    foreach ($v in (Rate $prevNet $curNet 'Bytes Sent/sec').Values) { $tx += $v }
+    $prevNet = $curNet
+    $parts.Add('"net":{"down":' + (Num $rx 0) + ',"up":' + (Num $tx 0) + '}')
+
+    # GPU load per adapter: sum over processes per engine type, then the busiest engine type
+    # (the same way Task Manager does it).
+    $curGpu = Snap $catGpu @('Utilization Percentage')
+    $eng = @{}
+    foreach ($e in (Rate $prevGpu $curGpu 'Utilization Percentage').GetEnumerator()) {
+      if ($e.Key -match '(luid_0x[0-9a-fA-F]+_0x[0-9a-fA-F]+).*engtype_(.+)$') {
+        $key = $Matches[1] + '|' + $Matches[2]
+        $eng[$key] = [double]$eng[$key] + [double]$e.Value
+      }
+    }
+    $prevGpu = $curGpu
+    $load = @{}
+    foreach ($e in $eng.GetEnumerator()) {
+      $l = $e.Key.Split('|')[0]
+      if (-not $load.ContainsKey($l) -or $e.Value -gt $load[$l]) { $load[$l] = $e.Value }
+    }
+    $vram = @{}
+    $gm = Snap $catGmem @('Dedicated Usage')
+    if ($gm['Dedicated Usage']) {
+      foreach ($e in $gm['Dedicated Usage'].GetEnumerator()) {
+        if ($e.Key -match '(luid_0x[0-9a-fA-F]+_0x[0-9a-fA-F]+)') { $vram[$Matches[1]] = [double]$vram[$Matches[1]] + [double]$e.Value.RawValue }
+      }
+    }
+    $gpus = @()
+    $nvLuid = $null
+    if ($smi) {
+      try {
+        $line = (& $smi --query-gpu=name,utilization.gpu,temperature.gpu,memory.used,memory.total,power.draw --format=csv,noheader,nounits 2>$null | Select-Object -First 1)
+        $f = $line -split ',\s*'
+        if ($f.Count -ge 5) {
+          $nd = { param($x) $o = 0.0; if ([double]::TryParse($x, [Globalization.NumberStyles]::Float, $inv, [ref]$o)) { $o } else { $null } }
+          $nvUsed = (& $nd $f[3]); if ($null -ne $nvUsed) { $nvUsed *= 1MB }
+          $nvTot = (& $nd $f[4]); if ($null -ne $nvTot) { $nvTot *= 1MB }
+          $gpus += '{"name":' + (Str $f[0]) + ',"load":' + (Num (Pct (& $nd $f[1])) 0) + ',"temp":' + (Num (& $nd $f[2]) 0) +
+            ',"vram":' + (Num $nvUsed 0) + ',"vramTotal":' + (Num $nvTot 0) + ',"power":' + (Num (& $nd $f[5]) 1) + '}'
+          # The adapter whose dedicated memory matches what nvidia-smi reports is the NVIDIA one.
+          if ($null -ne $nvUsed) {
+            $best = [double]::MaxValue
+            foreach ($l in $vram.Keys) { $dlt = [math]::Abs($vram[$l] - $nvUsed); if ($dlt -lt $best) { $best = $dlt; $nvLuid = $l } }
+          }
+        }
+      } catch {}
+    }
+    $other = $load.Keys | Where-Object { $_ -ne $nvLuid } | Sort-Object { -$load[$_] } | Select-Object -First 1
+    if ($other) {
+      $nm = if ($smi) { $igpuName } else { (Get-CimInstance Win32_VideoController | Select-Object -First 1).Name }
+      $gpus += '{"name":' + (Str $nm) + ',"load":' + (Num (Pct $load[$other]) 0) + ',"temp":null,"vram":' + (Num $vram[$other] 0) + ',"vramTotal":null,"power":null}'
+    }
+    $parts.Add('"gpus":[' + ($gpus -join ',') + ']')
+
+    $temp = $null
+    $tz = Snap $catTz @('Temperature')
+    if ($tz['Temperature']) { foreach ($v in $tz['Temperature'].Values) { $c = [double]$v.RawValue - 273.15; if ($c -gt -50 -and ($null -eq $temp -or $c -gt $temp)) { $temp = $c } } }
+    $parts.Add('"temp":' + (Num $temp 0))
+
+    $up = $null; if ($upc) { try { $up = $upc.NextValue() } catch {} }
+    $parts.Add('"uptime":' + (Num $up 0))
+    $parts.Add('"time":' + [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds())
+
+    $S.json = '{' + ($parts -join ',') + '}'
+    $tick++
+    Start-Sleep -Milliseconds 2000
+  }
+}
+$statsPs = [powershell]::Create()
+$statsPs.Runspace = [runspacefactory]::CreateRunspace()
+$statsPs.Runspace.Open()
+[void]$statsPs.AddScript($StatsScript).AddArgument($StatsShared)
+[void]$statsPs.BeginInvoke()
+
 $running = $true
 while ($running) {
   $client = $listener.AcceptTcpClient()
@@ -252,10 +427,13 @@ while ($running) {
     if ($method -eq 'OPTIONS') {
       Send-Reply $stream 204 'No Content' ''
     } elseif ($method -eq 'GET' -and $path -eq '/yorha/ping') {
-      Send-Reply $stream 200 'OK' ('{"ok":true,"app":"' + $App + '","version":' + $Version + ',"input":true}')
+      Send-Reply $stream 200 'OK' ('{"ok":true,"app":"' + $App + '","version":' + $Version + ',"input":true,"stats":true}')
     } elseif (-not (Test-Origin $origin)) {
       if ($DryRun) { Write-Host '[DRY] refused a request from a website' }
       Send-Reply $stream 403 'Forbidden' '{"ok":false,"error":"origin"}'
+    } elseif ($method -eq 'GET' -and $path -eq '/yorha/stats') {
+      $StatsShared.lastAsk = [DateTime]::UtcNow
+      Send-Reply $stream 200 'OK' $StatsShared.json
     } elseif ($method -eq 'POST' -and $path -match '^/yorha/media/([a-z]+)$' -and $Keys.ContainsKey($Matches[1])) {
       $cmd = $Matches[1]
       if ($DryRun) { Write-Host "[DRY] would press: $cmd" }
@@ -285,5 +463,6 @@ while ($running) {
     $client.Close()
   }
 }
+$StatsShared.quit = $true
 $listener.Stop()
 Write-Host "[OK] $App stopped."

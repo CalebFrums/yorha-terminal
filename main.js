@@ -61,7 +61,9 @@
     calEntries: '',
     schedEntries: '',
     helper: false, // YoRHa Helper: off until the user reads the disclaimer and switches it on
-    oskb: 'auto'
+    oskb: 'auto',
+    hwStrip: true, // PC stats strip under every place screen (needs YoRHa Helper)
+    hwHub: 'auto' // hub hardware box above the Pod log: 'auto' (desktop character off), 'on', 'off'
   };
   // Shipped defaults. Default text (footer, lines, orders) is shown translated until the user edits it.
   const DEFAULTS = Object.assign({}, cfg);
@@ -121,7 +123,9 @@
     calendarentries: 'calEntries',
     scheduleentries: 'schedEntries',
     yorhahelper: 'helper',
-    onscreenkeyboard: 'oskb'
+    onscreenkeyboard: 'oskb',
+    hwstrip: 'hwStrip',
+    hwhub: 'hwHub'
   };
 
   const PANELS = ['map', 'quests', 'intel', 'archive', 'unit', 'hacking', 'garden', 'system'];
@@ -2670,6 +2674,7 @@
       case 'intel':
         return [
           { id: 'now', label: K('NOW PLAYING'), desc: K('Live media signal through Wallpaper Engine media integration.') },
+          { id: 'hw', label: K('HARDWARE'), desc: K('Live readings of this PC through YoRHa Helper: processor, memory, graphics, drives, network and temperature.') },
           { id: 'audio', label: K('AUDIO LOG'), desc: K('Tracks the terminal has picked up, newest first. Choose what is kept under QUICK SETTINGS // AUDIO LOG.') },
           { id: 'pod', label: K('POD ARCHIVE'), desc: K('Full record of Pod transmissions this session.') },
           { id: 'clearaudio', label: K('CLEAR AUDIO LOG'), desc: K('Erase every track in the audio log. Click twice to confirm.'),
@@ -3697,10 +3702,287 @@
   function renderAudioLog() { audioPager.set(audioLog); }
   function renderPodLog() { podPager.set(pod.history); }
 
+  // ----- INTEL > HARDWARE: live PC readings from YoRHa Helper's /yorha/stats -----
+  // Asked for every 2 s, and only while this view is on screen, so the helper samples nothing otherwise.
+
+  const hw = { next: 0, busy: false, data: null, at: 0, err: '', last: 0, hist: [], max: 60 };
+
+  function fmtBytes(b) {
+    if (b == null || !isFinite(b)) return '--';
+    const u = ['B', 'KB', 'MB', 'GB', 'TB'];
+    let i = 0;
+    while (b >= 1024 && i < u.length - 1) { b /= 1024; i++; }
+    return (i === 0 || b >= 100 ? Math.round(b) : b.toFixed(1)) + ' ' + u[i];
+  }
+  const fmtPct = (v) => (v == null || !isFinite(v) ? '--' : Math.round(v) + '%');
+
+  function hwPoll(now) {
+    if (!cfg.helper || hw.busy || now < hw.next || typeof fetch !== 'function') return;
+    hw.busy = true;
+    hw.next = now + 2000;
+    const ctl = typeof AbortController === 'function' ? new AbortController() : null;
+    const to = setTimeout(() => { if (ctl) ctl.abort(); }, 1800);
+    fetch(LINK + 'stats', { cache: 'no-store', signal: ctl ? ctl.signal : undefined })
+      .then((r) => r.json())
+      .then((j) => {
+        if (j && j.ok) {
+          hw.data = j;
+          hw.at = Date.now();
+          hw.err = '';
+          if (j.time !== hw.last) {
+            hw.last = j.time;
+            const g = (j.gpus || []).reduce((m, x) => Math.max(m, x.load || 0), 0);
+            hw.hist.push({ cpu: (j.cpu && j.cpu.load) || 0, gpu: g });
+            if (hw.hist.length > hw.max) hw.hist.shift();
+          }
+        } else hw.err = j && j.warming ? 'warming' : 'old';
+      })
+      .catch(() => { hw.err = 'offline'; })
+      .then(() => {
+        clearTimeout(to);
+        hw.busy = false;
+        renderStats();
+      });
+  }
+
+  // Readings are wanted on every place screen (the strip under the frame) and on the hub while the
+  // desktop character is off (the box above the Pod log). Otherwise the helper is not asked.
+  const hubStatsWanted = () => !nav.place && (cfg.hwHub === 'on' || (cfg.hwHub !== 'off' && charMode() === 'off'));
+  const stripWanted = () => !!nav.place && cfg.hwStrip;
+  function hwTick(now) {
+    const hwPage = nav.place === 'intel' && nav.sel === 'hw';
+    if (cfg.helper && (hwPage || stripWanted() || hubStatsWanted())) hwPoll(now);
+    else renderStats();
+  }
+
+  function renderStats() {
+    renderHardware();
+    renderStrip();
+    renderHubStats();
+  }
+
+  const gpuTag = (i) => 'GPU' + (i + 1);
+
+  // Values sit in fixed-width, right-aligned slots ([text, characters]) so the strip does not shift
+  // when a number gains or loses a digit.
+  function psValues(el, parts) {
+    let spans = el.querySelectorAll('.ps-v');
+    if (spans.length !== parts.length) {
+      for (const s of spans) s.remove();
+      for (let i = 0; i < parts.length; i++) {
+        const s = document.createElement('span');
+        s.className = 'ps-v';
+        el.appendChild(s);
+      }
+      spans = el.querySelectorAll('.ps-v');
+    }
+    parts.forEach(([text, chars], i) => {
+      spans[i].style.width = 'calc(' + chars + 'ch + ' + chars * 0.1 + 'em)'; // letter-spacing is 0.1em
+      setText(spans[i], text);
+    });
+  }
+
+  // Compact strip on the right of the bar under every place screen.
+  function renderStrip() {
+    const box = $('place-stats');
+    const d = hw.data;
+    const on = !!(cfg.helper && stripWanted() && d && Date.now() - hw.at < 10000);
+    box.classList.toggle('show', on);
+    if (!on) return;
+    const items = [['cpu', 'CPU', d.cpu && d.cpu.load, '']];
+    const m = d.mem || {};
+    items.push(['mem', 'RAM', m.total ? (m.used / m.total) * 100 : null, '']);
+    (d.gpus || []).forEach((g, i) => items.push(['gpu' + i, gpuTag(i), g.load, g.temp != null ? g.temp + '°C' : '']));
+    const keep = new Set(items.map((x) => x[0]).concat(['temp', 'net']));
+    for (const [key, label, pct, extra] of items) {
+      let el = box.querySelector('[data-k="' + key + '"]');
+      if (!el) {
+        el = document.createElement('span');
+        el.className = 'ps-i';
+        el.dataset.k = key;
+        el.innerHTML = '<b></b><i class="ps-bar"><i></i></i><span class="ps-v"></span>';
+        box.appendChild(el);
+      }
+      setText(el.querySelector('b'), label);
+      el.querySelector('.ps-bar > i').style.width = (pct == null || !isFinite(pct) ? 0 : clamp(pct, 0, 100)) + '%';
+      psValues(el, extra ? [[fmtPct(pct), 4], [extra, 5]] : [[fmtPct(pct), 4]]);
+      el.classList.toggle('hot', pct >= 90);
+      box.appendChild(el);
+    }
+    const n = d.net || {};
+    for (const [key, label, vals] of [['temp', 'TEMP', [[d.temp == null ? '--' : d.temp + '°C', 5]]],
+      ['net', 'NET', [['↓' + fmtBytes(n.down) + '/S', 10], ['↑' + fmtBytes(n.up) + '/S', 10]]]]) {
+      let el = box.querySelector('[data-k="' + key + '"]');
+      if (!el) {
+        el = document.createElement('span');
+        el.className = 'ps-i';
+        el.dataset.k = key;
+        el.innerHTML = '<b></b>';
+      }
+      setText(el.querySelector('b'), label);
+      psValues(el, vals);
+      box.appendChild(el);
+    }
+    for (const el of Array.from(box.children)) if (!keep.has(el.dataset.k)) el.remove();
+  }
+
+  // Box above the Pod log on the hub, only while the desktop character is off.
+  function renderHubStats() {
+    const box = $('hub-stats');
+    const show = !!(cfg.helper && hubStatsWanted());
+    box.classList.toggle('show', show);
+    if (!show) return;
+    const d = hw.data;
+    const fresh = d && Date.now() - hw.at < 10000;
+    box.classList.toggle('stale', !fresh);
+    setText($('hs-state'), fresh ? T('LIVE') : hw.err === 'offline' ? T('OFFLINE') : hw.err === 'old' ? T('UPDATE HELPER') : T('READING'));
+    if (!d) return;
+    const B = $('hs-body');
+    const c = d.cpu || {};
+    const rows = [];
+    const cpu = hwRow(B, 'cpu');
+    hwSet(cpu, T('PROCESSOR'), fmtPct(c.load), c.load, '', c.load >= 90);
+    rows.push(cpu);
+    const m = d.mem || {};
+    const mp = m.total ? (m.used / m.total) * 100 : null;
+    const mem = hwRow(B, 'mem');
+    hwSet(mem, T('MEMORY'), fmtBytes(m.used) + ' / ' + fmtBytes(m.total) + '  ' + fmtPct(mp), mp, '', mp >= 90);
+    rows.push(mem);
+    const keep = new Set();
+    (d.gpus || []).forEach((g, i) => {
+      keep.add('gpu' + i);
+      const row = hwRow(B, 'gpu' + i);
+      const bits = [];
+      if (g.temp != null) bits.push(g.temp + ' °C');
+      if (g.power != null) bits.push(Math.round(g.power) + ' W');
+      hwSet(row, T('GRAPHICS') + ' ' + (i + 1), (bits.length ? bits.join('  ') + '  ' : '') + fmtPct(g.load), g.load, g.name || '', g.load >= 90 || g.temp >= 85);
+      rows.push(row);
+    });
+    hwPrune(B, 'gpu', keep);
+    for (const row of rows) B.appendChild(row);
+    const n = d.net || {};
+    setText($('hs-foot'), T('TEMP') + ' ' + (d.temp == null ? '--' : d.temp + ' °C') + '  //  ' +
+      T('IN') + ' ' + fmtBytes(n.down) + '/S  //  ' + T('OUT') + ' ' + fmtBytes(n.up) + '/S');
+  }
+
+  function hwRow(box, key, cls) {
+    let el = box.querySelector('[data-k="' + key + '"]');
+    if (!el) {
+      el = document.createElement('div');
+      el.className = 'meter hw-m' + (cls ? ' ' + cls : '');
+      el.dataset.k = key;
+      el.innerHTML = '<div class="m-row"><span class="m-name"></span><span class="m-val"></span></div>' +
+        '<div class="bar"><div class="fill"></div></div><div class="hw-sub"></div>';
+      box.appendChild(el);
+    }
+    return el;
+  }
+
+  function hwSet(el, name, val, pct, sub, hot) {
+    setText(el.querySelector('.m-name'), name);
+    setText(el.querySelector('.m-val'), val);
+    el.querySelector('.fill').style.width = (pct == null || !isFinite(pct) ? 0 : clamp(pct, 0, 100)) + '%';
+    setText(el.querySelector('.hw-sub'), sub || '');
+    el.classList.toggle('low', !!hot); // the accent colour the UNIT meters use for a warning
+  }
+
+  function hwPrune(box, prefix, keep) {
+    for (const el of Array.from(box.querySelectorAll('[data-k^="' + prefix + '"]'))) {
+      if (!keep.has(el.dataset.k)) el.remove();
+    }
+  }
+
+  function renderHardware() {
+    if (nav.place !== 'intel' || nav.sel !== 'hw') return;
+    const d = hw.data;
+    let msg = '';
+    if (!cfg.helper) msg = T('YORHA HELPER IS OFF // SETUP AND SWITCH IN SYSTEM > YORHA HELPER');
+    else if (hw.err === 'offline') msg = T('YORHA HELPER NOT RUNNING // SETUP STEPS IN SYSTEM > YORHA HELPER');
+    else if (hw.err === 'old') msg = T('THIS YORHA HELPER CANNOT READ PC STATS // UPDATE YORHAHELPER.PS1');
+    else if (!d) msg = T('READING SENSORS...');
+    setText($('hw-note'), msg);
+    $('pv-intel-hw').classList.toggle('stale', !d || Date.now() - hw.at > 10000);
+    if (!d) return;
+
+    const L = $('hw-left');
+    const c = d.cpu || {};
+    const cpuRow = hwRow(L, 'cpu'), memRow = hwRow(L, 'mem');
+    hwSet(cpuRow, T('PROCESSOR'), fmtPct(c.load), c.load,
+      (c.name || '') + (c.cores ? '  //  ' + T('{n} THREADS', { n: c.cores }) : ''), c.load >= 90);
+    const m = d.mem || {};
+    const mp = m.total ? (m.used / m.total) * 100 : null;
+    hwSet(memRow, T('MEMORY'), fmtPct(mp), mp, fmtBytes(m.used) + ' / ' + fmtBytes(m.total), mp >= 90);
+    const keep = new Set();
+    const gpuRows = (d.gpus || []).map((g, i) => {
+      const bits = [g.name || ''];
+      if (g.temp != null) bits.push(g.temp + ' °C');
+      if (g.vram != null) bits.push(T('VRAM') + ' ' + fmtBytes(g.vram) + (g.vramTotal ? ' / ' + fmtBytes(g.vramTotal) : ''));
+      if (g.power != null) bits.push(Math.round(g.power) + ' W');
+      keep.add('gpu' + i);
+      const row = hwRow(L, 'gpu' + i);
+      hwSet(row, T('GRAPHICS') + ' ' + (i + 1), fmtPct(g.load), g.load, bits.join('  //  '), g.load >= 90 || g.temp >= 85);
+      return row;
+    });
+    hwPrune(L, 'gpu', keep);
+    const k = d.disk || {};
+    const diskRow = hwRow(L, 'disk');
+    hwSet(diskRow, T('DISK ACTIVITY'), fmtPct(k.busy), k.busy, '', k.busy >= 90);
+    for (const row of [cpuRow, memRow].concat(gpuRows, [diskRow])) L.appendChild(row); // fixed order
+
+    setText($('hw-temp'), d.temp == null ? T('UNAVAILABLE') : d.temp + ' °C');
+    const n = d.net || {};
+    setText($('hw-net'), T('IN') + ' ' + fmtBytes(n.down) + '/S  //  ' + T('OUT') + ' ' + fmtBytes(n.up) + '/S');
+    setText($('hw-up'), d.uptime == null ? '--' : fmtDuration(d.uptime * 1000));
+
+    const R = $('hw-drives');
+    const dk = new Set();
+    for (const dr of k.drives || []) {
+      const key = 'dr' + String(dr.name).replace(/[^A-Za-z0-9]/g, '');
+      dk.add(key);
+      const p = dr.total ? (dr.used / dr.total) * 100 : null;
+      hwSet(hwRow(R, key, 'hw-drive'), dr.name + (dr.label ? '  ' + String(dr.label).toUpperCase() : ''),
+        fmtBytes(dr.used) + ' / ' + fmtBytes(dr.total) + '  ' + fmtPct(p), p, '', p >= 90);
+    }
+    hwPrune(R, 'dr', dk);
+  }
+
+  // CPU as bars, the busiest GPU as a line on top.
+  function drawHwSpark(c) {
+    const ctx = c.getContext('2d'), k = dpr();
+    fitCanvas(c);
+    const W = c.width, H = c.height;
+    const ink = state.colors.ink, accent = state.colors.accent;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = 'rgba(' + ink + ',0.12)';
+    for (let g = 1; g < 4; g++) ctx.fillRect(0, Math.round(H * g / 4), W, k);
+    const n = hw.max, bw = W / n, off = n - hw.hist.length;
+    ctx.fillStyle = 'rgba(' + ink + ',0.5)';
+    hw.hist.forEach((s, i) => {
+      const h = Math.max(k, (s.cpu / 100) * (H - 2 * k));
+      ctx.fillRect((off + i) * bw, H - h, Math.max(k, bw - k), h);
+    });
+    if (hw.hist.length > 1) {
+      ctx.strokeStyle = 'rgb(' + accent + ')';
+      ctx.lineWidth = 2 * k;
+      ctx.beginPath();
+      hw.hist.forEach((s, i) => {
+        const x = (off + i + 0.5) * bw, y = H - k - (s.gpu / 100) * (H - 2 * k);
+        if (i) ctx.lineTo(x, y); else ctx.moveTo(x, y);
+      });
+      ctx.stroke();
+    }
+    ctx.fillStyle = 'rgba(' + ink + ',0.4)';
+    ctx.fillRect(0, H - k, W, k);
+  }
+
   hooks.intel = {
     sub(id) {
       if (id === 'audio') renderAudioLog();
       else if (id === 'pod') renderPodLog();
+      else if (id === 'hw') {
+        hw.next = 0;
+        renderHardware();
+      }
     },
     refresh() {
       if (nav.sel === 'now') updateIntel('pm-');
@@ -3708,6 +3990,7 @@
     },
     frame() {
       if (nav.sel === 'now') drawIntelViz($('pm-viz'));
+      else if (nav.sel === 'hw') drawHwSpark($('hw-spark'));
     }
   };
 
@@ -4725,6 +5008,8 @@
     { label: K('SCANLINES AND GRAIN'), field: 'scanlines', opts: [[true, K('ON')], [false, K('OFF')]] },
     { label: K('GLITCH EFFECT'), field: 'glitch', opts: [[true, K('ON')], [false, K('OFF')]] },
     { label: K('MOUSE PARALLAX'), field: 'parallax', opts: [[true, K('ON')], [false, K('OFF')]] },
+    { label: K('PC STATS STRIP'), field: 'hwStrip', opts: [[true, K('ON')], [false, K('OFF')]] },
+    { label: K('HUB HARDWARE MONITOR'), field: 'hwHub', opts: [['auto', K('WHEN CHARACTER IS OFF')], ['on', K('ALWAYS')], ['off', K('HIDDEN')]] },
     { label: K('RETURN TO HUB WHEN IDLE'), field: 'hubReturn', opts: [[0, K('NEVER')], [60, K('1 MIN')], [120, K('2 MIN')], [300, K('5 MIN')], [600, K('10 MIN')]] }
   ];
 
@@ -4891,6 +5176,7 @@
     wellTick(now);
     planner.tick(now);
     linkTick(now);
+    hwTick(now);
     unitTick(now);
     refreshPanel(now);
     placeTick(now);

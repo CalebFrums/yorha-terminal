@@ -268,6 +268,37 @@
 				"type" : "slider",
 				"value" : 120
 			},
+			"hwhub" : 
+			{
+				"index" : 53,
+				"options" : 
+				[
+					{
+						"label" : "When the desktop character is off",
+						"value" : "auto"
+					},
+					{
+						"label" : "Always",
+						"value" : "on"
+					},
+					{
+						"label" : "Hidden",
+						"value" : "off"
+					}
+				],
+				"order" : 153,
+				"text" : "Hub hardware monitor above the Pod log (needs YoRHa Helper)",
+				"type" : "combo",
+				"value" : "auto"
+			},
+			"hwstrip" : 
+			{
+				"index" : 52,
+				"order" : 152,
+				"text" : "PC stats strip under every place screen (needs YoRHa Helper)",
+				"type" : "bool",
+				"value" : true
+			},
 			"imagefilter" : 
 			{
 				"index" : 27,

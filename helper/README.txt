@@ -8,6 +8,9 @@ What it does
     Spotify, browsers and most players respond.
   - TYPE ON PC KEYBOARD in the calendar and schedule editors: a small text box where you
     type with your real keyboard (Chinese, Japanese and Korean input methods work too).
+  - PC stats for INTEL > HARDWARE, the strip under every place screen and the hub box:
+    processor, memory, graphics, disks, network, temperature and uptime, read from Windows
+    performance counters (and nvidia-smi on NVIDIA cards) only while the wallpaper shows them.
 
 Setup
   1. Keep these files in a folder you will not delete, such as Documents\YoRHaHelper.

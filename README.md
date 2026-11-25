@@ -42,10 +42,11 @@ The desktop is the hub. Hover a menu entry to preview it and click to go there. 
 
 ## YoRHa Helper (optional)
 
-Wallpaper Engine lets a wallpaper see what is playing but not control it, and it sends wallpapers no key presses. [`helper/`](helper) fills both gaps on your own PC:
+Wallpaper Engine lets a wallpaper see what is playing but not control it, and it sends wallpapers no key presses. [`helper/`](helper) fills both gaps on your own PC, and can also report how the PC is doing:
 
 - **Music buttons**: INTEL's previous, play/pause and next press the Windows media keys, so Spotify, browsers and most players respond
 - **Real keyboard typing**: TYPE ON PC KEYBOARD in the calendar and schedule editors opens a small text box. You type there with your own keyboard, and input methods for Chinese, Japanese and Korean work too. It never reads keys typed anywhere else
+- **PC stats**: INTEL > HARDWARE shows processor, memory, graphics (temperature, VRAM and power on NVIDIA cards through `nvidia-smi`), disk activity, drive space, network, system temperature and uptime. A compact strip sits under every place screen, and a HARDWARE // MONITOR box can sit above the Pod log on the hub. Both can be switched in the properties or SYSTEM > QUICK SETTINGS. Readings come from Windows performance counters and are taken only while one of these views is on screen
 
 **Setup** (the same steps are inside the wallpaper under SYSTEM > YORHA HELPER):
 
