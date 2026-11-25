@@ -778,7 +778,6 @@ DIAS
 INÍCIO
 FIM
 O teclado na tela está oculto. Ative-o em SISTEMA > AJUSTES RÁPIDOS ou instale o YoRHa Helper (SISTEMA > YORHA HELPER).
-Para texto em chinês ou coreano, use DIGITAR NO TECLADO DO PC (requer o YoRHa Helper) ou as propriedades do papel de parede.
 Digite um título ou escolha uma das sugestões.
 Escolha pelo menos um dia.
 O horário de fim deve ser diferente do início.

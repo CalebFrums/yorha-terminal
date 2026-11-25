@@ -778,7 +778,6 @@ JOURS
 DÉBUT
 FIN
 Le clavier à l'écran est masqué. Activez-le dans SYSTÈME > RÉGLAGES RAPIDES, ou installez YoRHa Helper (SYSTÈME > YORHA HELPER).
-Pour du texte en chinois ou en coréen, utilisez TAPER AU CLAVIER DU PC (nécessite YoRHa Helper) ou les propriétés du fond d'écran.
 Saisissez un titre ou choisissez l'une des suggestions.
 Choisissez au moins un jour.
 L'heure de fin doit différer de celle du début.

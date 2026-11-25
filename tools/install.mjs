@@ -22,7 +22,7 @@ fs.writeFileSync(path.join(ROOT, 'bundled.js'), js);
 console.log('[OK] bundled.js: ' + files.length + ' files');
 
 if (process.argv.includes('--copy')) {
-  const list = ['index.html', 'style.css', 'i18n.js', 'main.js', 'games.js', 'breach3d.js', 'planner.js', 'podlines.js', 'bundled.js', 'preview.gif',
+  const list = ['index.html', 'style.css', 'i18n.js', 'main.js', 'games.js', 'breach3d.js', 'planner.js', 'pinyin.js', 'podlines.js', 'bundled.js', 'preview.gif',
     'vendor/three.min.js', 'vendor/three.LICENSE.txt'];
   fs.mkdirSync(path.join(DEST, 'lang'), { recursive: true });
   fs.mkdirSync(path.join(DEST, 'vendor'), { recursive: true });

@@ -778,7 +778,6 @@ TAGE
 BEGINN
 ENDE
 Die Bildschirmtastatur ist ausgeblendet. In SYSTEM > SCHNELLEINSTELLUNGEN einschalten oder YoRHa Helper einrichten (SYSTEM > YORHA HELPER).
-Für chinesischen oder koreanischen Text MIT PC-TASTATUR TIPPEN nutzen (braucht YoRHa Helper) oder die Hintergrund-Eigenschaften.
 Titel eingeben oder einen der Vorschläge wählen.
 Mindestens einen Tag wählen.
 Das Ende muss sich vom Beginn unterscheiden.

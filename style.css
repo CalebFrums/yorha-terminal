@@ -2082,10 +2082,21 @@ body.cal-alert #hubslot #agenda { display: none; }
 .key.down, .key.on { background: var(--ink); color: var(--hl-text); border-color: var(--ink); }
 .key.blank { visibility: hidden; }
 .key.off { opacity: 0.3; pointer-events: none; }
-.kb-ctl .key { font-size: 0.66rem; letter-spacing: 0.14em; }
-.kb-ctl .key.tab { font-size: 0.78rem; letter-spacing: 0.04em; }
+.kb-ctl .key { font-size: 0.66rem; letter-spacing: 0.14em; white-space: nowrap; }
+/* Seven layout tabs: they keep a fixed width, the worded keys fit their label, SPACE takes the rest. */
+.kb-ctl .key.tab { flex: 0 0 2.6rem; font-size: 0.78rem; letter-spacing: 0.04em; }
+.kb-ctl .key.wide { flex: 0 0 auto; min-width: 4.4rem; padding: 0 0.6rem; }
+.kb-ctl .key.space { flex: 1 1 0; }
 .key.wide { flex: 1.5 1 0; }
 .key.space { flex: 4 1 0; }
+/* What is still being composed (pinyin letters, a Hangul syllable), and the pinyin candidate row. */
+.ed-comp { text-decoration: underline; text-decoration-thickness: 0.1rem; text-underline-offset: 0.3rem; }
+.kb-cand { height: 2.35rem; }
+.kb-cand.idle { border-bottom: 1px dashed var(--ink-3); }
+.kb-cand .key.cand { font-size: 1.3rem; }
+.kb-cand .key.raw { flex: 2.4 1 0; justify-content: flex-start; padding: 0 0.7rem; overflow: hidden; white-space: nowrap; font-size: 0.9rem; letter-spacing: 0.08em; }
+.kb-cand .key.pg { flex: 0.8 1 0; }
+.kb-cand .key.pg .chev.l { transform: scaleX(-1); }
 .ed-rows { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 2rem; align-content: start; }
 .ed-row { min-width: 0; display: flex; align-items: center; gap: 1rem; padding: 0.45rem 0.4rem; border-bottom: 1px solid var(--ink-3); }
 .ed-row.span2 { grid-column: 1 / -1; }

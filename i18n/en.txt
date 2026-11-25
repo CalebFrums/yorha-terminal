@@ -783,7 +783,6 @@ DAYS
 START TIME
 END TIME
 The on-screen keyboard is hidden. Turn it on in SYSTEM > QUICK SETTINGS, or set up YoRHa Helper (SYSTEM > YORHA HELPER).
-For Chinese or Korean text, use TYPE ON PC KEYBOARD (needs YoRHa Helper) or the wallpaper properties.
 Type a title, or pick one of the suggestions.
 Choose at least one day.
 The end time must differ from the start.

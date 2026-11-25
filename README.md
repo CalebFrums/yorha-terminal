@@ -37,7 +37,7 @@ The desktop is the hub. Hover a menu entry to preview it and click to go there. 
 - CALENDAR: a month view for birthdays, appointments and reminders, with repeats (weekly, monthly, yearly) and alerts (at the time, 10 min, 1 hour or 1 day before). Alerts show above the hub panel with a soft chime and wait until you acknowledge or snooze them
 - WEEKLY SCHEDULE: a timetable of your week. Click an empty slot to add an activity; a line marks the current time
 - A desktop agenda above the hub panel (never over the character): this week, what is on now, what is next and coming entries. It shows when something is planned, always, or never
-- Titles are typed on an on-screen keyboard (Latin, accents, Cyrillic, kana, symbols), because Wallpaper Engine sends no key presses to wallpapers. With YoRHa Helper you can use your real keyboard
+- Titles are typed on an on-screen keyboard (Latin, accents, Cyrillic, kana, Korean Hangul, Chinese pinyin, symbols), because Wallpaper Engine sends no key presses to wallpapers. With YoRHa Helper you can use your real keyboard
 - 9 languages: English, 简体中文, 日本語, 한국어, Русский, Deutsch, Français, Español, Português (Brasil)
 
 ## YoRHa Helper (optional)

@@ -778,7 +778,6 @@ DÍAS
 INICIO
 FIN
 El teclado en pantalla está oculto. Actívalo en SISTEMA > AJUSTES RÁPIDOS o instala YoRHa Helper (SISTEMA > YORHA HELPER).
-Para texto en chino o coreano, usa ESCRIBIR CON EL TECLADO (requiere YoRHa Helper) o las propiedades del fondo.
 Escribe un título o elige una de las sugerencias.
 Elige al menos un día.
 La hora de fin debe ser distinta de la de inicio.

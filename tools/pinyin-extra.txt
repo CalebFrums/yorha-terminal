@@ -1,0 +1,86 @@
+# YoRHa Terminal -- readings that replace ICU's single Han-Latin reading in tools/build_pinyin.ps1.
+# UTF-8 data. One character per line: the character, then its readings (v = u-umlaut, no tones).
+# reading:weight scales the character's text frequency for that reading (default 1), so a rare
+# reading of a common character does not jump to the top of another syllable's list.
+# The build prints ICU's own reading next to each line; it must be one of the listed ones.
+的 de di:0.1
+了 le liao:0.15
+地 di de:0.6
+得 de dei:0.1
+着 zhe zhao:0.15 zhuo:0.05
+还 hai huan:0.25
+长 chang zhang:0.5
+行 xing hang:0.3
+都 dou du:0.3
+重 zhong chong:0.4
+乐 le yue:0.4
+便 bian pian:0.1
+觉 jue jiao:0.25
+传 chuan zhuan:0.15
+没 mei mo:0.05
+和 he huo:0.05 hu:0.02
+数 shu shuo:0.03
+省 sheng xing:0.1
+调 tiao diao:0.5
+大 da dai:0.05
+会 hui kuai:0.05
+差 cha chai:0.2 ci:0.02
+朝 chao zhao:0.4
+降 jiang xiang:0.1
+曾 ceng zeng:0.5
+薄 bao bo:0.5
+参 can shen:0.1 cen:0.05
+藏 cang zang:0.3
+弹 dan tan:0.5
+给 gei ji:0.15
+合 he ge:0.03
+恶 e wu:0.05
+角 jiao jue:0.2
+解 jie xie:0.03
+落 luo la:0.2 lao:0.05
+率 lv shuai:0.5
+绿 lv lu:0.05
+模 mo mu:0.3
+强 qiang jiang:0.05
+圈 quan juan:0.05
+色 se shai:0.1
+识 shi zhi:0.03
+似 si shi:0.1
+宿 su xiu:0.1
+提 ti di:0.05
+系 xi ji:0.1
+校 xiao jiao:0.1
+血 xue xie:0.3
+择 ze zhai:0.1
+扎 zha za:0.3
+仔 zi zai:0.3
+单 dan shan:0.03 chan:0.02
+区 qu ou:0.02
+塞 sai se:0.2
+奇 qi ji:0.05
+呢 ne ni:0.05
+哪 na nei:0.1
+那 na nei:0.1
+谁 shui shei:0.5
+这 zhe zhei:0.1
+称 cheng chen:0.05
+度 du duo:0.05
+卡 ka qia:0.1
+壳 ke qiao:0.1
+俩 lia liang:0.05
+抹 mo ma:0.3
+炮 pao bao:0.05
+屏 ping bing:0.2
+亲 qin qing:0.05
+说 shuo shui:0.02
+咽 yan ye:0.2
+钥 yao yue:0.1
+粘 zhan nian:0.5
+露 lu lou:0.4
+劲 jin jing:0.3
+朴 pu piao:0.2
+厦 sha xia:0.5
+虾 xia ha:0.05
+削 xiao xue:0.4
+剥 bo bao:0.4
+嗯 en

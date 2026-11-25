@@ -821,7 +821,8 @@
 
     // ---------- editor with on-screen keyboard ----------
 
-    const ed = { open: false, kind: '', rec: null, title: '', shift: false, kata: false, layout: 'abc', armDel: 0, tip: '', waiting: false };
+    const ed = { open: false, kind: '', rec: null, title: '', shift: false, kata: false, layout: 'abc', armDel: 0, tip: '', waiting: false,
+      py: '', pyPage: 0, hc: false };
 
     const u = (codes) => codes.map((c) => (c ? String.fromCharCode(c) : ''));
     const KB = {
@@ -844,13 +845,199 @@
         u([0x3048, 0x3051, 0x305b, 0x3066, 0x306d, 0x3078, 0x3081, 0x3083, 0x308c, 0x3063, 0x3001, 0x3047]),
         u([0x304a, 0x3053, 0x305d, 0x3068, 0x306e, 0x307b, 0x3082, 0x3085, 0x308d, 0x3087, 0x3002, 0x3049])] }
     };
-    const KB_ORDER = ['abc', 'acc', 'cyr', 'kana', 'sym'];
+    // Korean: the standard 2-set layout (jamo where QWERTY has its letters). Jamo join into syllables as
+    // they are typed (Hangul below); SHIFT gives the tense consonants and yae/ye.
+    KB.ko = { label: u([0xd55c, 0xae00]).join(''), rows: [
+      '1234567890'.split(''),
+      u([0x3142, 0x3148, 0x3137, 0x3131, 0x3145, 0x315b, 0x3155, 0x3151, 0x3150, 0x3154]),
+      u([0x3141, 0x3134, 0x3147, 0x3139, 0x314e, 0x3157, 0x3153, 0x314f, 0x3163]),
+      u([0x314b, 0x314c, 0x314a, 0x314d, 0x3160, 0x315c, 0x3161]).concat([',', '.', '?'])] };
+    const KO_SHIFT = { 0x3142: 0x3143, 0x3148: 0x3149, 0x3137: 0x3138, 0x3131: 0x3132, 0x3145: 0x3146, 0x3150: 0x3152, 0x3154: 0x3156 };
+    // Chinese: pinyin. Letters collect in a buffer and the row above the keys offers characters for it
+    // (Pinyin below). The apostrophe splits syllables by hand (xi'an); SHIFT types a Latin capital.
+    KB.zh = { label: u([0x62fc, 0x97f3]).join(''), rows: [
+      '1234567890'.split(''), 'qwertyuiop'.split(''), 'asdfghjkl\''.split(''),
+      'zxcvbnm'.split('').concat(u([0xff0c, 0x3002, 0xff1f]))] };
+    const KB_ORDER = ['abc', 'acc', 'cyr', 'kana', 'ko', 'zh', 'sym'];
+    const KB_DEFAULT = { ru: 'cyr', ja: 'kana', ko: 'ko', zh: 'zh' };
+
+    // ---- Hangul. ed.hc marks the last character as still being composed: the next jamo may join it, and
+    // ERASE takes it apart one jamo at a time, as a Korean IME does. Any other key ends the syllable.
+    const HG = 0xac00, HG_END = 0xd7a3, VOW0 = 0x314f; // the 21 vowel jamo follow VOW0 in syllable order
+    const CHO = [0x3131, 0x3132, 0x3134, 0x3137, 0x3138, 0x3139, 0x3141, 0x3142, 0x3143, 0x3145, 0x3146, 0x3147, 0x3148, 0x3149, 0x314a,
+      0x314b, 0x314c, 0x314d, 0x314e];
+    const JONG = [0, 0x3131, 0x3132, 0x3133, 0x3134, 0x3135, 0x3136, 0x3137, 0x3139, 0x313a, 0x313b, 0x313c, 0x313d, 0x313e, 0x313f,
+      0x3140, 0x3141, 0x3142, 0x3144, 0x3145, 0x3146, 0x3147, 0x3148, 0x314a, 0x314b, 0x314c, 0x314d, 0x314e];
+    // Double finals [first final, second consonant] and double vowels [first vowel, second vowel], by index.
+    const JONG2 = { 3: [1, 0x3145], 5: [4, 0x3148], 6: [4, 0x314e], 9: [8, 0x3131], 10: [8, 0x3141], 11: [8, 0x3142], 12: [8, 0x3145],
+      13: [8, 0x314c], 14: [8, 0x314d], 15: [8, 0x314e], 18: [17, 0x3145] };
+    const VOW2 = { 9: [8, 0], 10: [8, 1], 11: [8, 20], 14: [13, 4], 15: [13, 5], 16: [13, 20], 19: [18, 20] };
+    const isJamo = (ch) => ch >= String.fromCharCode(0x3131) && ch <= String.fromCharCode(0x3163);
+    const hsyl = (l, v, t) => String.fromCharCode(HG + (l * 21 + v) * 28 + t);
+    const hparts = (c) => ({ l: Math.floor((c - HG) / 588), v: Math.floor((c - HG) / 28) % 21, t: (c - HG) % 28 });
+    function joinOf(table, a, b) {
+      for (const k in table) if (table[k][0] === a && table[k][1] === b) return +k;
+      return -1;
+    }
+
+    function typeJamo(ch) {
+      const c = ch.charCodeAt(0), t = ed.title;
+      const last = ed.hc && t ? t.charCodeAt(t.length - 1) : 0;
+      const room = t.length < MAX_TITLE;
+      const put = (s) => {
+        ed.title = t.slice(0, -1) + s;
+        ed.hc = true;
+      };
+      if (c < VOW0) {
+        if (last >= HG && last <= HG_END) {
+          const p = hparts(last);
+          const nt = p.t ? joinOf(JONG2, p.t, c) : JONG.indexOf(c);
+          if (nt > 0) return put(hsyl(p.l, p.v, nt));
+        }
+      } else {
+        const v = c - VOW0;
+        if (CHO.indexOf(last) >= 0) return put(hsyl(CHO.indexOf(last), v, 0));
+        if (last >= HG && last <= HG_END) {
+          const p = hparts(last);
+          if (!p.t) {
+            const nv = joinOf(VOW2, p.v, v);
+            if (nv >= 0) return put(hsyl(p.l, nv, 0));
+          } else if (room) {
+            // The final moves on to start the new syllable (of a double final, only its second consonant).
+            const sp = JONG2[p.t];
+            return put(hsyl(p.l, p.v, sp ? sp[0] : 0) + hsyl(CHO.indexOf(sp ? sp[1] : JONG[p.t]), v, 0));
+          }
+        } else if (last >= VOW0 && last <= 0x3163) {
+          const nv = joinOf(VOW2, last - VOW0, v);
+          if (nv >= 0) return put(String.fromCharCode(VOW0 + nv));
+        }
+      }
+      if (!room) return;
+      ed.title = t + ch;
+      ed.hc = true;
+    }
+
+    // ERASE inside the syllable being composed; false when there is none (the caller erases a character).
+    function eraseJamo() {
+      const t = ed.title, last = ed.hc && t ? t.charCodeAt(t.length - 1) : 0;
+      const put = (s) => { ed.title = t.slice(0, -1) + s; };
+      if (last >= HG && last <= HG_END) {
+        const p = hparts(last);
+        if (p.t) put(hsyl(p.l, p.v, JONG2[p.t] ? JONG2[p.t][0] : 0));
+        else if (VOW2[p.v]) put(hsyl(p.l, VOW2[p.v][0], 0));
+        else put(String.fromCharCode(CHO[p.l]));
+        return true;
+      }
+      if (last >= VOW0 && VOW2[last - VOW0]) {
+        put(String.fromCharCode(VOW0 + VOW2[last - VOW0][0]));
+        return true;
+      }
+      ed.hc = false;
+      return false;
+    }
+
+    // ---- Pinyin. ed.py holds the letters typed so far. The candidates are for its first syllable: the
+    // longest whole syllable it starts with, else the unfinished one (zh, xio), which offers the most used
+    // characters of every syllable it could become. pinyin.js (tools/build_pinyin.ps1) loads on first use.
+    const PY_PAGE = 8;
+    let PY = window.YoRHaPinyin || null, pyFailed = false, pyLoading = false;
+    function needPinyin() {
+      if (PY || pyFailed || pyLoading) return;
+      pyLoading = true;
+      const s = document.createElement('script');
+      s.src = 'pinyin.js';
+      s.onload = s.onerror = () => {
+        pyLoading = false;
+        PY = window.YoRHaPinyin || null;
+        pyFailed = !PY;
+        if (ed.open) renderCand();
+      };
+      document.head.appendChild(s);
+    }
+
+    function pySeg() {
+      const body = ed.py.replace(/^'+/, ''), lead = ed.py.length - body.length, head = body.split('\'')[0];
+      if (PY && head) {
+        for (const table of [PY.syl, PY.pre]) {
+          for (let n = Math.min(6, head.length); n > 0; n--) {
+            if (table[head.slice(0, n)]) return { len: lead + n, chars: table[head.slice(0, n)] };
+          }
+        }
+      }
+      return { len: 0, chars: '' };
+    }
+
+    function pickCand(ch) {
+      if (ed.title.length >= MAX_TITLE) return false;
+      ed.title += ch;
+      ed.py = ed.py.slice(pySeg().len).replace(/^'+/, '');
+      ed.pyPage = 0;
+      return true;
+    }
+
+    // The letters as typed, when no character is wanted (a name, or a syllable the table lacks).
+    function commitRaw() {
+      const s = ed.py.replace(/'/g, '');
+      ed.title += s.slice(0, Math.max(0, MAX_TITLE - ed.title.length));
+      ed.py = '';
+      ed.pyPage = 0;
+    }
+
+    // SPACE: the first candidate for the first syllable.
+    function pickFirst() {
+      const sg = pySeg();
+      if (!sg.len) commitRaw();
+      else if (!pickCand(sg.chars[0])) commitRaw();
+    }
+
+    // Everything still in the buffer, before another key types (punctuation, digits, SAVE, a new layout).
+    function commitPy() {
+      for (let guard = 0; ed.py && guard < 40; guard++) pickFirst();
+      ed.py = '';
+      ed.pyPage = 0;
+    }
+
+    function endCompose() {
+      ed.py = '';
+      ed.pyPage = 0;
+      ed.hc = false;
+    }
+
+    // The candidate row (Chinese layout only): the typed letters (click: keep them as letters), a page of
+    // characters, and page keys. Rebuilt after every key.
+    function renderCand() {
+      const row = $('kb').querySelector('.kb-cand');
+      if (!row) return;
+      row.textContent = '';
+      row.classList.toggle('idle', !ed.py);
+      if (!ed.py) return;
+      needPinyin();
+      const list = pySeg().chars, pages = Math.max(1, Math.ceil(list.length / PY_PAGE));
+      ed.pyPage = Math.max(0, Math.min(ed.pyPage, pages - 1));
+      const raw = el('span', 'key raw', ed.py);
+      raw.dataset.op = 'raw';
+      row.appendChild(raw);
+      for (let i = 0; i < PY_PAGE; i++) {
+        const ch = list[ed.pyPage * PY_PAGE + i] || '';
+        const k = el('span', 'key cand' + (ch ? '' : ' blank'), ch);
+        if (ch) k.dataset.op = 'cand:' + ch;
+        row.appendChild(k);
+      }
+      for (const d of [-1, 1]) {
+        const k = el('span', 'key pg' + ((d < 0 ? ed.pyPage > 0 : ed.pyPage < pages - 1) ? '' : ' off'));
+        k.appendChild(el('span', 'chev' + (d < 0 ? ' l' : '')));
+        k.dataset.op = 'pg:' + d;
+        row.appendChild(k);
+      }
+    }
     const DAKU = '\u3099', HANDAKU = '\u309a';
     const toKata = (ch) => (ch >= '\u3041' && ch <= '\u3096' ? String.fromCharCode(ch.charCodeAt(0) + 0x60) : ch);
     const KEY_LABEL = { [DAKU]: '\u309b', [HANDAKU]: '\u309c' }; // spacing marks show on the keys
 
     function keyChar(ch) {
       if (ed.layout === 'kana') return ed.kata ? toKata(ch) : ch;
+      if (ed.layout === 'ko') return ed.shift && KO_SHIFT[ch.charCodeAt(0)] ? String.fromCharCode(KO_SHIFT[ch.charCodeAt(0)]) : ch;
+      if (ed.layout === 'zh') return ed.shift ? ch.toUpperCase() : ch; // pinyin is typed in lower case
       if (ed.layout === 'sym' || ch === '\u00df') return ch; // no capital form wanted
       return ed.shift || !ed.title ? ch.toUpperCase() : ch;
     }
@@ -881,6 +1068,10 @@
       const kb = $('kb');
       kb.textContent = '';
       kb.dataset.layout = ed.layout;
+      if (ed.layout === 'zh') {
+        kb.appendChild(el('div', 'kb-row kb-cand idle'));
+        needPinyin();
+      }
       for (const row of KB[ed.layout].rows) {
         const r = el('div', 'kb-row');
         for (const ch of row) {
@@ -911,30 +1102,67 @@
       kb.appendChild(r);
     }
 
-    function keyOp(k) {
-      if (k.dataset.ch) {
-        typeChar(keyChar(k.dataset.ch));
-      } else {
-        const op = k.dataset.op;
-        if (op === 'shift') {
-          if (ed.layout === 'kana') ed.kata = !ed.kata;
-          else ed.shift = !ed.shift;
-        } else if (op === 'space') {
+    // One typed character: pinyin letters go to the buffer, jamo into the syllable, the rest as they are.
+    function typeKey(ch) {
+      if (ed.layout === 'zh' && /^[a-z']$/.test(ch)) {
+        if (ch === '\'' && (!ed.py || ed.py.endsWith('\''))) return;
+        if (ed.py.length < 24) ed.py += ch;
+        ed.pyPage = 0;
+        return;
+      }
+      commitPy();
+      if (ed.layout === 'ko' && isJamo(ch)) {
+        typeJamo(ch);
+        ed.shift = false;
+        return;
+      }
+      ed.hc = false;
+      typeChar(ch);
+    }
+
+    // A key from the on-screen keyboard or a real one: a character, or an op.
+    function press(ch, op) {
+      if (ch) {
+        typeKey(ch);
+      } else if (op === 'shift') {
+        if (ed.layout === 'kana') ed.kata = !ed.kata;
+        else ed.shift = !ed.shift;
+      } else if (op === 'space') {
+        if (ed.py) {
+          pickFirst();
+        } else {
+          ed.hc = false;
           if (ed.title && !ed.title.endsWith(' ') && ed.title.length < MAX_TITLE) ed.title += ' ';
-        } else if (op === 'back') {
-          ed.title = Array.from(ed.title).slice(0, -1).join('');
-        } else if (op === 'clear') {
-          ed.title = '';
-        } else if (op && op.startsWith('layout:')) {
-          ed.layout = op.slice(7);
-          ed.shift = false;
-          renderKeyboard();
         }
+      } else if (op === 'back') {
+        if (ed.py) {
+          ed.py = ed.py.slice(0, -1);
+          ed.pyPage = 0;
+        } else if (!eraseJamo()) {
+          ed.title = Array.from(ed.title).slice(0, -1).join('');
+        }
+      } else if (op === 'clear') {
+        ed.title = '';
+        endCompose();
+      } else if (op.startsWith('layout:')) {
+        commitPy();
+        ed.hc = false;
+        ed.layout = op.slice(7);
+        ed.shift = false;
+        renderKeyboard();
+      } else if (op.startsWith('cand:')) {
+        pickCand(op.slice(5));
+      } else if (op === 'raw') {
+        commitRaw();
+      } else if (op.startsWith('pg:')) {
+        ed.pyPage += +op.slice(3);
       }
       ed.tip = '';
       renderTitle();
       relabelKeys();
     }
+
+    const keyOp = (k) => press(k.dataset.ch ? keyChar(k.dataset.ch) : '', k.dataset.op || '');
 
     // Keys respond on press; BACK repeats while held.
     let holdT = 0, holdI = 0;
@@ -953,9 +1181,17 @@
     });
     document.addEventListener('pointerup', stopHold);
 
+    // What is still being composed (pinyin letters, or the Hangul syllable) shows underlined after the title.
     function renderTitle() {
-      setText($('ed-text'), ed.title);
-      $('ed-input').classList.toggle('empty', !ed.title);
+      let text = ed.title, comp = ed.py;
+      if (!comp && ed.hc && text) {
+        comp = text.slice(-1);
+        text = text.slice(0, -1);
+      }
+      setText($('ed-text'), text);
+      setText($('ed-comp'), comp);
+      renderCand();
+      $('ed-input').classList.toggle('empty', !ed.title && !ed.py);
       setText($('ed-count'), ed.title.length + ' / ' + MAX_TITLE);
       setText($('ed-tip'), ed.tip);
     }
@@ -1061,7 +1297,8 @@
       ed.shift = false;
       ed.kata = false;
       ed.tip = '';
-      ed.layout = lang === 'ru' ? 'cyr' : lang === 'ja' ? 'kana' : 'abc';
+      ed.layout = KB_DEFAULT[lang] || 'abc';
+      endCompose();
       if (kind === 'cal') {
         const d = day || midnight(Date.now());
         ed.v = rec ? JSON.parse(JSON.stringify(rec)) : { id: '', title: '', date: keyOf(d), time: '', rep: 'none', rem: 0 };
@@ -1073,7 +1310,6 @@
       setText($('ed-kind'), kind === 'cal' ? T('CALENDAR') : T('WEEKLY SCHEDULE'));
       $('ed-del').style.display = rec ? '' : 'none';
       setText($('ed-del'), T('DELETE'));
-      // Chinese and Korean need an input method; the properties take any text.
       syncKb();
       api.pingHelper(); // its answer shows or hides the on-screen keyboard (helperChanged); nothing while switched off
 
@@ -1083,6 +1319,7 @@
         const c = el('span', 'chip', T(p));
         c.addEventListener('click', () => {
           ed.title = T(p);
+          endCompose();
           ed.tip = '';
           renderTitle();
         });
@@ -1163,12 +1400,11 @@
     // The on-screen keyboard: always, never, or (auto) only while YoRHa Helper is not running to offer the real one.
     const kbShown = () => cfg.oskb === 'on' || (cfg.oskb !== 'off' && !api.helperOnline());
     function syncKb() {
-      const show = kbShown(), lang = I18N.code;
+      const show = kbShown();
       $('pl-edit').classList.toggle('no-kb', !show);
       $('pl-edit').classList.toggle('helper', api.helperOnline());
       let hint = '';
       if (!show && !api.helperOnline()) hint = T('The on-screen keyboard is hidden. Turn it on in SYSTEM > QUICK SETTINGS, or set up YoRHa Helper (SYSTEM > YORHA HELPER).');
-      else if (lang === 'zh' || lang === 'ko') hint = T('For Chinese or Korean text, use TYPE ON PC KEYBOARD (needs YoRHa Helper) or the wallpaper properties.');
       setText($('ed-ime'), hint);
     }
 
@@ -1181,6 +1417,8 @@
     }
 
     function saveEditor() {
+      commitPy();
+      ed.hc = false;
       const v = ed.v;
       v.title = cleanTitle(ed.title);
       if (!v.title) {
@@ -1256,6 +1494,8 @@
     $('ed-input').addEventListener('click', () => { if (api.helperOnline()) $('ed-pc').click(); });
     $('ed-pc').addEventListener('click', () => {
       if (!ed.open || ed.waiting) return;
+      commitPy();
+      ed.hc = false;
       ed.waiting = true;
       $('ed-pc').classList.add('off');
       ed.tip = T('Type in the window that opened, then press Enter.');
@@ -1266,7 +1506,10 @@
         if (!ed.open) return;
         ed.tip = res.off ? T('YoRHa Helper is off. Setup steps and the switch: SYSTEM > YORHA HELPER.')
           : res.offline ? T('YoRHa Helper is not running. Setup steps: SYSTEM > YORHA HELPER.') : '';
-        if (typeof res.text === 'string') ed.title = cleanTitle(res.text);
+        if (typeof res.text === 'string') {
+          ed.title = cleanTitle(res.text);
+          endCompose();
+        }
         renderTitle();
         relabelKeys();
       });
@@ -1277,18 +1520,32 @@
     $('ed-del').addEventListener('click', deleteEditor);
 
     // Typing on a real keyboard, where keys arrive (a browser preview). Runs before the page's own Esc handler.
+    // The Korean and Chinese layouts work as their IMEs do: QWERTY letters type jamo (2-set) or pinyin;
+    // while pinyin is pending, 1-8 pick a candidate, - and = turn the page, Enter keeps the letters.
+    const QWERTY = 'qwertyuiopasdfghjklzxcvbnm';
+    const ZH_PUNCT = { ',': 0xff0c, '.': 0x3002, '?': 0xff1f, '!': 0xff01, ':': 0xff1a, ';': 0xff1b };
     window.addEventListener('keydown', (e) => {
       if (!ed.open) return;
       if (e.ctrlKey || e.altKey || e.metaKey) return;
-      if (e.key === 'Escape') closeEditor();
-      else if (e.key === 'Enter') saveEditor();
-      else if (e.key === 'Backspace') ed.title = Array.from(ed.title).slice(0, -1).join('');
-      else if (e.key.length === 1 && ed.title.length < MAX_TITLE) ed.title += e.key;
+      const key = e.key;
+      if (key === 'Escape') closeEditor();
+      else if (key === 'Enter' && ed.py) press('', 'raw');
+      else if (key === 'Enter') saveEditor();
+      else if (key === 'Backspace') press('', 'back');
+      else if (key === ' ') press('', 'space');
+      else if (ed.py && /^[1-8]$/.test(key)) {
+        const ch = pySeg().chars[ed.pyPage * PY_PAGE + (+key - 1)];
+        if (ch) press('', 'cand:' + ch);
+      } else if (ed.py && (key === '-' || key === '=')) press('', key === '-' ? 'pg:-1' : 'pg:1');
+      else if (ed.layout === 'ko' && QWERTY.includes(key.toLowerCase()) && key.length === 1) {
+        const jamo = KB.ko.rows.slice(1).flat()[QWERTY.indexOf(key.toLowerCase())];
+        const c = jamo.charCodeAt(0);
+        press(key !== key.toLowerCase() && KO_SHIFT[c] ? String.fromCharCode(KO_SHIFT[c]) : jamo, '');
+      } else if (ed.layout === 'zh' && ZH_PUNCT[key]) press(String.fromCharCode(ZH_PUNCT[key]), '');
+      else if (key.length === 1) press(key, '');
       else return;
       e.preventDefault();
       e.stopImmediatePropagation();
-      ed.tip = '';
-      renderTitle();
     }, true);
 
     function afterChange() {
