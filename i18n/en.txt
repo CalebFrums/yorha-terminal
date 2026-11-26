@@ -140,7 +140,10 @@ On this PC, open github.com/CalebFrums/yorha-terminal in your web browser.
 Click Download YoRHaHelper.zip near the top of the page, then unzip it into a folder you will keep, such as Documents.
 In that folder, double-click Install-YoRHaHelper.cmd. If Windows asks, choose Run (or More info, then Run anyway). It starts now and with Windows.
 Come back here and press SWITCH ON. A disclaimer explains what it does first.
+Press PAIR, then type the six-digit code shown here into the box that YoRHa Helper opens.
 The status above changes to ONLINE, and the music buttons in INTEL work.
+PAIRING CODE
+PAIR
 TO REMOVE IT: DOUBLE-CLICK UNINSTALL-YORHAHELPER.CMD, THEN DELETE THE FOLDER // IT ONLY TALKS TO THIS PC, KEEPS NO LOG AND NEVER GOES ONLINE
 YoRHa TACTICAL TERMINAL
 Fan-made desktop terminal in the style of NieR:Automata. Not affiliated with Square Enix. The interface is drawn in code. Characters come from the included set, or from your own folder once you choose one.
@@ -150,7 +153,7 @@ GLORY TO MANKIND
 YORHA HELPER // DISCLAIMER
 YoRHa Helper is a small, optional program from this wallpaper's GitHub page (github.com/CalebFrums/yorha-terminal, folder helper). You download and start it yourself; the wallpaper cannot install anything.
 With this switch on, the wallpaper talks to it on this PC only (127.0.0.1) for two things: pressing the Windows media keys when you click previous, play/pause or next in INTEL, and opening a text box when you choose TYPE ON PC KEYBOARD.
-Privacy: nothing is sent to the internet or to the author. The helper keeps no log and writes no files, and it reads only what you type into its own text box. Your calendar and schedule stay on this PC.
+Privacy: nothing is sent to the internet or to the author. The helper keeps no log, and the only file it writes holds its pairing key. It reads only what you type into its own text box, and it obeys only a wallpaper you paired with it. Your calendar and schedule stay on this PC.
 With the switch off, the wallpaper never contacts the helper. You can switch it off again here at any time.
 Setup steps are in SYSTEM > YORHA HELPER.
 CANCEL
@@ -234,20 +237,33 @@ AWAITING AUDIO SIGNAL // PLAY SOMETHING IN SPOTIFY, A BROWSER, ETC.
 Audio log cleared. No record of past signals remains.
 Audio signal acquired: "{title}"{by}.
 Audio playback suspended.
+TYPE THIS CODE INTO THE BOX YORHA HELPER OPENED
+YoRHa Helper paired. Music buttons and PC keyboard typing are ready.
+TOO MANY TRIES // WAIT 10 MINUTES, THEN PRESS PAIR
+PAIRING CANCELLED // PRESS PAIR TO TRY AGAIN
+CODE DID NOT MATCH // PRESS PAIR TO TRY AGAIN
+YORHA HELPER NOT RUNNING // SETUP STEPS IN SYSTEM > YORHA HELPER
+YORHA HELPER OUT OF DATE // DOWNLOAD YORHAHELPER.ZIP AGAIN (SYSTEM > YORHA HELPER)
+YORHA HELPER NOT PAIRED // PAIR IT IN SYSTEM > YORHA HELPER
 SIGNAL SENT // NEXT TRACK
 SIGNAL SENT // PREVIOUS TRACK
 SIGNAL SENT // PLAY / PAUSE
 YORHA HELPER IS OFF // SETUP AND SWITCH IN SYSTEM > YORHA HELPER
 YORHA HELPER LOST // IS YORHA HELPER STILL RUNNING?
-YORHA HELPER NOT RUNNING // SETUP STEPS IN SYSTEM > YORHA HELPER
 HELPER OFF
-HELPER ONLINE
 HELPER OFFLINE
+HELPER OUT OF DATE
+HELPER NOT PAIRED
+HELPER ONLINE
 YoRHa Helper switched on. It only talks to this PC.
-ONLINE
 NOT RUNNING
+UPDATE NEEDED
+NOT PAIRED
+ONLINE
 STATUS // {s}
 SWITCH OFF
+THIS COPY IS OUT OF DATE // DOWNLOAD YORHAHELPER.ZIP AGAIN, THEN RUN INSTALL-YORHAHELPER.CMD
+PRESS PAIR TO CONNECT THIS WALLPAPER
 {n} FPS
 CAP {n}
 SIMULATED
@@ -809,6 +825,7 @@ Entry deleted: {title}.
 Type in the window that opened, then press Enter.
 YoRHa Helper is off. Setup steps and the switch: SYSTEM > YORHA HELPER.
 YoRHa Helper is not running. Setup steps: SYSTEM > YORHA HELPER.
+YoRHa Helper is not paired yet. Press PAIR in SYSTEM > YORHA HELPER.
 
 ## pod.idle.routine
 Report: No hostile signatures detected in this sector.

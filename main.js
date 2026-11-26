@@ -298,11 +298,20 @@
   };
 
   // localStorage can be missing or blocked; everything stored is optional.
+  // A saved value of the wrong shape (an old format, a hand edit) falls back to the default instead of
+  // throwing later, since one exception during start-up would stop the whole wallpaper.
+  const sameShape = (v, def) => (def === null || def === undefined ? true
+    : Array.isArray(def) ? Array.isArray(v)
+    : typeof def === 'object' ? !!v && typeof v === 'object' && !Array.isArray(v)
+    : typeof def === 'number' ? typeof v === 'number' && isFinite(v)
+    : typeof v === typeof def);
   const store = {
     get(key, def) {
       try {
         const raw = window.localStorage.getItem('yorha.' + key);
-        return raw === null ? def : JSON.parse(raw);
+        if (raw === null) return def;
+        const v = JSON.parse(raw);
+        return sameShape(v, def) ? v : def;
       } catch (e) {
         return def;
       }
@@ -794,29 +803,104 @@
   // The optional YoRHa Helper (helper/ in the GitHub repository) listens on this PC only (127.0.0.1): it presses
   // the Windows media keys when a button here asks, and opens a text box for typing with the real keyboard.
   // Nothing goes anywhere else. Without it the buttons say where to get it.
+  // Pairing: the wallpaper's own requests carry Origin "null", which any website can send from a sandboxed
+  // frame, so the helper (version 3) obeys only a page holding a key it handed out. SYSTEM > YORHA HELPER >
+  // PAIR shows a code here and the helper asks for it in its own box; a website never sees the code.
 
   const LINK = 'http://127.0.0.1:47823/yorha/';
-  const link = { online: false, next: 0, busy: null, asking: false, note: '', noteUntil: 0 };
+  const link = { online: false, paired: false, old: false, next: 0, busy: null, asking: false, note: '', noteUntil: 0,
+    pairing: false, code: '', pairMsg: '' };
+  const KEY_RE = /^[0-9a-f]{32}$/;
+  link.key = (() => {
+    const k = store.get('helper.key', '');
+    return typeof k === 'string' && KEY_RE.test(k) ? k : '';
+  })();
+  const keyQ = () => 'k=' + link.key;
+  const linkReady = () => link.online && link.paired;
 
-  // Resolves to true when the helper answers.
+  // Resolves to true when the helper answers (paired or not: see link.paired and link.old).
   function linkPing() {
     if (!cfg.helper) return Promise.resolve(false);
     if (link.busy) return link.busy;
     if (typeof fetch !== 'function') return Promise.resolve(false);
     const ctl = typeof AbortController === 'function' ? new AbortController() : null;
     const to = setTimeout(() => { if (ctl) ctl.abort(); }, 1500);
-    link.busy = fetch(LINK + 'ping', { cache: 'no-store', signal: ctl ? ctl.signal : undefined })
+    link.busy = fetch(LINK + 'ping?' + keyQ(), { cache: 'no-store', signal: ctl ? ctl.signal : undefined })
       .then((r) => r.json())
-      .then((j) => !!(j && j.ok && j.app === 'YoRHa Helper'))
-      .catch(() => false)
-      .then((ok) => {
+      .then((j) => (j && j.ok && j.app === 'YoRHa Helper' ? j : null))
+      .catch(() => null)
+      .then((j) => {
         clearTimeout(to);
         link.busy = null;
-        link.online = ok && cfg.helper;
+        const ok = !!j && cfg.helper;
+        link.online = ok;
+        link.old = ok && !j.pair; // version 2 and older: no pairing, so the wallpaper no longer uses it
+        link.paired = ok && j.paired === true;
+        // The helper forgot this key (Uninstall or -Forget): drop it, so PAIR shows again.
+        if (ok && j.pair && !j.paired && link.key) setKey('');
         refreshLinkUi();
         return ok;
       });
     return link.busy;
+  }
+
+  function setKey(k) {
+    link.key = k;
+    store.set('helper.key', k);
+  }
+
+  // A request the helper refused for want of a key (it was forgotten there): back to NOT PAIRED.
+  function linkRefused() {
+    link.paired = false;
+    setKey('');
+    refreshLinkUi();
+  }
+
+  // Six random digits for the pairing box.
+  function pairCode() {
+    let n = Math.floor(Math.random() * 1e6);
+    try {
+      n = window.crypto.getRandomValues(new Uint32Array(1))[0] % 1e6;
+    } catch (e) { /* Math.random is enough for a code that is typed once */ }
+    return String(n).padStart(6, '0');
+  }
+
+  function linkPair() {
+    if (!cfg.helper || link.pairing || !link.online || link.old) return;
+    link.pairing = true;
+    link.asking = true;
+    link.code = pairCode();
+    link.pairMsg = K('TYPE THIS CODE INTO THE BOX YORHA HELPER OPENED');
+    refreshLinkUi();
+    // The box's words are the helper's own (in this language), so no page can write a code into it.
+    fetch(LINK + 'pair?c=' + link.code + '&lang=' + encodeURIComponent(I18N.code), { method: 'POST', cache: 'no-store' })
+      .then((r) => r.json().catch(() => ({})).then((j) => ({ status: r.status, j: j || {} })))
+      .then((res) => {
+        const j = res.j;
+        if (j.ok && typeof j.key === 'string' && KEY_RE.test(j.key)) {
+          setKey(j.key);
+          link.paired = true;
+          link.pairMsg = '';
+          say('Report', T('YoRHa Helper paired. Music buttons and PC keyboard typing are ready.'));
+        } else if (res.status === 429) {
+          link.pairMsg = K('TOO MANY TRIES // WAIT 10 MINUTES, THEN PRESS PAIR');
+        } else if (j.cancel) {
+          link.pairMsg = K('PAIRING CANCELLED // PRESS PAIR TO TRY AGAIN');
+        } else {
+          link.pairMsg = K('CODE DID NOT MATCH // PRESS PAIR TO TRY AGAIN');
+        }
+      })
+      .catch(() => {
+        link.online = false;
+        link.pairMsg = '';
+      })
+      .then(() => {
+        link.pairing = false;
+        link.asking = false;
+        link.code = '';
+        link.next = 0;
+        refreshLinkUi();
+      });
   }
 
   // Looks for the helper once at start, then only while the controls are on screen
@@ -827,8 +911,16 @@
     const shown = nav.place ? (nav.place === 'intel' && nav.sel === 'now') || setup : state.panel === 'intel';
     if (!shown && link.next) return;
     // On the setup page it notices a freshly started helper within seconds.
-    link.next = now + (link.online ? 20000 : setup ? 4000 : 60000);
+    link.next = now + (linkReady() ? 20000 : setup ? 4000 : 60000);
     linkPing();
+  }
+
+  // Why the helper cannot be used yet, as a note for the music controls ('' when it can).
+  function linkProblem(ok) {
+    if (!ok) return K('YORHA HELPER NOT RUNNING // SETUP STEPS IN SYSTEM > YORHA HELPER');
+    if (link.old) return K('YORHA HELPER OUT OF DATE // DOWNLOAD YORHAHELPER.ZIP AGAIN (SYSTEM > YORHA HELPER)');
+    if (!link.paired) return K('YORHA HELPER NOT PAIRED // PAIR IT IN SYSTEM > YORHA HELPER');
+    return '';
   }
 
   function linkNote(text, ms) {
@@ -845,41 +937,52 @@
       return;
     }
     const send = () => {
-      fetch(LINK + 'media/' + cmd, { method: 'POST', mode: 'no-cors', cache: 'no-store' }).catch(() => {
-        link.online = false;
-        linkNote(K('YORHA HELPER LOST // IS YORHA HELPER STILL RUNNING?'), 7000);
-      });
+      fetch(LINK + 'media/' + cmd + '?' + keyQ(), { method: 'POST', cache: 'no-store' })
+        .then((r) => {
+          if (r.status !== 401) return;
+          linkRefused();
+          linkNote(linkProblem(true), 12000);
+        })
+        .catch(() => {
+          link.online = false;
+          linkNote(K('YORHA HELPER LOST // IS YORHA HELPER STILL RUNNING?'), 7000);
+        });
       linkNote(LINK_SENT[cmd], 2500);
     };
-    if (link.online) {
+    if (linkReady()) {
       send();
       return;
     }
     linkPing().then((ok) => {
-      if (ok) send();
-      else linkNote(K('YORHA HELPER NOT RUNNING // SETUP STEPS IN SYSTEM > YORHA HELPER'), 12000);
+      const why = linkProblem(ok);
+      if (why) linkNote(why, 12000);
+      else send();
     });
   }
 
   // Asks the helper for its text box: resolves to { text } when typed, { cancel: true } when closed,
-  // or { offline: true } when the helper is not running.
+  // { offline: true } when the helper is not running and { unpaired: true } when it is not paired (or too old).
   function linkAsk(prompt, text, max) {
     if (!cfg.helper) return Promise.resolve({ off: true });
-    return (link.online ? Promise.resolve(true) : linkPing()).then((ok) => {
+    return (linkReady() ? Promise.resolve(true) : linkPing()).then((ok) => {
       if (!ok) return { offline: true };
+      if (!linkReady()) return { unpaired: true };
       link.asking = true;
-      const q = '?p=' + encodeURIComponent(prompt) + '&t=' + encodeURIComponent(text || '') + '&n=' + max +
+      const q = '?' + keyQ() + '&p=' + encodeURIComponent(prompt) + '&t=' + encodeURIComponent(text || '') + '&n=' + max +
         '&ok=' + encodeURIComponent(T('DONE')) + '&cancel=' + encodeURIComponent(T('CANCEL'));
       return fetch(LINK + 'input' + q, { method: 'POST', cache: 'no-store' })
-        .then((r) => r.json())
-        .then((j) => (j && j.ok && typeof j.text === 'string' ? { text: j.text } : { cancel: true }))
+        .then((r) => {
+          if (r.status === 401) return { unpaired: true };
+          return r.json().then((j) => (j && j.ok && typeof j.text === 'string' ? { text: j.text } : { cancel: true }));
+        })
         .catch(() => {
           link.online = false;
           return { offline: true };
         })
         .then((res) => {
           link.asking = false;
-          if (res.offline) refreshLinkUi(); // brings back the on-screen keyboard it had replaced
+          if (res.unpaired) linkRefused();
+          else if (res.offline) refreshLinkUi(); // brings back the on-screen keyboard it had replaced
           return res;
         });
     });
@@ -887,11 +990,13 @@
 
   function refreshLinkUi() {
     planner.helperChanged();
+    const label = !cfg.helper ? K('HELPER OFF') : !link.online ? K('HELPER OFFLINE') : link.old ? K('HELPER OUT OF DATE')
+      : !link.paired ? K('HELPER NOT PAIRED') : K('HELPER ONLINE');
     for (const p of ['m-', 'pm-']) {
       const box = $(p + 'ctl');
-      box.classList.toggle('online', link.online);
+      box.classList.toggle('online', linkReady());
       box.classList.toggle('playing', isPlaying());
-      setText($(p + 'link'), !cfg.helper ? T('HELPER OFF') : link.online ? T('HELPER ONLINE') : T('HELPER OFFLINE'));
+      setText($(p + 'link'), T(label));
     }
     if (nav.place === 'intel') updateIntel('pm-');
     else if (state.panel === 'intel') updateIntel();
@@ -903,7 +1008,11 @@
   // The switch (property 'yorhahelper', or SYSTEM > QUICK SETTINGS) starts off. While it is off the wallpaper
   // never contacts 127.0.0.1 at all; switching it off forgets the helper at once.
   function syncHelper() {
-    if (!cfg.helper) link.online = false;
+    if (!cfg.helper) {
+      link.online = false;
+      link.paired = false;
+      link.pairMsg = '';
+    }
     if (cfg.helper && !link.wasOn) link.next = 0; // just switched on: look for it straight away
     link.wasOn = cfg.helper;
     refreshLinkUi();
@@ -931,13 +1040,24 @@
 
   // SYSTEM > YORHA HELPER: the setup steps inside the wallpaper, for subscribers who never read the Workshop page.
   function renderHelperPage() {
-    const st = !cfg.helper ? K('OFF') : link.online ? K('ONLINE') : K('NOT RUNNING');
+    const st = !cfg.helper ? K('OFF') : !link.online ? K('NOT RUNNING') : link.old ? K('UPDATE NEEDED')
+      : !link.paired ? K('NOT PAIRED') : K('ONLINE');
     setText($('hp-state'), T('STATUS // {s}', { s: T(st) }));
-    $('hp-state').classList.toggle('ok', !!(cfg.helper && link.online));
+    $('hp-state').classList.toggle('ok', !!(cfg.helper && linkReady()));
     setText($('hp-switch'), cfg.helper ? T('SWITCH OFF') : T('SWITCH ON'));
     $('hp-switch').classList.toggle('ghost', !!cfg.helper);
     $('hp-check').classList.toggle('off', !cfg.helper);
+    // The pairing row: while the helper answers but does not know this wallpaper yet.
+    const show = !!cfg.helper && link.online && (link.pairing || !link.paired);
+    $('hp-pair').classList.toggle('show', show);
+    $('hp-pair').classList.toggle('busy', link.pairing);
+    $('hp-pairbtn').classList.toggle('off', link.pairing || link.old);
+    setText($('hp-code'), link.code ? link.code.slice(0, 3) + ' ' + link.code.slice(3) : '--- ---');
+    const msg = link.old ? K('THIS COPY IS OUT OF DATE // DOWNLOAD YORHAHELPER.ZIP AGAIN, THEN RUN INSTALL-YORHAHELPER.CMD')
+      : link.pairMsg || K('PRESS PAIR TO CONNECT THIS WALLPAPER');
+    setText($('hp-pmsg'), T(msg));
   }
+  $('hp-pairbtn').addEventListener('click', linkPair);
   $('hp-switch').addEventListener('click', () => {
     if (cfg.helper) setOverride('helper', false);
     else helperDisclaimer();
@@ -1882,6 +2002,9 @@
     }
     files.sort((a, b) => baseName(a).localeCompare(baseName(b), undefined, { numeric: true, sensitivity: 'base' }));
     gallery.files = files;
+    // Small copies and figure readings of records that left the folder are freed (a wallpaper runs for days).
+    for (const f of Object.keys(thumbs.done)) if (!files.includes(f)) forgetFile(f);
+    for (const f of Object.keys(figures)) if (!files.includes(f)) delete figures[f];
     // A record deployed from the ARCHIVE place stays on the desktop across restarts.
     const pin = pinnedName();
     gallery.pinned = (pin && files.find((p) => baseName(p) === pin)) || '';
@@ -2220,6 +2343,14 @@
   // session, one at a time, so a page of records does not hold a dozen full-size renders in memory.
   const THUMB_H = 400;
   const thumbs = { done: {}, waiting: {}, queue: [], busy: false };
+
+  // Drops what was made from a file, so a changed or removed image is read again (or freed).
+  function forgetFile(file) {
+    const bmp = thumbs.done[file];
+    if (bmp && bmp.close) bmp.close();
+    delete thumbs.done[file];
+    delete figures[file];
+  }
 
   function thumbFor(file, cb) {
     if (file in thumbs.done) return cb(thumbs.done[file]);
@@ -2692,7 +2823,7 @@
           { id: 'field', label: K('FIELD'), desc: K('Click the ground to plant a Lunar Tear. Sweep the cursor across the flowers to stir the wind.') },
           { id: 'wind', label: K('WIND'), desc: K('Cursor: your movement makes gusts. Calm: still air. Storm: a constant gale.'),
             action: () => garden && garden.cycleWind(), value: () => (garden ? T(garden.windLabel()) : '--') },
-          { id: 'clear', label: K('CLEAR FIELD'), desc: K('Let every flower wither and start over.'), action: () => garden && garden.clear() }
+          { id: 'clear', label: K('CLEAR FIELD'), desc: K('Let every flower wither and start over.'), action: armClearField, armed: () => Date.now() < fieldArm }
         ];
       case 'system':
         return [
@@ -2715,6 +2846,16 @@
       clearAudioLog();
     } else {
       clearArm = Date.now() + 4000;
+    }
+  }
+  // CLEAR FIELD too: one stray click would wither every flower planted (and the Lunar Tears UNIT counts).
+  let fieldArm = 0;
+  function armClearField() {
+    if (Date.now() < fieldArm) {
+      fieldArm = 0;
+      if (garden) garden.clear();
+    } else {
+      fieldArm = Date.now() + 4000;
     }
   }
 
@@ -3786,7 +3927,7 @@
     emote: emote,
     go: go,
     ask: (prompt, text, max) => linkAsk(prompt, text, max), // real-keyboard typing through YoRHa Helper
-    helperOnline: () => link.online,
+    helperOnline: () => linkReady(), // running and paired, so its text box can replace the on-screen keyboard
     pingHelper: () => linkPing()
   });
 
@@ -5031,7 +5172,8 @@
       if (key === 'place') previewPlace = raw;
       if (key === 'sub') previewSub = raw;
       const field = PROP_MAP[key];
-      if (!field) continue;
+      // A link can preview settings, but never switch on contact with YoRHa Helper: that needs the disclaimer.
+      if (!field || field === 'helper') continue;
       const cur = base[field];
       base[field] = typeof cur === 'boolean' ? (raw === 'true' || raw === '1')
         : typeof cur === 'number' ? Number(raw) : raw;
@@ -5039,14 +5181,21 @@
     }
   }
 
-  I18N.translateStatic(document.body); // remember the English originals before any language applies
-  applyConfig();
-  if (previewChars) setGalleryFiles(previewChars);
-  // Outside Wallpaper Engine nothing sends the folder property: show the bundled set.
-  else setTimeout(() => { if (!weSeen && !gallery.files.length) useBundled(); }, 1200);
-  setPanel(cfg.startPanel, false);
-  if (PLACES[previewPlace]) showPlace(previewPlace, previewSub);
-  updateClock(new Date());
+  let weSeen = false;
+  // A failure in here must not stop the rest of start-up: without the listener below, Wallpaper Engine's
+  // settings would never arrive, and without the loops nothing would move.
+  try {
+    I18N.translateStatic(document.body); // remember the English originals before any language applies
+    applyConfig();
+    if (previewChars) setGalleryFiles(previewChars);
+    // Outside Wallpaper Engine nothing sends the folder property: show the bundled set.
+    else setTimeout(() => { if (!weSeen && !gallery.files.length) useBundled(); }, 1200);
+    setPanel(cfg.startPanel, false);
+    if (PLACES[previewPlace]) showPlace(previewPlace, previewSub);
+    updateClock(new Date());
+  } catch (e) {
+    if (window.console) console.error('[YoRHa] start-up step failed:', e);
+  }
   scheduleIdle(Date.now() + 15000);
   // After Wallpaper Engine has applied the unit name, and once the language file is in.
   setTimeout(function hello() {
@@ -5054,7 +5203,6 @@
     else greet();
   }, 1500);
 
-  let weSeen = false;
   window.wallpaperPropertyListener = {
     applyUserProperties: function (props) {
       // The first call carries every property; later calls carry only what the user just changed,
@@ -5084,6 +5232,9 @@
     },
     userDirectoryFilesAddedOrChanged: function (propertyName, changedFiles) {
       if (propertyName !== 'charfolder' || !Array.isArray(changedFiles)) return;
+      // A file saved again under the same name: its old small copy and figure reading no longer match it.
+      const changed = new Set(changedFiles.map(normPath));
+      for (const f of gallery.files) if (changed.has(normPath(f))) forgetFile(f);
       setGalleryFiles(gallery.files.concat(changedFiles));
     },
     userDirectoryFilesRemoved: function (propertyName, removedFiles) {

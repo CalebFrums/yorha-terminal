@@ -135,7 +135,10 @@ Neste PC, abra github.com/CalebFrums/yorha-terminal no navegador.
 Clique em "Download YoRHaHelper.zip" no topo da página e extraia o arquivo em uma pasta que você vai manter, como Documentos.
 Nessa pasta, clique duas vezes em Install-YoRHaHelper.cmd. Se o Windows perguntar, escolha Executar (ou Mais informações e depois Executar assim mesmo). Ele inicia agora e junto com o Windows.
 Volte aqui e pressione LIGAR. Antes, um aviso explica o que ele faz.
+Pressione PAREAR e digite o código de seis dígitos mostrado aqui na caixa que o YoRHa Helper abrir.
 O status acima muda para ONLINE e os botões de música em INTELIGÊNCIA funcionam.
+CÓDIGO DE PAREAMENTO
+PAREAR
 PARA REMOVER: CLIQUE DUAS VEZES EM UNINSTALL-YORHAHELPER.CMD E APAGUE A PASTA // ELE SÓ FALA COM ESTE PC, NÃO GUARDA REGISTROS E NUNCA ACESSA A INTERNET
 YoRHa TERMINAL TÁTICO
 Terminal de área de trabalho feito por fã no estilo de NieR:Automata. Sem ligação com a Square Enix. A interface é toda desenhada em código. Os personagens vêm do conjunto incluído ou da sua própria pasta, quando você escolher uma.
@@ -145,7 +148,7 @@ GLÓRIA À HUMANIDADE
 YORHA HELPER // AVISO
 O YoRHa Helper é um programa pequeno e opcional da página do GitHub deste papel de parede (github.com/CalebFrums/yorha-terminal, pasta helper). Você mesmo baixa e inicia; o papel de parede não consegue instalar nada.
 Com este botão ligado, o papel de parede fala com ele só neste PC (127.0.0.1), para duas coisas: pressionar as teclas de mídia do Windows quando você clica em anterior, tocar/pausar ou próxima em INTELIGÊNCIA, e abrir uma caixa de texto quando você escolhe DIGITAR NO TECLADO DO PC.
-Privacidade: nada é enviado para a internet nem para o autor. O helper não guarda registros, não grava arquivos e só lê o que você digita na própria caixa de texto dele. Seu calendário e sua agenda ficam neste PC.
+Privacidade: nada é enviado para a internet nem para o autor. O helper não guarda registros, e o único arquivo que ele grava contém a chave de pareamento. Ele só lê o que você digita na própria caixa de texto dele e só obedece a um papel de parede que você pareou. Seu calendário e sua agenda ficam neste PC.
 Com o botão desligado, o papel de parede nunca entra em contato com o helper. Você pode desligá-lo aqui a qualquer momento.
 Os passos de instalação estão em SISTEMA > YORHA HELPER.
 CANCELAR
@@ -229,20 +232,33 @@ AGUARDANDO SINAL DE ÁUDIO // TOQUE ALGO NO SPOTIFY, EM UM NAVEGADOR ETC.
 Registro de áudio apagado. Não resta nenhum registro de sinais anteriores.
 Sinal de áudio captado: "{title}"{by}.
 Reprodução de áudio suspensa.
+DIGITE ESTE CÓDIGO NA CAIXA QUE O YORHA HELPER ABRIU
+YoRHa Helper pareado. Os botões de música e a digitação pelo teclado do PC estão prontos.
+TENTATIVAS DEMAIS // ESPERE 10 MINUTOS E PRESSIONE PAREAR
+PAREAMENTO CANCELADO // PRESSIONE PAREAR PARA TENTAR DE NOVO
+O CÓDIGO NÃO CONFERE // PRESSIONE PAREAR PARA TENTAR DE NOVO
+O YORHA HELPER NÃO ESTÁ RODANDO // PASSOS EM SISTEMA > YORHA HELPER
+YORHA HELPER DESATUALIZADO // BAIXE O YORHAHELPER.ZIP DE NOVO (SISTEMA > YORHA HELPER)
+YORHA HELPER NÃO PAREADO // PAREIE EM SISTEMA > YORHA HELPER
 SINAL ENVIADO // PRÓXIMA FAIXA
 SINAL ENVIADO // FAIXA ANTERIOR
 SINAL ENVIADO // TOCAR / PAUSAR
 O YORHA HELPER ESTÁ DESLIGADO // INSTALAÇÃO E BOTÃO EM SISTEMA > YORHA HELPER
 YORHA HELPER PERDIDO // O YORHA HELPER AINDA ESTÁ RODANDO?
-O YORHA HELPER NÃO ESTÁ RODANDO // PASSOS EM SISTEMA > YORHA HELPER
 HELPER DESLIGADO
-HELPER ONLINE
 HELPER OFFLINE
+HELPER DESATUALIZADO
+HELPER NÃO PAREADO
+HELPER ONLINE
 YoRHa Helper ligado. Ele só fala com este PC.
-ONLINE
 NÃO ESTÁ RODANDO
+PRECISA ATUALIZAR
+NÃO PAREADO
+ONLINE
 STATUS // {s}
 DESLIGAR
+ESTA CÓPIA ESTÁ DESATUALIZADA // BAIXE O YORHAHELPER.ZIP DE NOVO E EXECUTE O INSTALL-YORHAHELPER.CMD
+PRESSIONE PAREAR PARA CONECTAR ESTE PAPEL DE PAREDE
 {n} FPS
 LIMITE {n}
 SIMULADO
@@ -804,6 +820,7 @@ Entrada excluída: {title}.
 Digite na janela que abriu e pressione Enter.
 O YoRHa Helper está desligado. Instalação e botão: SISTEMA > YORHA HELPER.
 O YoRHa Helper não está rodando. Passos: SISTEMA > YORHA HELPER.
+O YoRHa Helper ainda não está pareado. Pressione PAREAR em SISTEMA > YORHA HELPER.
 
 ## pod.idle.routine
 Report: Nenhuma assinatura hostil detectada neste setor.

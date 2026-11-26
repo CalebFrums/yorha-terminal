@@ -132,9 +132,12 @@
     const resetUp = () => PATCHES.forEach((p) => { up[p.id] = 0; });
     resetUp();
 
+    // Saved runs that are not records (an old format, a hand edit) are dropped, so sorting them cannot throw.
+    const okRun = (r) => !!r && typeof r === 'object' && isFinite(r.score);
     let runs = api.store.get('breach.runs', []);
     let last = api.store.get('breach.last', null);
-    if (!Array.isArray(runs)) runs = [];
+    runs = Array.isArray(runs) ? runs.filter(okRun) : [];
+    if (!okRun(last)) last = null;
 
     const P = {
       x: 0, z: 0, vx: 0, vz: 0, aim: -Math.PI / 2, tx: 0, tz: 0, hp: 3, inv: 0, barrier: 0, cool: 0,
@@ -246,8 +249,12 @@
       renderer = new THREE.WebGLRenderer({ canvas: glc, antialias: !LOW, alpha: true, stencil: false, powerPreference: 'default' });
       renderer.setPixelRatio(1);
       renderer.setClearColor(0x000000, 0);
-      glc.addEventListener('webglcontextlost', (e) => { e.preventDefault(); g.lost = true; });
-      glc.addEventListener('webglcontextrestored', () => { g.lost = false; });
+      // release() ends a context with forceContextLoss(), and the browser reports that loss a moment later:
+      // only this canvas's own events count, or the old one would mark the next 3D view as lost for good.
+      const own = glc;
+      g.lost = false;
+      own.addEventListener('webglcontextlost', (e) => { e.preventDefault(); if (own === glc) g.lost = true; });
+      own.addEventListener('webglcontextrestored', () => { if (own === glc) g.lost = false; });
       g.rw = g.rh = 0;
 
       scene = new THREE.Scene();

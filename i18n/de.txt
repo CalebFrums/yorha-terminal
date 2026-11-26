@@ -135,7 +135,10 @@ Optional. Er macht die Musiktasten in INFOS funktionsfähig und ergänzt MIT PC-
 Klicke oben auf der Seite auf „Download YoRHaHelper.zip" und entpacke die Datei in einen Ordner, den du behältst, z. B. Dokumente.
 Doppelklicke in diesem Ordner auf Install-YoRHaHelper.cmd. Falls Windows fragt, wähle Ausführen (oder Weitere Informationen, dann Trotzdem ausführen). Er startet sofort und mit Windows.
 Komm hierher zurück und drücke EINSCHALTEN. Vorher erklärt ein Hinweis, was er tut.
+Drücke KOPPELN und tippe den hier gezeigten sechsstelligen Code in das Fenster, das YoRHa Helper öffnet.
 Der Status oben wechselt auf ONLINE, und die Musiktasten in INFOS funktionieren.
+KOPPLUNGSCODE
+KOPPELN
 ENTFERNEN: UNINSTALL-YORHAHELPER.CMD DOPPELKLICKEN, DANN DEN ORDNER LÖSCHEN // ER SPRICHT NUR MIT DIESEM PC, FÜHRT KEIN PROTOKOLL UND GEHT NIE INS INTERNET
 YoRHa TAKTISCHES TERMINAL
 Fan-Desktopterminal im Stil von NieR:Automata. Nicht mit Square Enix verbunden. Die Oberfläche ist komplett in Code gezeichnet. Charaktere stammen aus dem mitgelieferten Set oder aus deinem eigenen Ordner, sobald du einen wählst.
@@ -145,7 +148,7 @@ RUHM DER MENSCHHEIT
 YORHA HELPER // HINWEIS
 YoRHa Helper ist ein kleines, optionales Programm von der GitHub-Seite dieses Hintergrunds (github.com/CalebFrums/yorha-terminal, Ordner helper). Du lädst es selbst herunter und startest es selbst; der Hintergrund kann nichts installieren.
 Ist dieser Schalter an, spricht der Hintergrund nur auf diesem PC (127.0.0.1) mit ihm, und zwar für zwei Dinge: Er drückt die Windows-Medientasten, wenn du in INFOS auf Zurück, Wiedergabe/Pause oder Weiter klickst, und er öffnet ein Textfeld, wenn du MIT PC-TASTATUR TIPPEN wählst.
-Datenschutz: Nichts wird ins Internet oder an den Autor gesendet. Der Helper führt kein Protokoll, schreibt keine Dateien und liest nur, was du in sein eigenes Textfeld tippst. Kalender und Wochenplan bleiben auf diesem PC.
+Datenschutz: Nichts wird ins Internet oder an den Autor gesendet. Der Helper führt kein Protokoll, und die einzige Datei, die er schreibt, enthält seinen Kopplungsschlüssel. Er liest nur, was du in sein eigenes Textfeld tippst, und gehorcht nur einem Hintergrund, den du mit ihm gekoppelt hast. Kalender und Wochenplan bleiben auf diesem PC.
 Ist der Schalter aus, nimmt der Hintergrund nie Kontakt mit dem Helper auf. Du kannst ihn hier jederzeit wieder ausschalten.
 Die Einrichtungsschritte stehen unter SYSTEM > YORHA HELPER.
 ABBRECHEN
@@ -229,20 +232,33 @@ WARTE AUF AUDIOSIGNAL // SPIELE ETWAS IN SPOTIFY, EINEM BROWSER USW. AB
 Audioprotokoll gelöscht. Keine Aufzeichnung früherer Signale bleibt erhalten.
 Audiosignal erfasst: „{title}“{by}.
 Audiowiedergabe angehalten.
+TIPPE DIESEN CODE IN DAS FENSTER, DAS YORHA HELPER GEÖFFNET HAT
+YoRHa Helper gekoppelt. Musiktasten und Tippen mit der PC-Tastatur sind bereit.
+ZU VIELE VERSUCHE // 10 MINUTEN WARTEN, DANN KOPPELN DRÜCKEN
+KOPPLUNG ABGEBROCHEN // ZUM WIEDERHOLEN KOPPELN DRÜCKEN
+CODE PASST NICHT // ZUM WIEDERHOLEN KOPPELN DRÜCKEN
+YORHA HELPER LÄUFT NICHT // EINRICHTUNG UNTER SYSTEM > YORHA HELPER
+YORHA HELPER VERALTET // YORHAHELPER.ZIP NEU HERUNTERLADEN (SYSTEM > YORHA HELPER)
+YORHA HELPER NICHT GEKOPPELT // KOPPELN UNTER SYSTEM > YORHA HELPER
 SIGNAL GESENDET // NÄCHSTER TITEL
 SIGNAL GESENDET // VORHERIGER TITEL
 SIGNAL GESENDET // WIEDERGABE / PAUSE
 YORHA HELPER IST AUS // EINRICHTUNG UND SCHALTER UNTER SYSTEM > YORHA HELPER
 YORHA HELPER GETRENNT // LÄUFT YORHA HELPER NOCH?
-YORHA HELPER LÄUFT NICHT // EINRICHTUNG UNTER SYSTEM > YORHA HELPER
 HELPER AUS
-HELPER ONLINE
 HELPER OFFLINE
+HELPER VERALTET
+HELPER NICHT GEKOPPELT
+HELPER ONLINE
 YoRHa Helper eingeschaltet. Er spricht nur mit diesem PC.
-ONLINE
 LÄUFT NICHT
+UPDATE NÖTIG
+NICHT GEKOPPELT
+ONLINE
 STATUS // {s}
 AUSSCHALTEN
+DIESE KOPIE IST VERALTET // YORHAHELPER.ZIP NEU HERUNTERLADEN, DANN INSTALL-YORHAHELPER.CMD AUSFÜHREN
+KOPPELN DRÜCKEN, UM DIESEN HINTERGRUND ZU VERBINDEN
 {n} FPS
 LIMIT {n}
 SIMULIERT
@@ -804,6 +820,7 @@ Eintrag gelöscht: {title}.
 Im geöffneten Fenster tippen, dann Enter drücken.
 YoRHa Helper ist aus. Einrichtung und Schalter: SYSTEM > YORHA HELPER.
 YoRHa Helper läuft nicht. Einrichtung: SYSTEM > YORHA HELPER.
+YoRHa Helper ist noch nicht gekoppelt. Drücke KOPPELN unter SYSTEM > YORHA HELPER.
 
 ## pod.idle.routine
 Report: Keine feindlichen Signaturen in diesem Sektor.

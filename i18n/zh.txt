@@ -135,7 +135,10 @@ YORHA HELPER // 安装
 点击页面顶部的“Download YoRHaHelper.zip”，并解压到一个会长期保留的文件夹，例如“文档”。
 在该文件夹中双击 Install-YoRHaHelper.cmd。如果 Windows 询问，请选择“运行”（或“更多信息”，再选“仍要运行”）。它会立即启动，并随 Windows 启动。
 回到这里并按下“打开”。在此之前会有说明告诉你它的作用。
+按下“配对”，然后把这里显示的六位数代码输入到 YoRHa Helper 打开的窗口中。
 上方状态会变为“在线”，情报中的音乐按钮即可使用。
+配对代码
+配对
 卸载方法：双击 UNINSTALL-YORHAHELPER.CMD，然后删除该文件夹 // 它只与本机通信，不保留日志，也绝不联网
 YoRHa 战术终端
 以《尼尔：自动人形》为风格的同人桌面终端，与 Square Enix 无关。界面全部由代码绘制。角色来自附带的角色集，选择自己的文件夹后则来自该文件夹。
@@ -145,7 +148,7 @@ YoRHa 战术终端
 YORHA HELPER // 说明
 YoRHa Helper 是一个小巧的可选程序，来自本壁纸的 GitHub 页面（github.com/CalebFrums/yorha-terminal，helper 文件夹）。需要你自己下载并启动；壁纸本身无法安装任何东西。
 打开此开关后，壁纸只会在本机（127.0.0.1）与它通信，且只做两件事：当你在情报中点击上一首、播放/暂停或下一首时按下 Windows 媒体键；当你选择“用电脑键盘输入”时打开一个文本框。
-隐私：不会向互联网或作者发送任何内容。Helper 不保留日志、不写入文件，只读取你在它自己的文本框中输入的内容。你的日历和日程只保存在本机。
+隐私：不会向互联网或作者发送任何内容。Helper 不保留日志，它写入的唯一文件只保存配对密钥。它只读取你在它自己的文本框中输入的内容，也只听从与它配对过的壁纸。你的日历和日程只保存在本机。
 关闭开关时，壁纸绝不会联系 Helper。你可以随时在这里再次关闭它。
 安装步骤见 系统 > YORHA HELPER。
 取消
@@ -229,20 +232,33 @@ POD
 音频记录已清除。不再保留任何过往信号。
 已捕获音频信号："{title}"{by}。
 音频播放已暂停。
+把此代码输入 YORHA HELPER 打开的窗口
+YoRHa Helper 已配对。音乐按钮和电脑键盘输入已就绪。
+尝试次数过多 // 等待 10 分钟后再按“配对”
+配对已取消 // 按“配对”重试
+代码不匹配 // 按“配对”重试
+YORHA HELPER 未运行 // 安装步骤见 系统 > YORHA HELPER
+YORHA HELPER 版本过旧 // 重新下载 YORHAHELPER.ZIP（系统 > YORHA HELPER）
+YORHA HELPER 未配对 // 在 系统 > YORHA HELPER 中配对
 信号已发送 // 下一首
 信号已发送 // 上一首
 信号已发送 // 播放 / 暂停
 YORHA HELPER 已关闭 // 安装与开关见 系统 > YORHA HELPER
 YORHA HELPER 连接中断 // YORHA HELPER 还在运行吗？
-YORHA HELPER 未运行 // 安装步骤见 系统 > YORHA HELPER
 HELPER 已关闭
-HELPER 在线
 HELPER 离线
+HELPER 版本过旧
+HELPER 未配对
+HELPER 在线
 YoRHa Helper 已打开。它只与本机通信。
-在线
 未运行
+需要更新
+未配对
+在线
 状态 // {s}
 关闭
+此副本已过旧 // 重新下载 YORHAHELPER.ZIP，然后运行 INSTALL-YORHAHELPER.CMD
+按“配对”连接此壁纸
 {n} FPS
 上限 {n}
 模拟
@@ -804,6 +820,7 @@ SHIFT
 请在弹出的窗口中输入，然后按回车。
 YoRHa Helper 已关闭。安装与开关：系统 > YORHA HELPER。
 YoRHa Helper 未运行。安装步骤：系统 > YORHA HELPER。
+YoRHa Helper 尚未配对。请在 系统 > YORHA HELPER 中按“配对”。
 
 ## pod.idle.routine
 Report: 本区域未检测到敌对信号。

@@ -2025,11 +2025,22 @@ body.cal-alert #hubslot #agenda { display: none; }
 .hp-state { padding: 0.15rem 0.6rem; border: 1px solid var(--ink-2); font-size: 0.72rem; letter-spacing: 0.2em; }
 .hp-state.ok { background: var(--ink); color: var(--hl-text); border-color: var(--ink); }
 .hp-intro { flex: none; max-width: 58rem; margin: 1.1rem 0 0.6rem; font-size: 0.92rem; line-height: 1.6; letter-spacing: 0.05em; }
-.hp-steps { flex: 1; min-height: 0; list-style: none; margin: 0; padding: 0; max-width: 62rem; }
+.hp-steps { flex: 0 1 auto; min-height: 0; list-style: none; margin: 0; padding: 0; max-width: 62rem; }
 .hp-steps li { display: flex; align-items: baseline; gap: 1.2rem; padding: 0.85rem 0.6rem; border-bottom: 1px solid var(--ink-3); }
 .hp-n { flex: none; width: 2.6rem; padding: 0.1rem 0; text-align: center; background: var(--ink); color: var(--hl-text); font-size: 0.78rem; letter-spacing: 0.12em; }
 .hp-t { flex: 1; min-width: 0; font-size: 0.95rem; line-height: 1.55; letter-spacing: 0.04em; }
-.hp-note { flex: none; margin-top: 0.8rem; }
+.hp-note { flex: none; margin-top: auto; padding-top: 0.8rem; }
+/* Pairing row: shown while the helper answers but does not know this wallpaper yet. */
+.hp-pair { display: none; flex: none; align-items: center; gap: 1.2rem; max-width: 62rem; margin-top: 0.8rem; padding: 0.7rem 0.6rem;
+  border: 1px solid var(--ink); background: rgba(var(--ink-rgb), 0.06); }
+.hp-pair.show { display: flex; animation: pv-in 0.3s ease-out 1; }
+.hp-pl { flex: none; font-size: 0.72rem; letter-spacing: 0.2em; }
+.hp-code { flex: none; min-width: 7.6em; padding: 0.2rem 0.7rem; background: var(--ink); color: var(--hl-text); font-size: 1.35rem;
+  letter-spacing: 0.18em; text-align: center; font-variant-numeric: tabular-nums; }
+.hp-pair.busy .hp-pmsg::before { content: ""; display: inline-block; width: 0.42rem; height: 0.42rem; margin-right: 0.5rem;
+  background: currentColor; animation: blink 1.2s steps(1) infinite; }
+.hp-pmsg { flex: 1; min-width: 0; font-size: 0.78rem; line-height: 1.45; letter-spacing: 0.1em; }
+.hp-pair .btn { flex: none; height: 2rem; padding: 0 1.4rem; font-size: 0.7rem; }
 
 /* ---------- entry editor + on-screen keyboard ---------- */
 

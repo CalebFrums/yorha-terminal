@@ -1579,7 +1579,8 @@
         $('ed-pc').classList.remove('off');
         if (!ed.open) return;
         ed.tip = res.off ? T('YoRHa Helper is off. Setup steps and the switch: SYSTEM > YORHA HELPER.')
-          : res.offline ? T('YoRHa Helper is not running. Setup steps: SYSTEM > YORHA HELPER.') : '';
+          : res.offline ? T('YoRHa Helper is not running. Setup steps: SYSTEM > YORHA HELPER.')
+          : res.unpaired ? T('YoRHa Helper is not paired yet. Press PAIR in SYSTEM > YORHA HELPER.') : '';
         if (typeof res.text === 'string') {
           ed.title = cleanTitle(res.text, ed.max);
           endCompose();

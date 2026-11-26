@@ -135,7 +135,10 @@ En este PC, abre github.com/CalebFrums/yorha-terminal en tu navegador.
 Haz clic en «Download YoRHaHelper.zip» arriba de la página y descomprímelo en una carpeta que vayas a conservar, como Documentos.
 En esa carpeta, haz doble clic en Install-YoRHaHelper.cmd. Si Windows pregunta, elige Ejecutar (o Más información y luego Ejecutar de todas formas). Se inicia ya y con Windows.
 Vuelve aquí y pulsa ACTIVAR. Antes, un aviso explica lo que hace.
+Pulsa VINCULAR y escribe el código de seis dígitos que aparece aquí en el cuadro que abre YoRHa Helper.
 El estado de arriba cambia a CONECTADO y los botones de música de INTELIGENCIA funcionan.
+CÓDIGO DE VINCULACIÓN
+VINCULAR
 PARA QUITARLO: DOBLE CLIC EN UNINSTALL-YORHAHELPER.CMD Y BORRA LA CARPETA // SOLO HABLA CON ESTE PC, NO GUARDA REGISTROS Y NUNCA SE CONECTA A INTERNET
 YoRHa TERMINAL TÁCTICA
 Terminal de escritorio hecha por fans al estilo de NieR:Automata. Sin relación con Square Enix. La interfaz está dibujada en código. Los personajes vienen del conjunto incluido o de tu propia carpeta cuando elijas una.
@@ -145,7 +148,7 @@ GLORIA A LA HUMANIDAD
 YORHA HELPER // AVISO
 YoRHa Helper es un programa pequeño y opcional de la página de GitHub de este fondo (github.com/CalebFrums/yorha-terminal, carpeta helper). Lo descargas e inicias tú; el fondo no puede instalar nada.
 Con este interruptor encendido, el fondo habla con él solo en este PC (127.0.0.1) para dos cosas: pulsar las teclas multimedia de Windows cuando haces clic en anterior, reproducir/pausa o siguiente en INTELIGENCIA, y abrir un cuadro de texto cuando eliges ESCRIBIR CON EL TECLADO.
-Privacidad: no se envía nada a internet ni al autor. El helper no guarda registros ni escribe archivos, y solo lee lo que escribes en su propio cuadro de texto. Tu calendario y tu horario se quedan en este PC.
+Privacidad: no se envía nada a internet ni al autor. El helper no guarda registros, y el único archivo que escribe contiene su clave de vinculación. Solo lee lo que escribes en su propio cuadro de texto y solo obedece a un fondo que hayas vinculado. Tu calendario y tu horario se quedan en este PC.
 Con el interruptor apagado, el fondo nunca contacta con el helper. Puedes volver a apagarlo aquí cuando quieras.
 Los pasos de instalación están en SISTEMA > YORHA HELPER.
 CANCELAR
@@ -229,20 +232,33 @@ ESPERANDO SEÑAL DE AUDIO // REPRODUCE ALGO EN SPOTIFY, UN NAVEGADOR, ETC.
 Registro de audio borrado. No queda constancia de señales anteriores.
 Señal de audio captada: «{title}»{by}.
 Reproducción de audio suspendida.
+ESCRIBE ESTE CÓDIGO EN EL CUADRO QUE ABRIÓ YORHA HELPER
+YoRHa Helper vinculado. Los botones de música y la escritura con el teclado del PC están listos.
+DEMASIADOS INTENTOS // ESPERA 10 MINUTOS Y PULSA VINCULAR
+VINCULACIÓN CANCELADA // PULSA VINCULAR PARA REINTENTAR
+EL CÓDIGO NO COINCIDE // PULSA VINCULAR PARA REINTENTAR
+YORHA HELPER NO ESTÁ EN MARCHA // PASOS EN SISTEMA > YORHA HELPER
+YORHA HELPER DESACTUALIZADO // VUELVE A DESCARGAR YORHAHELPER.ZIP (SISTEMA > YORHA HELPER)
+YORHA HELPER SIN VINCULAR // VINCÚLALO EN SISTEMA > YORHA HELPER
 SEÑAL ENVIADA // PISTA SIGUIENTE
 SEÑAL ENVIADA // PISTA ANTERIOR
 SEÑAL ENVIADA // REPRODUCIR / PAUSA
 YORHA HELPER ESTÁ APAGADO // INSTALACIÓN E INTERRUPTOR EN SISTEMA > YORHA HELPER
 YORHA HELPER PERDIDO // ¿SIGUE EN MARCHA YORHA HELPER?
-YORHA HELPER NO ESTÁ EN MARCHA // PASOS EN SISTEMA > YORHA HELPER
 HELPER APAGADO
-HELPER CONECTADO
 HELPER DESCONECTADO
+HELPER DESACTUALIZADO
+HELPER SIN VINCULAR
+HELPER CONECTADO
 YoRHa Helper activado. Solo habla con este PC.
-CONECTADO
 NO ESTÁ EN MARCHA
+HACE FALTA ACTUALIZAR
+SIN VINCULAR
+CONECTADO
 ESTADO // {s}
 APAGAR
+ESTA COPIA ESTÁ DESACTUALIZADA // VUELVE A DESCARGAR YORHAHELPER.ZIP Y EJECUTA INSTALL-YORHAHELPER.CMD
+PULSA VINCULAR PARA CONECTAR ESTE FONDO
 {n} FPS
 LÍMITE {n}
 SIMULADO
@@ -804,6 +820,7 @@ Entrada borrada: {title}.
 Escribe en la ventana que se abrió y pulsa Intro.
 YoRHa Helper está apagado. Instalación e interruptor: SISTEMA > YORHA HELPER.
 YoRHa Helper no está en marcha. Pasos: SISTEMA > YORHA HELPER.
+YoRHa Helper aún no está vinculado. Pulsa VINCULAR en SISTEMA > YORHA HELPER.
 
 ## pod.idle.routine
 Report: No se detectan firmas hostiles en este sector.

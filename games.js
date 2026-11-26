@@ -15,6 +15,9 @@
   const T = (k, v) => (window.YoRHaI18N ? window.YoRHaI18N.t(k, v) : k);
   const TN = (n, k, v) => (window.YoRHaI18N ? window.YoRHaI18N.n(n, k, v) : k.split('|')[n === 1 ? 0 : 1].replace('{n}', n));
   const K = (k) => k;
+  // A saved number, or the default when it is missing or not a finite number (old or hand-edited saves).
+  const num = (v, def) => (typeof v === 'number' && isFinite(v) ? v : def);
+  const okRun = (r) => !!r && typeof r === 'object' && isFinite(r.score);
 
   // Pointer position in canvas pixels.
   function pointerPos(c, e) {
@@ -81,8 +84,9 @@
       mx: -1, my: -1, lastMove: 0, buttons: [], hot: '', overAt: 0, newBest: false,
       W: 1, H: 1, S: 1, cx: 0, cy: 0
     };
-    let runs = api.store.get('intercept.runs', []);
+    let runs = [].concat(api.store.get('intercept.runs', [])).filter(okRun);
     let last = api.store.get('intercept.last', null);
+    if (!okRun(last)) last = null;
 
     const mult = () => 1 + Math.min(3, Math.floor(g.combo / 6) * 0.5);
     const reach = () => 0.5 * Math.hypot(g.W, g.H) / g.S + 0.05;
@@ -121,6 +125,7 @@
       g.speedMul = 1 + (g.wave - 1) * 0.07;
       g.waveHurt = false;
       g.waveT = 0;
+      g.waveDone = false;
       banner(T('WAVE {w}', { w: pad(g.wave) }));
     }
 
@@ -239,7 +244,8 @@
           g.spawnT = g.gap * rand(0.6, 1.3);
         }
       } else if (!g.enemies.length) {
-        if (g.waveT === 0) {
+        if (!g.waveDone) { // a flag, not waveT === 0: a frame with dt 0 would pay the bonus twice
+          g.waveDone = true;
           const bonus = 50 * g.wave + (g.waveHurt ? 0 : 100);
           g.score += bonus;
           banner(g.waveHurt ? T('WAVE CLEARED  +{n}', { n: bonus }) : T('PERFECT WAVE  +{n}', { n: bonus }));
@@ -584,9 +590,9 @@
     const DIRS = [[0, -1, 1, 4], [1, 0, 2, 8], [0, 1, 4, 1], [-1, 0, 8, 2]]; // dx, dy, bit, opposite bit (N E S W)
     const L = {
       visible: false,
-      level: api.store.get('logic.level', 1),
-      solved: api.store.get('logic.solved', 0),
-      best: api.store.get('logic.best', {}),
+      level: Math.max(1, Math.floor(num(api.store.get('logic.level', 1), 1))),
+      solved: Math.max(0, Math.floor(num(api.store.get('logic.solved', 0), 0))),
+      best: Object.assign({}, api.store.get('logic.best', {})),
       n: 5, shownLevel: 1, cells: [], rot: [], anim: null, powered: null, src: 0,
       // elapsed: seconds of play, counted only while the board is on screen and the wallpaper runs
       started: 0, elapsed: 0, moves: 0, won: false, wonAt: 0, time: 0, newBest: false,
@@ -907,8 +913,9 @@
         bend: 0, bv: 0, wither: 0
       };
     }
-    api.store.get('garden.flowers', []).forEach((f, i) => {
-      if (f && typeof f.x === 'number') gd.flowers.push(makeFlower(clamp(f.x, 0, 1), clamp(f.d || 0, 0, 1), f.s || i + 1, true, -1000 + i));
+    gd.total = num(gd.total, 0);
+    [].concat(api.store.get('garden.flowers', [])).forEach((f, i) => {
+      if (f && isFinite(f.x)) gd.flowers.push(makeFlower(clamp(f.x, 0, 1), clamp(num(f.d, 0), 0, 1), num(f.s, 0) || i + 1, true, -1000 + i));
     });
     gd.flowers.sort((a, b) => a.d - b.d);
 

@@ -135,7 +135,10 @@ Sur ce PC, ouvrez github.com/CalebFrums/yorha-terminal dans votre navigateur.
 Cliquez sur « Download YoRHaHelper.zip » en haut de la page, puis décompressez-le dans un dossier que vous garderez, par exemple Documents.
 Dans ce dossier, double-cliquez sur Install-YoRHaHelper.cmd. Si Windows le demande, choisissez Exécuter (ou Informations complémentaires, puis Exécuter quand même). Il démarre aussitôt et avec Windows.
 Revenez ici et appuyez sur ACTIVER. Un avertissement explique d'abord ce qu'il fait.
+Appuyez sur ASSOCIER, puis tapez le code à six chiffres affiché ici dans la fenêtre qu'ouvre YoRHa Helper.
 Le statut ci-dessus passe à EN LIGNE et les boutons de musique de RENSEIGNEMENTS fonctionnent.
+CODE D'ASSOCIATION
+ASSOCIER
 POUR LE RETIRER : DOUBLE-CLIQUEZ SUR UNINSTALL-YORHAHELPER.CMD, PUIS SUPPRIMEZ LE DOSSIER // IL NE PARLE QU'À CE PC, NE TIENT AUCUN JOURNAL ET NE VA JAMAIS SUR INTERNET
 YoRHa TERMINAL TACTIQUE
 Terminal de bureau créé par un fan dans le style de NieR:Automata. Sans lien avec Square Enix. L'interface est entièrement dessinée en code. Les personnages viennent de l'ensemble fourni, ou de votre propre dossier dès que vous en choisissez un.
@@ -145,7 +148,7 @@ GLOIRE À L'HUMANITÉ
 YORHA HELPER // AVERTISSEMENT
 YoRHa Helper est un petit programme facultatif proposé sur la page GitHub de ce fond d'écran (github.com/CalebFrums/yorha-terminal, dossier helper). Vous le téléchargez et le lancez vous-même ; le fond d'écran ne peut rien installer.
 Quand ce bouton est activé, le fond d'écran lui parle sur ce PC uniquement (127.0.0.1), pour deux choses : appuyer sur les touches multimédia de Windows quand vous cliquez sur précédent, lecture/pause ou suivant dans RENSEIGNEMENTS, et ouvrir une zone de texte quand vous choisissez TAPER AU CLAVIER DU PC.
-Confidentialité : rien n'est envoyé sur Internet ni à l'auteur. Le helper ne tient aucun journal, n'écrit aucun fichier et ne lit que ce que vous tapez dans sa propre zone de texte. Votre calendrier et votre planning restent sur ce PC.
+Confidentialité : rien n'est envoyé sur Internet ni à l'auteur. Le helper ne tient aucun journal, et le seul fichier qu'il écrit contient sa clé d'association. Il ne lit que ce que vous tapez dans sa propre zone de texte, et n'obéit qu'à un fond d'écran que vous avez associé. Votre calendrier et votre planning restent sur ce PC.
 Quand le bouton est désactivé, le fond d'écran ne contacte jamais le helper. Vous pouvez le désactiver ici à tout moment.
 Les étapes d'installation sont dans SYSTÈME > YORHA HELPER.
 ANNULER
@@ -229,20 +232,33 @@ EN ATTENTE DE SIGNAL AUDIO // LANCEZ QUELQUE CHOSE DANS SPOTIFY, UN NAVIGATEUR, 
 Journal audio effacé. Aucune trace des signaux passés ne subsiste.
 Signal audio capté : « {title} »{by}.
 Lecture audio suspendue.
+TAPEZ CE CODE DANS LA FENÊTRE OUVERTE PAR YORHA HELPER
+YoRHa Helper associé. Les boutons de musique et la saisie au clavier du PC sont prêts.
+TROP D'ESSAIS // ATTENDEZ 10 MINUTES, PUIS APPUYEZ SUR ASSOCIER
+ASSOCIATION ANNULÉE // APPUYEZ SUR ASSOCIER POUR RÉESSAYER
+LE CODE NE CORRESPOND PAS // APPUYEZ SUR ASSOCIER POUR RÉESSAYER
+YORHA HELPER NE TOURNE PAS // ÉTAPES DANS SYSTÈME > YORHA HELPER
+YORHA HELPER OBSOLÈTE // RETÉLÉCHARGEZ YORHAHELPER.ZIP (SYSTÈME > YORHA HELPER)
+YORHA HELPER NON ASSOCIÉ // ASSOCIEZ-LE DANS SYSTÈME > YORHA HELPER
 SIGNAL ENVOYÉ // PISTE SUIVANTE
 SIGNAL ENVOYÉ // PISTE PRÉCÉDENTE
 SIGNAL ENVOYÉ // LECTURE / PAUSE
 YORHA HELPER EST DÉSACTIVÉ // INSTALLATION ET BOUTON DANS SYSTÈME > YORHA HELPER
 YORHA HELPER PERDU // YORHA HELPER TOURNE-T-IL ENCORE ?
-YORHA HELPER NE TOURNE PAS // ÉTAPES DANS SYSTÈME > YORHA HELPER
 HELPER ARRÊTÉ
-HELPER EN LIGNE
 HELPER HORS LIGNE
+HELPER OBSOLÈTE
+HELPER NON ASSOCIÉ
+HELPER EN LIGNE
 YoRHa Helper activé. Il ne communique qu'avec ce PC.
-EN LIGNE
 NE TOURNE PAS
+MISE À JOUR REQUISE
+NON ASSOCIÉ
+EN LIGNE
 STATUT // {s}
 DÉSACTIVER
+CETTE COPIE EST OBSOLÈTE // RETÉLÉCHARGEZ YORHAHELPER.ZIP, PUIS LANCEZ INSTALL-YORHAHELPER.CMD
+APPUYEZ SUR ASSOCIER POUR CONNECTER CE FOND D'ÉCRAN
 {n} IPS
 LIMITE {n}
 SIMULÉ
@@ -804,6 +820,7 @@ Entrée supprimée : {title}.
 Tapez dans la fenêtre qui s'est ouverte, puis appuyez sur Entrée.
 YoRHa Helper est désactivé. Installation et bouton : SYSTÈME > YORHA HELPER.
 YoRHa Helper ne tourne pas. Étapes : SYSTÈME > YORHA HELPER.
+YoRHa Helper n'est pas encore associé. Appuyez sur ASSOCIER dans SYSTÈME > YORHA HELPER.
 
 ## pod.idle.routine
 Report: Aucune signature hostile détectée dans ce secteur.

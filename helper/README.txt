@@ -14,18 +14,26 @@ Setup
   2. Double-click Install-YoRHaHelper.cmd. If Windows asks, choose Run
      (or More info, then Run anyway). It starts now and with every Windows sign-in.
   3. In the wallpaper, open SYSTEM > YORHA HELPER and press SWITCH ON.
-     The status changes to ONLINE.
+  4. Press PAIR. The wallpaper shows a six-digit code and the helper opens a box:
+     type the code there. The status changes to ONLINE.
 
   Start-YoRHaHelper.cmd     runs it once, without starting it with Windows
-  Uninstall-YoRHaHelper.cmd stops it and removes it from Windows startup;
-                            then you can delete this folder
+  Uninstall-YoRHaHelper.cmd stops it, removes it from Windows startup and forgets the
+                            pairing; then you can delete this folder
+
+Updating from an older copy
+  Replace the files in your folder with the new ones and double-click
+  Install-YoRHaHelper.cmd again: it stops the old helper and starts the new one.
+  Version 3 (November 2026) needs the wallpaper to be paired once (step 4).
 
 Privacy
   - It listens on 127.0.0.1:47823, which only programs on this PC can reach.
-  - It never connects to the internet, writes no files and keeps no log.
+  - It never connects to the internet and keeps no log.
+  - The only file it writes is its pairing key:
+    %LOCALAPPDATA%\YoRHa Helper\keys.txt (Uninstall-YoRHaHelper.cmd deletes it).
   - It reads only what you type into its own text box, never keys typed anywhere else.
-  - It accepts commands only from the wallpaper itself, pages on this PC and the
-    project's demo page; any other website is refused.
+  - It obeys only a wallpaper you paired with it. A website cannot pair, because it never
+    sees the code, so websites cannot press keys or open the box.
   - While the wallpaper's YORHA HELPER switch is off, the wallpaper never contacts it.
 
   YoRHaHelper.ps1 is a plain PowerShell script: open it in Notepad to read every line.

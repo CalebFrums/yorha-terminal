@@ -40,5 +40,5 @@ console.log('[OK] ' + (list.length + 2) + ' files -> ' + DEST);
 const zip = path.join(DEST, 'YoRHaHelper.zip');
 if (fs.existsSync(zip)) fs.unlinkSync(zip);
 const helperFiles = fs.readdirSync(path.join(ROOT, 'helper')).filter((f) => fs.statSync(path.join(ROOT, 'helper', f)).isFile());
-execFileSync(path.join(process.env.SystemRoot || 'C:\Windows', 'System32', 'tar.exe'), ['-a', '-c', '-f', zip, '-C', path.join(ROOT, 'helper')].concat(helperFiles));
+execFileSync(path.join(process.env.SystemRoot || 'C:\\Windows', 'System32', 'tar.exe'), ['-a', '-c', '-f', zip, '-C', path.join(ROOT, 'helper')].concat(helperFiles));
 console.log('[OK] YoRHaHelper.zip: ' + helperFiles.join(', '));
