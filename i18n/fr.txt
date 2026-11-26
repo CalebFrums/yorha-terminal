@@ -83,7 +83,9 @@ CONDITIONS
 SIGNAUX MACHINES
 NIVEAU DE MENACE
 FAITES GLISSER LE GLOBE POUR LE TOURNER // CLIQUEZ SUR UN MARQUEUR POUR EXPLORER
-MODIFIEZ LA LISTE DANS LES PROPRIÉTÉS DU FOND D'ÉCRAN // ORDRES DU JOUR (SÉPARÉS PAR |)
+NOUVEL ORDRE
+LISTE DE WALLPAPER ENGINE
+CLIQUEZ SUR UN ORDRE POUR LE TERMINER // MODIFIER POUR LE CHANGER OU LE RETIRER // UNE NOUVELLE LISTE DANS LES PROPRIÉTÉS DU FOND D'ÉCRAN REMPLACE CELLE-CI
 EN ATTENTE
 DURÉE DE L'OPÉRATION
 DÉMARRER
@@ -400,9 +402,16 @@ ALT 4 800 KM  //  INCL 67,6
 AUCUN  //  SÉCURISÉ
 {n} DÉTECTÉS
 HEURE EN COURS
+La liste contient {n} ordres au maximum. Retirez-en un d'abord.
+Cet ordre figure déjà dans la liste.
+Ordre ajouté : {order}.
+Ordre modifié : {order}.
+Ordre retiré : {order}.
+Ordres du jour restaurés depuis les propriétés du fond d'écran.
 AUCUN ORDRE ATTRIBUÉ
 TERMINÉ
 EN ATTENTE
+MODIFIER
 {weekday}  {day} {month}
 SÉRIE : {days}
 Tous les ordres du jour sont terminés. Série : {days}. Gloire à l'humanité.
@@ -738,6 +747,15 @@ Jeu vidéo
 Temps libre
 Ménage
 Trajet
+Aller se promener
+Ranger son bureau
+Lire vingt minutes
+Prendre un vrai repas
+Écrire à un proche
+Se coucher avant minuit
+MODIFIER L'ENTRÉE
+MODIFIER L'ACTIVITÉ
+MODIFIER L'ORDRE
 aujourd'hui
 Calendrier : {title}, {when}.
 Planning : {title} à {when}.
@@ -766,11 +784,10 @@ MAJ
 ESPACE
 EFFACER
 TOUT EFFACER
-MODIFIER L'ENTRÉE
-MODIFIER L'ACTIVITÉ
 MOIS
 RÉPÉTITION
 ALERTE
+POSITION
 EN SEMAINE
 WEEK-END
 TOUS LES JOURS

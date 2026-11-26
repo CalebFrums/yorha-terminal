@@ -83,7 +83,9 @@ BEDINGUNGEN
 FEINDSIGNALE
 GEFAHRENSTUFE
 GLOBUS ZIEHEN ZUM DREHEN // MARKIERUNG KLICKEN ZUM ERKUNDEN
-LISTE IN DEN HINTERGRUND-EIGENSCHAFTEN BEARBEITEN // TAGESBEFEHLE (MIT | TRENNEN)
+NEUER BEFEHL
+WALLPAPER-ENGINE-LISTE
+BEFEHL ANKLICKEN ZUM ABHAKEN // BEARBEITEN ZUM ÄNDERN ODER ENTFERNEN // EINE NEUE LISTE IN DEN HINTERGRUND-EIGENSCHAFTEN ERSETZT DIESE
 BEREIT
 OPERATIONSDAUER
 START
@@ -400,9 +402,16 @@ HÖHE 4800 KM // 67,6°
 KEINE  //  SICHER
 {n} ERKANNT
 AKTUELLE STUNDE
+Die Liste fasst höchstens {n} Befehle. Bitte zuerst einen entfernen.
+Dieser Befehl steht schon auf der Liste.
+Befehl hinzugefügt: {order}.
+Befehl geändert: {order}.
+Befehl entfernt: {order}.
+Tagesbefehle aus den Hintergrund-Eigenschaften wiederhergestellt.
 KEINE BEFEHLE ZUGEWIESEN
 ERLEDIGT
 OFFEN
+BEARBEITEN
 {weekday}  {day}. {month}
 SERIE: {days}
 Alle Tagesbefehle erledigt. Serie: {days}. Ruhm der Menschheit.
@@ -738,6 +747,15 @@ Zocken
 Freizeit
 Haushalt
 Pendeln
+Spazieren gehen
+Schreibtisch aufräumen
+Zwanzig Minuten lesen
+Richtig essen
+Freunden schreiben
+Vor Mitternacht schlafen gehen
+EINTRAG BEARBEITEN
+AKTIVITÄT BEARBEITEN
+BEFEHL BEARBEITEN
 heute
 Kalender: {title}, {when}.
 Wochenplan: {title} um {when}.
@@ -766,11 +784,10 @@ UMSCHALT
 LEER
 LÖSCHEN
 ALLES LEEREN
-EINTRAG BEARBEITEN
-AKTIVITÄT BEARBEITEN
 MONAT
 WIEDERHOLEN
 ALARM
+POSITION
 WERKTAGS
 WOCHENENDE
 TÄGLICH

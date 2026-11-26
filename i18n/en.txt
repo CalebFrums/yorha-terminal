@@ -88,7 +88,9 @@ CONDITIONS
 MACHINE SIGNALS
 THREAT LEVEL
 DRAG THE GLOBE TO ROTATE // CLICK A MARKER TO SURVEY
-EDIT THE LIST IN THE WALLPAPER PROPERTIES // DAILY ORDERS (SEPARATE WITH |)
+NEW ORDER
+USE WALLPAPER ENGINE LIST
+CLICK AN ORDER TO MARK IT COMPLETE // EDIT TO CHANGE OR REMOVE IT // A NEW LIST IN THE WALLPAPER PROPERTIES REPLACES THIS ONE
 STANDBY
 OPERATION LENGTH
 START
@@ -405,9 +407,16 @@ ALT 4,800 KM  //  INCL 67.6
 NONE  //  SECURE
 {n} DETECTED
 CURRENT HOUR
+The list holds {n} orders at most. Remove one first.
+That order is already on the list.
+Order added: {order}.
+Order updated: {order}.
+Order removed: {order}.
+Daily orders restored from the wallpaper properties.
 NO ORDERS ASSIGNED
 COMPLETE
 PENDING
+EDIT
 {weekday}  {day} {month}
 STREAK {days}
 All daily orders complete. Streak: {days}. Glory to Mankind.
@@ -743,6 +752,15 @@ Gaming
 Free time
 Chores
 Commute
+Go for a walk
+Tidy your desk
+Read for twenty minutes
+Eat a proper meal
+Message a friend
+Sleep before midnight
+EDIT ENTRY
+EDIT ACTIVITY
+EDIT ORDER
 today
 Calendar: {title}, {when}.
 Schedule: {title} at {when}.
@@ -771,11 +789,10 @@ SHIFT
 SPACE
 ERASE
 CLEAR ALL
-EDIT ENTRY
-EDIT ACTIVITY
 MONTH
 REPEAT
 ALERT
+POSITION
 WEEKDAYS
 WEEKEND
 EVERY DAY

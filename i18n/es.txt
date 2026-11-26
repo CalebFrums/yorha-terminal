@@ -83,7 +83,9 @@ CONDICIONES
 SEÑALES DE MÁQUINAS
 NIVEL DE AMENAZA
 ARRASTRA EL GLOBO PARA GIRARLO // HAZ CLIC EN UN MARCADOR PARA EXPLORAR
-EDITA LA LISTA EN LAS PROPIEDADES DEL FONDO // ÓRDENES DIARIAS (SEPARADAS POR |)
+NUEVA ORDEN
+LISTA DE WALLPAPER ENGINE
+HAZ CLIC EN UNA ORDEN PARA COMPLETARLA // EDITAR PARA CAMBIARLA O QUITARLA // UNA LISTA NUEVA EN LAS PROPIEDADES DEL FONDO REEMPLAZA ESTA
 EN ESPERA
 DURACIÓN DE LA OPERACIÓN
 INICIAR
@@ -400,9 +402,16 @@ ALT 4.800 KM  //  INCL 67,6
 NINGUNA  //  SEGURO
 {n} DETECTADAS
 HORA ACTUAL
+La lista admite {n} órdenes como máximo. Quita una primero.
+Esa orden ya está en la lista.
+Orden añadida: {order}.
+Orden actualizada: {order}.
+Orden quitada: {order}.
+Órdenes diarias restauradas desde las propiedades del fondo.
 SIN ÓRDENES ASIGNADAS
 COMPLETADA
 PENDIENTE
+EDITAR
 {weekday}  {day} {month}
 RACHA: {days}
 Todas las órdenes diarias completadas. Racha: {days}. Gloria a la humanidad.
@@ -738,6 +747,15 @@ Videojuegos
 Tiempo libre
 Tareas de casa
 Trayecto
+Salir a caminar
+Ordenar tu escritorio
+Leer veinte minutos
+Comer bien
+Escribir a una amistad
+Dormir antes de medianoche
+EDITAR ENTRADA
+EDITAR ACTIVIDAD
+EDITAR ORDEN
 hoy
 Calendario: {title}, {when}.
 Horario: {title} a las {when}.
@@ -766,11 +784,10 @@ MAYÚS
 ESPACIO
 BORRAR
 BORRAR TODO
-EDITAR ENTRADA
-EDITAR ACTIVIDAD
 MES
 REPETIR
 ALERTA
+POSICIÓN
 ENTRE SEMANA
 FIN DE SEMANA
 TODOS LOS DÍAS

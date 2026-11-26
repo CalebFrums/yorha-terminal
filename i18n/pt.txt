@@ -83,7 +83,9 @@ CONDIÇÕES
 SINAIS DE MÁQUINAS
 NÍVEL DE AMEAÇA
 ARRASTE O GLOBO PARA GIRAR // CLIQUE EM UM MARCADOR PARA EXPLORAR
-EDITE A LISTA NAS PROPRIEDADES DO PAPEL DE PAREDE // ORDENS DIÁRIAS (SEPARADAS POR |)
+NOVA ORDEM
+LISTA DO WALLPAPER ENGINE
+CLIQUE EM UMA ORDEM PARA CONCLUÍ-LA // EDITAR PARA MUDAR OU REMOVER // UMA NOVA LISTA NAS PROPRIEDADES DO PAPEL DE PAREDE SUBSTITUI ESTA
 EM ESPERA
 DURAÇÃO DA OPERAÇÃO
 INICIAR
@@ -400,9 +402,16 @@ ALT 4.800 KM  //  INCL 67,6
 NENHUM  //  SEGURO
 {n} DETECTADOS
 HORA ATUAL
+A lista comporta no máximo {n} ordens. Remova uma primeiro.
+Essa ordem já está na lista.
+Ordem adicionada: {order}.
+Ordem atualizada: {order}.
+Ordem removida: {order}.
+Ordens diárias restauradas das propriedades do papel de parede.
 NENHUMA ORDEM ATRIBUÍDA
 CONCLUÍDA
 PENDENTE
+EDITAR
 {weekday}  {day} {month}
 SEQUÊNCIA: {days}
 Todas as ordens diárias concluídas. Sequência: {days}. Glória à humanidade.
@@ -738,6 +747,15 @@ Jogos
 Tempo livre
 Tarefas de casa
 Trajeto
+Fazer uma caminhada
+Arrumar a mesa
+Ler por vinte minutos
+Fazer uma refeição de verdade
+Mandar mensagem a alguém querido
+Dormir antes da meia-noite
+EDITAR ENTRADA
+EDITAR ATIVIDADE
+EDITAR ORDEM
 hoje
 Calendário: {title}, {when}.
 Agenda: {title} às {when}.
@@ -766,11 +784,10 @@ SHIFT
 ESPAÇO
 APAGAR
 LIMPAR TUDO
-EDITAR ENTRADA
-EDITAR ATIVIDADE
 MÊS
 REPETIR
 ALERTA
+POSIÇÃO
 DIAS ÚTEIS
 FIM DE SEMANA
 TODO DIA

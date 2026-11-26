@@ -2,6 +2,7 @@
    QUESTS > CALENDAR and QUESTS > WEEKLY SCHEDULE keep entries on this PC; the wallpaper properties can add
    more as text. Wallpaper Engine forwards no keys to a wallpaper, so titles are typed on an on-screen
    keyboard (a real keyboard works too wherever keys arrive, such as a browser preview).
+   The same editor writes QUESTS > DAILY ORDERS (editOrder; main.js keeps that list).
    Code stays ASCII: letters outside ASCII are written as \u escapes. */
 (function () {
   'use strict';
@@ -83,9 +84,20 @@
     const SCH_REMIND = [[-1, K('OFF')], [0, K('AT THE START')], [5, K('5 MIN BEFORE')], [15, K('15 MIN BEFORE')]];
     const CAL_PRESETS = [K('Birthday'), K('Appointment'), K('Meeting'), K('Deadline'), K('Payment'), K('Call'), K('Exam'), K('Trip'), K('Event')];
     const SCH_PRESETS = [K('Work'), K('Study'), K('Class'), K('Gym'), K('Meal'), K('Sleep'), K('Gaming'), K('Free time'), K('Chores'), K('Commute')];
+    const ORDER_PRESETS = [K('Drink some water'), K('Stretch for five minutes'), K('Back up your save data'),
+      K('Finish one task you have been avoiding'), K('Go for a walk'), K('Tidy your desk'), K('Read for twenty minutes'),
+      K('Eat a proper meal'), K('Message a friend'), K('Sleep before midnight')];
+    const ORDER_LEN = 80; // the length the property list allows
+
+    // What the editor opens as: its heading for a new or an existing record, the view's name, suggestions.
+    const ED_KINDS = {
+      cal: { add: K('NEW ENTRY'), edit: K('EDIT ENTRY'), name: K('CALENDAR'), presets: CAL_PRESETS },
+      sched: { add: K('NEW ACTIVITY'), edit: K('EDIT ACTIVITY'), name: K('WEEKLY SCHEDULE'), presets: SCH_PRESETS },
+      order: { add: K('NEW ORDER'), edit: K('EDIT ORDER'), name: K('DAILY ORDERS'), presets: ORDER_PRESETS }
+    };
 
     const newId = (p) => p + Date.now().toString(36) + Math.floor(Math.random() * 1296).toString(36);
-    const cleanTitle = (s) => String(s || '').replace(/\s+/g, ' ').trim().slice(0, MAX_TITLE);
+    const cleanTitle = (s, max) => String(s || '').replace(/\s+/g, ' ').trim().slice(0, max || MAX_TITLE);
 
     function okEvent(e) {
       return e && typeof e.id === 'string' && parseKey(e.date) && cleanTitle(e.title) &&
@@ -821,8 +833,9 @@
 
     // ---------- editor with on-screen keyboard ----------
 
+    // ord: the daily-order request from main.js ({ title, pos, count, save, remove }); max: this kind's title length.
     const ed = { open: false, kind: '', rec: null, title: '', shift: false, kata: false, layout: 'abc', armDel: 0, tip: '', waiting: false,
-      py: '', pyPage: 0, hc: false };
+      py: '', pyPage: 0, hc: false, ord: null, max: MAX_TITLE };
 
     const u = (codes) => codes.map((c) => (c ? String.fromCharCode(c) : ''));
     const KB = {
@@ -906,7 +919,7 @@
     function typeJamo(ch) {
       const c = ch.charCodeAt(0), t = ed.title;
       const last = ed.hc && t ? t.charCodeAt(t.length - 1) : 0;
-      const room = t.length < MAX_TITLE;
+      const room = t.length < ed.max;
       const put = (s) => {
         ed.title = t.slice(0, -1) + s;
         ed.hc = true;
@@ -991,7 +1004,7 @@
     }
 
     function pickCand(ch) {
-      if (ed.title.length >= MAX_TITLE) return false;
+      if (ed.title.length >= ed.max) return false;
       ed.title += ch;
       ed.py = ed.py.slice(pySeg().len).replace(/^'+/, '');
       ed.pyPage = 0;
@@ -1001,7 +1014,7 @@
     // The letters as typed, when no character is wanted (a name, or a syllable the table lacks).
     function commitRaw() {
       const s = ed.py.replace(/'/g, '');
-      ed.title += s.slice(0, Math.max(0, MAX_TITLE - ed.title.length));
+      ed.title += s.slice(0, Math.max(0, ed.max - ed.title.length));
       ed.py = '';
       ed.pyPage = 0;
     }
@@ -1073,7 +1086,7 @@
         if (joined.length === ed.title.length) ed.title = joined;
         return;
       }
-      if (ed.title.length >= MAX_TITLE) return;
+      if (ed.title.length >= ed.max) return;
       ed.title += ch;
       if (ed.layout !== 'kana') ed.shift = false;
     }
@@ -1157,7 +1170,7 @@
           pickFirst();
         } else {
           ed.hc = false;
-          if (ed.title && !ed.title.endsWith(' ') && ed.title.length < MAX_TITLE) ed.title += ' ';
+          if (ed.title && !ed.title.endsWith(' ') && ed.title.length < ed.max) ed.title += ' ';
         }
       } else if (op === 'back') {
         if (ed.py) {
@@ -1217,8 +1230,18 @@
       setText($('ed-comp'), comp);
       renderCand();
       $('ed-input').classList.toggle('empty', !ed.title && !ed.py);
-      setText($('ed-count'), ed.title.length + ' / ' + MAX_TITLE);
+      setText($('ed-count'), ed.title.length + ' / ' + ed.max);
       setText($('ed-tip'), ed.tip);
+      fitTitle();
+    }
+
+    // A long title (daily orders take 80 characters) steps down a size or two so its end stays in view.
+    function fitTitle() {
+      const inp = $('ed-input');
+      inp.classList.remove('long', 'longer');
+      if (!ed.open || inp.scrollWidth <= inp.clientWidth) return;
+      inp.classList.add('long');
+      if (inp.scrollWidth > inp.clientWidth) inp.classList.add('longer');
     }
 
     // A stepper: [<] value [>], repeating while held. One shared release handler for all of them.
@@ -1323,16 +1346,20 @@
       ed.kata = false;
       ed.tip = '';
       ed.layout = KB_DEFAULT[lang] || 'abc';
+      ed.max = kind === 'order' ? ORDER_LEN : MAX_TITLE;
       endCompose();
       if (kind === 'cal') {
         const d = day || midnight(Date.now());
         ed.v = rec ? JSON.parse(JSON.stringify(rec)) : { id: '', title: '', date: keyOf(d), time: '', rep: 'none', rem: 0 };
+      } else if (kind === 'order') {
+        ed.v = { title: ed.ord.title || '', pos: ed.ord.pos };
       } else {
         ed.v = rec ? JSON.parse(JSON.stringify(rec)) : Object.assign({ id: '', title: '', days: [1, 2, 3, 4, 5], start: '09:00', end: '10:00', rem: -1 }, preset || {});
       }
       ed.title = ed.v.title;
-      setText($('ed-head'), rec ? (kind === 'cal' ? T('EDIT ENTRY') : T('EDIT ACTIVITY')) : (kind === 'cal' ? T('NEW ENTRY') : T('NEW ACTIVITY')));
-      setText($('ed-kind'), kind === 'cal' ? T('CALENDAR') : T('WEEKLY SCHEDULE'));
+      const ek = ED_KINDS[kind];
+      setText($('ed-head'), T(rec ? ek.edit : ek.add));
+      setText($('ed-kind'), T(ek.name));
       $('ed-del').style.display = rec ? '' : 'none';
       setText($('ed-del'), T('DELETE'));
       syncKb();
@@ -1340,7 +1367,7 @@
 
       const pre = $('ed-presets');
       pre.textContent = '';
-      for (const p of kind === 'cal' ? CAL_PRESETS : SCH_PRESETS) {
+      for (const p of ek.presets) {
         const c = el('span', 'chip', T(p));
         c.addEventListener('click', () => {
           ed.title = T(p);
@@ -1390,6 +1417,11 @@
         rows.appendChild(edRow(K('TIME'), timeBox));
         rows.appendChild(edRow(K('REPEAT'), chips(REPEATS, (x) => v.rep === x, (x) => { v.rep = x; })));
         rows.appendChild(edRow(K('ALERT'), chips(CAL_REMIND, (x) => v.rem === x, (x) => { v.rem = x; }), 'span2'));
+      } else if (kind === 'order') {
+        // Where the order sits in the list: 1 is the top.
+        const n = ed.ord.count;
+        if (n > 1) rows.appendChild(edRow(K('POSITION'), stepper(() => v.pos, (d) => { v.pos = Math.max(0, Math.min(n - 1, v.pos + d)); },
+          (p) => (p + 1) + ' / ' + n), 'span2'));
       } else {
         const ws = weekStart();
         const dayOpts = Array.from({ length: 7 }, (_, i) => [(ws + i) % 7, DOW[(ws + i) % 7]]);
@@ -1420,6 +1452,7 @@
       box.classList.remove('show');
       void box.offsetWidth;
       box.classList.add('show');
+      fitTitle(); // measurable now that the editor is shown
     }
 
     // The on-screen keyboard: always, never, or (auto) only while YoRHa Helper is not running to offer the real one.
@@ -1445,10 +1478,21 @@
       commitPy();
       ed.hc = false;
       const v = ed.v;
-      v.title = cleanTitle(ed.title);
+      v.title = cleanTitle(ed.title, ed.max);
       if (!v.title) {
         ed.tip = T('Type a title, or pick one of the suggestions.');
         renderTitle();
+        return;
+      }
+      if (ed.kind === 'order') {
+        // main.js keeps the list; it answers with a reason when the order cannot be saved.
+        const why = ed.ord.save(v.title, v.pos);
+        if (why) {
+          ed.tip = why;
+          renderTitle();
+          return;
+        }
+        closeEditor();
         return;
       }
       if (ed.kind === 'sched') {
@@ -1499,6 +1543,11 @@
         setTimeout(() => { if (ed.open && Date.now() > ed.armDel) setText($('ed-del'), T('DELETE')); }, 4100);
         return;
       }
+      if (ed.kind === 'order') {
+        ed.ord.remove();
+        closeEditor();
+        return;
+      }
       const id = ed.v.id;
       if (ed.kind === 'cal') {
         data.events = data.events.filter((x) => x.id !== id);
@@ -1525,14 +1574,14 @@
       $('ed-pc').classList.add('off');
       ed.tip = T('Type in the window that opened, then press Enter.');
       renderTitle();
-      api.ask(T(ed.kind === 'cal' ? 'CALENDAR' : 'WEEKLY SCHEDULE') + ' // ' + T('TITLE'), ed.title, MAX_TITLE).then((res) => {
+      api.ask(T(ED_KINDS[ed.kind].name) + ' // ' + T('TITLE'), ed.title, ed.max).then((res) => {
         ed.waiting = false;
         $('ed-pc').classList.remove('off');
         if (!ed.open) return;
         ed.tip = res.off ? T('YoRHa Helper is off. Setup steps and the switch: SYSTEM > YORHA HELPER.')
           : res.offline ? T('YoRHa Helper is not running. Setup steps: SYSTEM > YORHA HELPER.') : '';
         if (typeof res.text === 'string') {
-          ed.title = cleanTitle(res.text);
+          ed.title = cleanTitle(res.text, ed.max);
           endCompose();
         }
         renderTitle();
@@ -1620,6 +1669,12 @@
       hubLine: hubLine,
       alertTitle: alertTitle,
       editing: () => ed.open,
+      // A daily order: o = { isNew, title, pos (0 = top), count (list length with it), save(title, pos) -> '' or
+      // the reason it was not saved, remove() }.
+      editOrder: (o) => {
+        ed.ord = o;
+        openEditor('order', o.isNew ? null : o);
+      },
       leave: closeEditor,
       helperChanged: () => { if (ed.open) syncKb(); },
       showHub: () => renderAgenda(Date.now(), true) // back on the desktop: lay the agenda out while it is visible

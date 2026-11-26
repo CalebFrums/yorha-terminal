@@ -3124,17 +3124,113 @@
     opsEls[id] = { pct: q.querySelector('.q-pct'), fill: q.querySelector('.fill'), rem: q.querySelector('.q-rem'), name: q.querySelector('.q-name') };
   }
 
+  // The list comes from the dailyorders property until it is edited here (NEW ORDER / EDIT). From then on the
+  // wallpaper's own copy (orders.custom) is used, until the property is changed in Wallpaper Engine again, the same
+  // way a quick setting gives way. Completed marks are kept by text, for today only.
+  const ORDER_MAX = 10, ORDER_LEN = 80;
+  const cleanOrder = (s) => String(s || '').replace(/\s+/g, ' ').trim().slice(0, ORDER_LEN);
+  const savedOrders = store.get('orders.list', null);
   const orders = {
     done: store.get('orders.done', { day: '', items: {} }),
     streak: store.get('orders.streak', { count: 0, last: '' }),
-    renderedDay: ''
+    custom: Array.isArray(savedOrders) ? savedOrders.map(cleanOrder).filter(Boolean).slice(0, ORDER_MAX) : null,
+    renderedDay: '',
+    armReset: 0
   };
 
-  const orderLabel = (s) => (cfg.dailyOrders === DEFAULTS.dailyOrders ? T(s) : s);
+  const orderLabel = (s) => (!orders.custom && cfg.dailyOrders === DEFAULTS.dailyOrders ? T(s) : s);
 
   function orderList() {
-    return String(cfg.dailyOrders || '').split('|').map((s) => s.trim().slice(0, 80)).filter(Boolean).slice(0, 10);
+    if (orders.custom) return orders.custom;
+    return String(cfg.dailyOrders || '').split('|').map((s) => s.trim().slice(0, ORDER_LEN)).filter(Boolean).slice(0, ORDER_MAX);
   }
+
+  // Change the list as shown (default orders in the current language): change(list, done) edits both arrays
+  // in step, so a completed mark follows its order through a rename or a move.
+  function changeOrders(change) {
+    const cur = orderList(), st = ordersState();
+    const list = cur.map(orderLabel);
+    const done = cur.map((t) => !!st.items[t]);
+    change(list, done);
+    const items = {};
+    list.forEach((t, i) => { if (done[i]) items[t] = true; });
+    st.items = items;
+    store.set('orders.done', st);
+    orders.custom = list;
+    store.set('orders.list', list);
+    renderOrders();
+  }
+
+  function dropCustomOrders() {
+    orders.custom = null;
+    orders.armReset = 0;
+    store.set('orders.list', null);
+  }
+
+  // NEW ORDER (i < 0) or EDIT on row i: the planner's editor with the on-screen keyboard.
+  function openOrder(i) {
+    const shown = orderList().map(orderLabel);
+    const isNew = i < 0 || i >= shown.length;
+    if (isNew && shown.length >= ORDER_MAX) {
+      say('Report', T('The list holds {n} orders at most. Remove one first.', { n: ORDER_MAX }));
+      return;
+    }
+    const orig = isNew ? '' : shown[i];
+    // The list can change while the editor is open (a new property list): find the order again by its text.
+    const at = (list) => (isNew ? -1 : list.indexOf(orig));
+    planner.editOrder({
+      isNew: isNew,
+      title: orig,
+      pos: isNew ? shown.length : i,
+      count: isNew ? shown.length + 1 : shown.length,
+      save(title, pos) {
+        title = cleanOrder(title);
+        const now = orderList().map(orderLabel), j = at(now);
+        if (now.some((t, k) => k !== j && t.toLowerCase() === title.toLowerCase())) return T('That order is already on the list.');
+        if (j < 0 && now.length >= ORDER_MAX) return T('The list holds {n} orders at most. Remove one first.', { n: ORDER_MAX });
+        changeOrders((list, done) => {
+          let d = false;
+          if (j >= 0) {
+            d = done[j];
+            list.splice(j, 1);
+            done.splice(j, 1);
+          }
+          const p = Math.max(0, Math.min(list.length, pos));
+          list.splice(p, 0, title);
+          done.splice(p, 0, d);
+        });
+        if (j < 0) say('Confirmation', T('Order added: {order}.', { order: title }));
+        else say('Confirmation', T('Order updated: {order}.', { order: title }));
+        return '';
+      },
+      remove() {
+        const j = at(orderList().map(orderLabel));
+        if (j < 0) return;
+        changeOrders((list, done) => {
+          list.splice(j, 1);
+          done.splice(j, 1);
+        });
+        say('Report', T('Order removed: {order}.', { order: orig }));
+      }
+    });
+  }
+
+  // USE WALLPAPER ENGINE LIST: back to the property's list (two clicks).
+  function resetOrders() {
+    if (!orders.custom) return;
+    const now = Date.now();
+    if (now > orders.armReset) {
+      orders.armReset = now + 4000;
+      setText($('ord-reset'), T('CONFIRM?'));
+      setTimeout(() => { if (Date.now() > orders.armReset) renderOrders(); }, 4100);
+      return;
+    }
+    dropCustomOrders();
+    say('Report', T('Daily orders restored from the wallpaper properties.'));
+    renderOrders();
+  }
+  $('ord-add').addEventListener('click', () => openOrder(-1));
+  $('ord-reset').addEventListener('click', resetOrders);
 
   function ordersState() {
     const today = dayKey(new Date());
@@ -3160,9 +3256,10 @@
       const li = document.createElement('li');
       li.className = 'empty';
       li.textContent = T('NO ORDERS ASSIGNED');
+      li.addEventListener('click', () => openOrder(-1));
       ul.appendChild(li);
     }
-    for (const text of list) {
+    list.forEach((text, i) => {
       const done = !!st.items[text];
       const li = document.createElement('li');
       if (done) li.className = 'done';
@@ -3174,10 +3271,21 @@
       const s = document.createElement('span');
       s.className = 'st';
       s.textContent = done ? T('COMPLETE') : T('PENDING');
-      li.append(chk, txt, s);
+      const edit = document.createElement('span');
+      edit.className = 'ord-edit';
+      edit.textContent = T('EDIT');
+      edit.addEventListener('click', (e) => {
+        e.stopPropagation(); // editing is not completing
+        openOrder(i);
+      });
+      li.append(chk, txt, s, edit);
       li.addEventListener('click', () => toggleOrder(text));
       ul.appendChild(li);
-    }
+    });
+    $('ord-add').classList.toggle('ghost', list.length >= ORDER_MAX);
+    const reset = $('ord-reset');
+    reset.style.display = orders.custom ? '' : 'none';
+    if (Date.now() > orders.armReset) setText(reset, T('USE WALLPAPER ENGINE LIST'));
     const d = new Date();
     const n = list.filter((t) => st.items[t]).length;
     const sk = streakCount();
@@ -4965,6 +5073,11 @@
         cfg[field] = field in overrides ? overrides[field] : base[field];
       }
       if (dropped) store.set('overrides', overrides);
+      // A list typed in the properties replaces the one edited in QUESTS > DAILY ORDERS.
+      if (!first && props.dailyorders && orders.custom) {
+        dropCustomOrders();
+        say('Report', T('Daily orders restored from the wallpaper properties.'));
+      }
       applyConfig();
       if (props.charfolder) onFolderChange(props.charfolder.value);
       if (props.startpanel) setPanel(cfg.startPanel, false);
