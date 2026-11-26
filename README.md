@@ -51,11 +51,14 @@ Wallpaper Engine lets a wallpaper see what is playing but not control it, and it
 
 1. **[Download YoRHaHelper.zip](https://github.com/CalebFrums/yorha-terminal/raw/main/YoRHaHelper.zip)** and unzip it into a folder you will keep, such as Documents.
 2. Double-click `Install-YoRHaHelper.cmd`. If Windows asks, choose **Run** (or **More info**, then **Run anyway**): the file came from the internet. It starts now and with Windows.
-3. In the wallpaper, open **SYSTEM > YORHA HELPER** and press **SWITCH ON**. The switch is off by default and shows a disclaimer first. The status changes to ONLINE.
+3. In the wallpaper, open **SYSTEM > YORHA HELPER** and press **SWITCH ON**. The switch is off by default and shows a disclaimer first.
+4. Press **PAIR**. The wallpaper shows a six-digit code and the helper opens a small box: click the box and type the code there. The status changes to ONLINE. You only do this once.
 
-`Uninstall-YoRHaHelper.cmd` stops it and removes it from startup; then delete the folder. `Start-YoRHaHelper.cmd` runs it once without adding it to startup. It is one readable PowerShell script (open it in Notepad) with no install, no admin rights and no extra downloads.
+Updating from an older copy: replace the files in your folder and double-click `Install-YoRHaHelper.cmd` again (it stops the old helper and starts the new one), then pair once. Version 3 (November 2026) is the first that needs pairing.
 
-**Privacy.** The helper listens on `127.0.0.1:47823`, which only programs on your PC can reach. It never connects to the internet, writes no files and keeps no log. It accepts commands only from the wallpaper itself, pages on your PC and this project's demo page; other websites are refused. The wallpaper keeps your calendar and schedule on your PC (Wallpaper Engine's local storage) and sends nothing to any server.
+`Uninstall-YoRHaHelper.cmd` stops it, removes it from startup and forgets the pairing; then delete the folder. `Start-YoRHaHelper.cmd` runs it once without adding it to startup. It is one readable PowerShell script (open it in Notepad) with no install, no admin rights and no extra downloads.
+
+**Privacy.** The helper listens on `127.0.0.1:47823`, which only programs on your PC can reach. It never connects to the internet and keeps no log; the only file it writes is its pairing key (`%LOCALAPPDATA%\YoRHa Helper\keys.txt`). It obeys only a wallpaper you paired with it: a website never sees the code, so it cannot press keys or open the box. The wallpaper keeps your calendar and schedule on your PC (Wallpaper Engine's local storage) and sends nothing to any server.
 
 ## Demo notes
 
@@ -99,3 +102,7 @@ To use it in Wallpaper Engine, subscribe on the Workshop. Or open the editor, cr
 | `i18n.js`, `i18n/*.txt`, `lang/*.js` | Translations. Edit `i18n/<code>.txt`, then run `node tools/build_i18n.mjs` |
 | `project.json` | Wallpaper Engine project and its properties |
 | `tools/` | Dev helpers: translation build, the preview GIF capture, the BREACH test page |
+
+## License
+
+The code is [MIT licensed](LICENSE): use it, change it and share it, as long as the copyright notice stays with it. three.js in `vendor/` keeps its own MIT license (`vendor/three.LICENSE.txt`). The license covers this project's code only: NieR:Automata, its names and its characters belong to Square Enix, and no game assets or character images are in this repository.

@@ -3,7 +3,7 @@
 // The repo gets the runtime files, translations and dev tools, but never the NieRCharacters renders:
 // its bundled.js is written with an empty list, so the live demo asks for no images it does not have.
 // project.json comes from the installed Wallpaper Engine project when it exists (that copy is the source
-// of truth). README.md, .nojekyll and .git in the repo folder are left alone. Also builds YoRHaHelper.zip.
+// of truth). README.md, LICENSE, .nojekyll and .git in the repo folder are left alone. Also builds YoRHaHelper.zip.
 import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import path from 'node:path';
