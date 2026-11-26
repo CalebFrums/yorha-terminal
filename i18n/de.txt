@@ -135,7 +135,7 @@ Optional. Er macht die Musiktasten in INFOS funktionsfähig und ergänzt MIT PC-
 Klicke oben auf der Seite auf „Download YoRHaHelper.zip" und entpacke die Datei in einen Ordner, den du behältst, z. B. Dokumente.
 Doppelklicke in diesem Ordner auf Install-YoRHaHelper.cmd. Falls Windows fragt, wähle Ausführen (oder Weitere Informationen, dann Trotzdem ausführen). Er startet sofort und mit Windows.
 Komm hierher zurück und drücke EINSCHALTEN. Vorher erklärt ein Hinweis, was er tut.
-Drücke KOPPELN und tippe den hier gezeigten sechsstelligen Code in das Fenster, das YoRHa Helper öffnet.
+Drücke KOPPELN, klicke in das Fenster, das YoRHa Helper öffnet, und tippe den hier gezeigten sechsstelligen Code.
 Der Status oben wechselt auf ONLINE, und die Musiktasten in INFOS funktionieren.
 KOPPLUNGSCODE
 KOPPELN
@@ -232,7 +232,7 @@ WARTE AUF AUDIOSIGNAL // SPIELE ETWAS IN SPOTIFY, EINEM BROWSER USW. AB
 Audioprotokoll gelöscht. Keine Aufzeichnung früherer Signale bleibt erhalten.
 Audiosignal erfasst: „{title}“{by}.
 Audiowiedergabe angehalten.
-TIPPE DIESEN CODE IN DAS FENSTER, DAS YORHA HELPER GEÖFFNET HAT
+KLICKE IN DAS FENSTER VON YORHA HELPER, DANN TIPPE DIESEN CODE
 YoRHa Helper gekoppelt. Musiktasten und Tippen mit der PC-Tastatur sind bereit.
 ZU VIELE VERSUCHE // 10 MINUTEN WARTEN, DANN KOPPELN DRÜCKEN
 KOPPLUNG ABGEBROCHEN // ZUM WIEDERHOLEN KOPPELN DRÜCKEN

@@ -870,7 +870,8 @@
     link.pairing = true;
     link.asking = true;
     link.code = pairCode();
-    link.pairMsg = K('TYPE THIS CODE INTO THE BOX YORHA HELPER OPENED');
+    // The box does not take the keyboard on its own (a page that opens it must not catch keys typed elsewhere).
+    link.pairMsg = K('CLICK THE BOX YORHA HELPER OPENED, THEN TYPE THIS CODE');
     refreshLinkUi();
     // The box's words are the helper's own (in this language), so no page can write a code into it.
     fetch(LINK + 'pair?c=' + link.code + '&lang=' + encodeURIComponent(I18N.code), { method: 'POST', cache: 'no-store' })

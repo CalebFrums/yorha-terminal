@@ -140,7 +140,7 @@ On this PC, open github.com/CalebFrums/yorha-terminal in your web browser.
 Click Download YoRHaHelper.zip near the top of the page, then unzip it into a folder you will keep, such as Documents.
 In that folder, double-click Install-YoRHaHelper.cmd. If Windows asks, choose Run (or More info, then Run anyway). It starts now and with Windows.
 Come back here and press SWITCH ON. A disclaimer explains what it does first.
-Press PAIR, then type the six-digit code shown here into the box that YoRHa Helper opens.
+Press PAIR, click the box that YoRHa Helper opens, then type the six-digit code shown here.
 The status above changes to ONLINE, and the music buttons in INTEL work.
 PAIRING CODE
 PAIR
@@ -237,7 +237,7 @@ AWAITING AUDIO SIGNAL // PLAY SOMETHING IN SPOTIFY, A BROWSER, ETC.
 Audio log cleared. No record of past signals remains.
 Audio signal acquired: "{title}"{by}.
 Audio playback suspended.
-TYPE THIS CODE INTO THE BOX YORHA HELPER OPENED
+CLICK THE BOX YORHA HELPER OPENED, THEN TYPE THIS CODE
 YoRHa Helper paired. Music buttons and PC keyboard typing are ready.
 TOO MANY TRIES // WAIT 10 MINUTES, THEN PRESS PAIR
 PAIRING CANCELLED // PRESS PAIR TO TRY AGAIN

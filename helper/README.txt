@@ -15,7 +15,7 @@ Setup
      (or More info, then Run anyway). It starts now and with every Windows sign-in.
   3. In the wallpaper, open SYSTEM > YORHA HELPER and press SWITCH ON.
   4. Press PAIR. The wallpaper shows a six-digit code and the helper opens a box:
-     type the code there. The status changes to ONLINE.
+     click the box, then type the code there. The status changes to ONLINE.
 
   Start-YoRHaHelper.cmd     runs it once, without starting it with Windows
   Uninstall-YoRHaHelper.cmd stops it, removes it from Windows startup and forgets the

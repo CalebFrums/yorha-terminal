@@ -135,7 +135,7 @@ En este PC, abre github.com/CalebFrums/yorha-terminal en tu navegador.
 Haz clic en «Download YoRHaHelper.zip» arriba de la página y descomprímelo en una carpeta que vayas a conservar, como Documentos.
 En esa carpeta, haz doble clic en Install-YoRHaHelper.cmd. Si Windows pregunta, elige Ejecutar (o Más información y luego Ejecutar de todas formas). Se inicia ya y con Windows.
 Vuelve aquí y pulsa ACTIVAR. Antes, un aviso explica lo que hace.
-Pulsa VINCULAR y escribe el código de seis dígitos que aparece aquí en el cuadro que abre YoRHa Helper.
+Pulsa VINCULAR, haz clic en el cuadro que abre YoRHa Helper y escribe el código de seis dígitos que aparece aquí.
 El estado de arriba cambia a CONECTADO y los botones de música de INTELIGENCIA funcionan.
 CÓDIGO DE VINCULACIÓN
 VINCULAR
@@ -232,7 +232,7 @@ ESPERANDO SEÑAL DE AUDIO // REPRODUCE ALGO EN SPOTIFY, UN NAVEGADOR, ETC.
 Registro de audio borrado. No queda constancia de señales anteriores.
 Señal de audio captada: «{title}»{by}.
 Reproducción de audio suspendida.
-ESCRIBE ESTE CÓDIGO EN EL CUADRO QUE ABRIÓ YORHA HELPER
+HAZ CLIC EN EL CUADRO QUE ABRIÓ YORHA HELPER Y ESCRIBE ESTE CÓDIGO
 YoRHa Helper vinculado. Los botones de música y la escritura con el teclado del PC están listos.
 DEMASIADOS INTENTOS // ESPERA 10 MINUTOS Y PULSA VINCULAR
 VINCULACIÓN CANCELADA // PULSA VINCULAR PARA REINTENTAR

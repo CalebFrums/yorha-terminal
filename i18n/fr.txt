@@ -135,7 +135,7 @@ Sur ce PC, ouvrez github.com/CalebFrums/yorha-terminal dans votre navigateur.
 Cliquez sur « Download YoRHaHelper.zip » en haut de la page, puis décompressez-le dans un dossier que vous garderez, par exemple Documents.
 Dans ce dossier, double-cliquez sur Install-YoRHaHelper.cmd. Si Windows le demande, choisissez Exécuter (ou Informations complémentaires, puis Exécuter quand même). Il démarre aussitôt et avec Windows.
 Revenez ici et appuyez sur ACTIVER. Un avertissement explique d'abord ce qu'il fait.
-Appuyez sur ASSOCIER, puis tapez le code à six chiffres affiché ici dans la fenêtre qu'ouvre YoRHa Helper.
+Appuyez sur ASSOCIER, cliquez dans la fenêtre qu'ouvre YoRHa Helper, puis tapez le code à six chiffres affiché ici.
 Le statut ci-dessus passe à EN LIGNE et les boutons de musique de RENSEIGNEMENTS fonctionnent.
 CODE D'ASSOCIATION
 ASSOCIER
@@ -232,7 +232,7 @@ EN ATTENTE DE SIGNAL AUDIO // LANCEZ QUELQUE CHOSE DANS SPOTIFY, UN NAVIGATEUR, 
 Journal audio effacé. Aucune trace des signaux passés ne subsiste.
 Signal audio capté : « {title} »{by}.
 Lecture audio suspendue.
-TAPEZ CE CODE DANS LA FENÊTRE OUVERTE PAR YORHA HELPER
+CLIQUEZ DANS LA FENÊTRE OUVERTE PAR YORHA HELPER, PUIS TAPEZ CE CODE
 YoRHa Helper associé. Les boutons de musique et la saisie au clavier du PC sont prêts.
 TROP D'ESSAIS // ATTENDEZ 10 MINUTES, PUIS APPUYEZ SUR ASSOCIER
 ASSOCIATION ANNULÉE // APPUYEZ SUR ASSOCIER POUR RÉESSAYER

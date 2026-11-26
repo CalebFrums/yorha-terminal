@@ -135,7 +135,7 @@ Neste PC, abra github.com/CalebFrums/yorha-terminal no navegador.
 Clique em "Download YoRHaHelper.zip" no topo da página e extraia o arquivo em uma pasta que você vai manter, como Documentos.
 Nessa pasta, clique duas vezes em Install-YoRHaHelper.cmd. Se o Windows perguntar, escolha Executar (ou Mais informações e depois Executar assim mesmo). Ele inicia agora e junto com o Windows.
 Volte aqui e pressione LIGAR. Antes, um aviso explica o que ele faz.
-Pressione PAREAR e digite o código de seis dígitos mostrado aqui na caixa que o YoRHa Helper abrir.
+Pressione PAREAR, clique na caixa que o YoRHa Helper abrir e digite o código de seis dígitos mostrado aqui.
 O status acima muda para ONLINE e os botões de música em INTELIGÊNCIA funcionam.
 CÓDIGO DE PAREAMENTO
 PAREAR
@@ -232,7 +232,7 @@ AGUARDANDO SINAL DE ÁUDIO // TOQUE ALGO NO SPOTIFY, EM UM NAVEGADOR ETC.
 Registro de áudio apagado. Não resta nenhum registro de sinais anteriores.
 Sinal de áudio captado: "{title}"{by}.
 Reprodução de áudio suspensa.
-DIGITE ESTE CÓDIGO NA CAIXA QUE O YORHA HELPER ABRIU
+CLIQUE NA CAIXA QUE O YORHA HELPER ABRIU E DIGITE ESTE CÓDIGO
 YoRHa Helper pareado. Os botões de música e a digitação pelo teclado do PC estão prontos.
 TENTATIVAS DEMAIS // ESPERE 10 MINUTOS E PRESSIONE PAREAR
 PAREAMENTO CANCELADO // PRESSIONE PAREAR PARA TENTAR DE NOVO
