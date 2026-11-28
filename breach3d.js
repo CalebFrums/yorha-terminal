@@ -127,7 +127,7 @@
       hasMouse: false, px: 0, py: 0, hot: '', buttons: [], cards: [],
       reason: '', newBest: false, overAt: 0, seenHint: {}, hideAt: 0, god: false
     };
-    const Q = { scale: LOW ? 0.8 : 1, max: LOW ? 0.9 : 1, base: 0, warm: [], acc: 0, n: 0, good: 0 };
+    const Q = { scale: LOW ? 0.8 : 1, max: LOW ? 0.9 : 1, base: 0, warm: [], acc: 0, n: 0, good: 0, lim: -1 };
     const up = {};
     const resetUp = () => PATCHES.forEach((p) => { up[p.id] = 0; });
     resetUp();
@@ -1972,12 +1972,27 @@
 
     // Resolution follows the frame rate: the host's normal frame time is measured on the light title
     // screen, then a slower average during play lowers the scale and steady headroom raises it again.
+    // A new FPS setting in Wallpaper Engine changes the normal frame time, so it is measured again
+    // (outside a run, where the scene is light).
     function adapt(raw) {
+      const lim = api.fpsLimit ? api.fpsLimit() : 0;
+      if (lim !== Q.lim) {
+        Q.lim = lim;
+        Q.base = 0;
+        Q.warm = [];
+        Q.acc = 0;
+        Q.n = 0;
+      }
       if (!Q.base) {
+        if (g.mode === 'play' || g.mode === 'intro' || g.mode === 'clear' || g.mode === 'down') return;
         Q.warm.push(raw);
         if (Q.warm.length >= 45) {
+          // The middle half: a limit that does not divide the refresh rate alternates short and long
+          // frames, and the median alone would pick one of them.
           Q.warm.sort((a, b) => a - b);
-          Q.base = Math.max(1 / 240, Q.warm[22]);
+          let sum = 0;
+          for (let i = 11; i < 34; i++) sum += Q.warm[i];
+          Q.base = Math.max(1 / 240, sum / 23);
           Q.warm = [];
         }
         return;

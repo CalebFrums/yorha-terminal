@@ -2762,6 +2762,7 @@
     fit: fitCanvas,
     get font() { return canvasFont(); },
     colors: () => state.colors,
+    fpsLimit: () => state.fpsLimit,
     bass: bass,
     unit: unit,
     say: (kind, text) => say(kind, text)
@@ -5091,16 +5092,29 @@
   // ---------- loops ----------
 
   let lastFrame = performance.now();
+  let lastTick = lastFrame;
+  let owed = 0;
   let frames = 0;
   let fpsAt = lastFrame;
 
   function frame(now) {
     requestAnimationFrame(frame);
+    const gap = Math.max(0, now - lastTick);
+    lastTick = now;
     if (state.paused) {
       lastFrame = now;
+      owed = 0;
       return;
     }
-    if (state.fpsLimit > 0 && now - lastFrame < 1000 / state.fpsLimit - 2) return;
+    // Wallpaper Engine's FPS setting (Settings > Performance), met on average at any refresh rate:
+    // the time owed carries over between callbacks, so a limit that does not divide the monitor's
+    // rate (60 on a 144 Hz screen) is not rounded down to a divisor of it (48).
+    if (state.fpsLimit > 0) {
+      const step = 1000 / state.fpsLimit;
+      owed += gap;
+      if (owed < step - Math.min(2, step / 4)) return;
+      owed = Math.min(owed - step, step);
+    }
     // A rAF timestamp can predate lastFrame; a negative step would make the audio smoothing diverge.
     const dt = Math.max(0, Math.min(0.1, (now - lastFrame) / 1000));
     lastFrame = now;
